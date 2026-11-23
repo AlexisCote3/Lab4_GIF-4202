@@ -33,6 +33,7 @@ use IEEE.STD_LOGIC_1164.ALL;
 
 entity test is
     Port ( is_mur : in STD_LOGIC;
+           is_pixel_joueur : in STD_LOGIC;
            rbg_in : in STD_LOGIC_VECTOR (23 downto 0);
            rbg_out : out STD_LOGIC_VECTOR (23 downto 0));
 end test;
@@ -41,6 +42,9 @@ architecture Behavioral of test is
 
 begin
 
-rbg_out <= rbg_in when is_mur = '1' else (others=>'0');
+rbg_out <= x"FF0000" when (is_mur = '1' and  is_pixel_joueur = '1') else 
+            x"00FF00" when (is_mur = '1' and  is_pixel_joueur = '0') else
+            x"0000FF" when (is_mur = '0' and  is_pixel_joueur = '1') else
+            rbg_in;
 
 end Behavioral;

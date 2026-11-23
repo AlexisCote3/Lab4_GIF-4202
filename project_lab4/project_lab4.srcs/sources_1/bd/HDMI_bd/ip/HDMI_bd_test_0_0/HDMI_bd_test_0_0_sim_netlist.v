@@ -1,10 +1,10 @@
 // Copyright 1986-2018 Xilinx, Inc. All Rights Reserved.
 // --------------------------------------------------------------------------------
 // Tool Version: Vivado v.2018.2.1 (win64) Build 2288692 Thu Jul 26 18:24:02 MDT 2018
-// Date        : Fri Nov 20 19:12:47 2026
-// Host        : pcetu-149 running 64-bit major release  (build 9200)
+// Date        : Sun Nov 22 20:06:06 2026
+// Host        : pcetu-129 running 64-bit major release  (build 9200)
 // Command     : write_verilog -force -mode funcsim
-//               c:/Users/juroy185/Documents/project_lab4/project_lab4.srcs/sources_1/bd/HDMI_bd/ip/HDMI_bd_test_0_0/HDMI_bd_test_0_0_sim_netlist.v
+//               U:/Documents/FPGA/Lab4_GIF-4202/project_lab4/project_lab4.srcs/sources_1/bd/HDMI_bd/ip/HDMI_bd_test_0_0/HDMI_bd_test_0_0_sim_netlist.v
 // Design      : HDMI_bd_test_0_0
 // Purpose     : This verilog netlist is a functional simulation representation of the design and should not be modified
 //               or synthesized. This netlist cannot be used for SDF annotated simulation.
@@ -17,159 +17,233 @@
 (* NotValidForBitStream *)
 module HDMI_bd_test_0_0
    (is_mur,
+    is_pixel_joueur,
     rbg_in,
     rbg_out);
   input is_mur;
+  input is_pixel_joueur;
   input [23:0]rbg_in;
   output [23:0]rbg_out;
 
   wire is_mur;
+  wire is_pixel_joueur;
   wire [23:0]rbg_in;
   wire [23:0]rbg_out;
 
-  LUT2 #(
-    .INIT(4'h8)) 
+  HDMI_bd_test_0_0_test U0
+       (.is_mur(is_mur),
+        .is_pixel_joueur(is_pixel_joueur),
+        .rbg_in(rbg_in),
+        .rbg_out(rbg_out));
+endmodule
+
+(* ORIG_REF_NAME = "test" *) 
+module HDMI_bd_test_0_0_test
+   (rbg_out,
+    rbg_in,
+    is_pixel_joueur,
+    is_mur);
+  output [23:0]rbg_out;
+  input [23:0]rbg_in;
+  input is_pixel_joueur;
+  input is_mur;
+
+  wire is_mur;
+  wire is_pixel_joueur;
+  wire [23:0]rbg_in;
+  wire [23:0]rbg_out;
+
+  (* SOFT_HLUTNM = "soft_lutpair0" *) 
+  LUT3 #(
+    .INIT(8'h0E)) 
     \rbg_out[0]_INST_0 
-       (.I0(is_mur),
-        .I1(rbg_in[0]),
+       (.I0(rbg_in[0]),
+        .I1(is_pixel_joueur),
+        .I2(is_mur),
         .O(rbg_out[0]));
-  LUT2 #(
-    .INIT(4'h8)) 
+  (* SOFT_HLUTNM = "soft_lutpair10" *) 
+  LUT3 #(
+    .INIT(8'h32)) 
     \rbg_out[10]_INST_0 
-       (.I0(is_mur),
-        .I1(rbg_in[10]),
+       (.I0(rbg_in[10]),
+        .I1(is_pixel_joueur),
+        .I2(is_mur),
         .O(rbg_out[10]));
-  LUT2 #(
-    .INIT(4'h8)) 
+  (* SOFT_HLUTNM = "soft_lutpair10" *) 
+  LUT3 #(
+    .INIT(8'h32)) 
     \rbg_out[11]_INST_0 
-       (.I0(is_mur),
-        .I1(rbg_in[11]),
+       (.I0(rbg_in[11]),
+        .I1(is_pixel_joueur),
+        .I2(is_mur),
         .O(rbg_out[11]));
-  LUT2 #(
-    .INIT(4'h8)) 
+  (* SOFT_HLUTNM = "soft_lutpair9" *) 
+  LUT3 #(
+    .INIT(8'h32)) 
     \rbg_out[12]_INST_0 
-       (.I0(is_mur),
-        .I1(rbg_in[12]),
+       (.I0(rbg_in[12]),
+        .I1(is_pixel_joueur),
+        .I2(is_mur),
         .O(rbg_out[12]));
-  LUT2 #(
-    .INIT(4'h8)) 
+  (* SOFT_HLUTNM = "soft_lutpair9" *) 
+  LUT3 #(
+    .INIT(8'h32)) 
     \rbg_out[13]_INST_0 
-       (.I0(is_mur),
-        .I1(rbg_in[13]),
+       (.I0(rbg_in[13]),
+        .I1(is_pixel_joueur),
+        .I2(is_mur),
         .O(rbg_out[13]));
-  LUT2 #(
-    .INIT(4'h8)) 
+  (* SOFT_HLUTNM = "soft_lutpair8" *) 
+  LUT3 #(
+    .INIT(8'h32)) 
     \rbg_out[14]_INST_0 
-       (.I0(is_mur),
-        .I1(rbg_in[14]),
+       (.I0(rbg_in[14]),
+        .I1(is_pixel_joueur),
+        .I2(is_mur),
         .O(rbg_out[14]));
-  LUT2 #(
-    .INIT(4'h8)) 
+  (* SOFT_HLUTNM = "soft_lutpair8" *) 
+  LUT3 #(
+    .INIT(8'h32)) 
     \rbg_out[15]_INST_0 
-       (.I0(is_mur),
-        .I1(rbg_in[15]),
+       (.I0(rbg_in[15]),
+        .I1(is_pixel_joueur),
+        .I2(is_mur),
         .O(rbg_out[15]));
-  LUT2 #(
-    .INIT(4'h8)) 
+  (* SOFT_HLUTNM = "soft_lutpair7" *) 
+  LUT3 #(
+    .INIT(8'h98)) 
     \rbg_out[16]_INST_0 
        (.I0(is_mur),
-        .I1(rbg_in[16]),
+        .I1(is_pixel_joueur),
+        .I2(rbg_in[16]),
         .O(rbg_out[16]));
-  LUT2 #(
-    .INIT(4'h8)) 
+  (* SOFT_HLUTNM = "soft_lutpair7" *) 
+  LUT3 #(
+    .INIT(8'h98)) 
     \rbg_out[17]_INST_0 
        (.I0(is_mur),
-        .I1(rbg_in[17]),
+        .I1(is_pixel_joueur),
+        .I2(rbg_in[17]),
         .O(rbg_out[17]));
-  LUT2 #(
-    .INIT(4'h8)) 
+  (* SOFT_HLUTNM = "soft_lutpair6" *) 
+  LUT3 #(
+    .INIT(8'h98)) 
     \rbg_out[18]_INST_0 
        (.I0(is_mur),
-        .I1(rbg_in[18]),
+        .I1(is_pixel_joueur),
+        .I2(rbg_in[18]),
         .O(rbg_out[18]));
-  LUT2 #(
-    .INIT(4'h8)) 
+  (* SOFT_HLUTNM = "soft_lutpair6" *) 
+  LUT3 #(
+    .INIT(8'h98)) 
     \rbg_out[19]_INST_0 
        (.I0(is_mur),
-        .I1(rbg_in[19]),
+        .I1(is_pixel_joueur),
+        .I2(rbg_in[19]),
         .O(rbg_out[19]));
-  LUT2 #(
-    .INIT(4'h8)) 
+  (* SOFT_HLUTNM = "soft_lutpair0" *) 
+  LUT3 #(
+    .INIT(8'h0E)) 
     \rbg_out[1]_INST_0 
-       (.I0(is_mur),
-        .I1(rbg_in[1]),
+       (.I0(rbg_in[1]),
+        .I1(is_pixel_joueur),
+        .I2(is_mur),
         .O(rbg_out[1]));
-  LUT2 #(
-    .INIT(4'h8)) 
+  (* SOFT_HLUTNM = "soft_lutpair5" *) 
+  LUT3 #(
+    .INIT(8'h98)) 
     \rbg_out[20]_INST_0 
        (.I0(is_mur),
-        .I1(rbg_in[20]),
+        .I1(is_pixel_joueur),
+        .I2(rbg_in[20]),
         .O(rbg_out[20]));
-  LUT2 #(
-    .INIT(4'h8)) 
+  (* SOFT_HLUTNM = "soft_lutpair5" *) 
+  LUT3 #(
+    .INIT(8'h98)) 
     \rbg_out[21]_INST_0 
        (.I0(is_mur),
-        .I1(rbg_in[21]),
+        .I1(is_pixel_joueur),
+        .I2(rbg_in[21]),
         .O(rbg_out[21]));
-  LUT2 #(
-    .INIT(4'h8)) 
+  (* SOFT_HLUTNM = "soft_lutpair4" *) 
+  LUT3 #(
+    .INIT(8'h98)) 
     \rbg_out[22]_INST_0 
        (.I0(is_mur),
-        .I1(rbg_in[22]),
+        .I1(is_pixel_joueur),
+        .I2(rbg_in[22]),
         .O(rbg_out[22]));
-  LUT2 #(
-    .INIT(4'h8)) 
+  (* SOFT_HLUTNM = "soft_lutpair4" *) 
+  LUT3 #(
+    .INIT(8'h98)) 
     \rbg_out[23]_INST_0 
        (.I0(is_mur),
-        .I1(rbg_in[23]),
+        .I1(is_pixel_joueur),
+        .I2(rbg_in[23]),
         .O(rbg_out[23]));
-  LUT2 #(
-    .INIT(4'h8)) 
+  (* SOFT_HLUTNM = "soft_lutpair1" *) 
+  LUT3 #(
+    .INIT(8'h0E)) 
     \rbg_out[2]_INST_0 
-       (.I0(is_mur),
-        .I1(rbg_in[2]),
+       (.I0(rbg_in[2]),
+        .I1(is_pixel_joueur),
+        .I2(is_mur),
         .O(rbg_out[2]));
-  LUT2 #(
-    .INIT(4'h8)) 
+  (* SOFT_HLUTNM = "soft_lutpair1" *) 
+  LUT3 #(
+    .INIT(8'h0E)) 
     \rbg_out[3]_INST_0 
-       (.I0(is_mur),
-        .I1(rbg_in[3]),
+       (.I0(rbg_in[3]),
+        .I1(is_pixel_joueur),
+        .I2(is_mur),
         .O(rbg_out[3]));
-  LUT2 #(
-    .INIT(4'h8)) 
+  (* SOFT_HLUTNM = "soft_lutpair2" *) 
+  LUT3 #(
+    .INIT(8'h0E)) 
     \rbg_out[4]_INST_0 
-       (.I0(is_mur),
-        .I1(rbg_in[4]),
+       (.I0(rbg_in[4]),
+        .I1(is_pixel_joueur),
+        .I2(is_mur),
         .O(rbg_out[4]));
-  LUT2 #(
-    .INIT(4'h8)) 
+  (* SOFT_HLUTNM = "soft_lutpair2" *) 
+  LUT3 #(
+    .INIT(8'h0E)) 
     \rbg_out[5]_INST_0 
-       (.I0(is_mur),
-        .I1(rbg_in[5]),
+       (.I0(rbg_in[5]),
+        .I1(is_pixel_joueur),
+        .I2(is_mur),
         .O(rbg_out[5]));
-  LUT2 #(
-    .INIT(4'h8)) 
+  (* SOFT_HLUTNM = "soft_lutpair3" *) 
+  LUT3 #(
+    .INIT(8'h0E)) 
     \rbg_out[6]_INST_0 
-       (.I0(is_mur),
-        .I1(rbg_in[6]),
+       (.I0(rbg_in[6]),
+        .I1(is_pixel_joueur),
+        .I2(is_mur),
         .O(rbg_out[6]));
-  LUT2 #(
-    .INIT(4'h8)) 
+  (* SOFT_HLUTNM = "soft_lutpair3" *) 
+  LUT3 #(
+    .INIT(8'h0E)) 
     \rbg_out[7]_INST_0 
-       (.I0(is_mur),
-        .I1(rbg_in[7]),
+       (.I0(rbg_in[7]),
+        .I1(is_pixel_joueur),
+        .I2(is_mur),
         .O(rbg_out[7]));
-  LUT2 #(
-    .INIT(4'h8)) 
+  (* SOFT_HLUTNM = "soft_lutpair11" *) 
+  LUT3 #(
+    .INIT(8'h32)) 
     \rbg_out[8]_INST_0 
-       (.I0(is_mur),
-        .I1(rbg_in[8]),
+       (.I0(rbg_in[8]),
+        .I1(is_pixel_joueur),
+        .I2(is_mur),
         .O(rbg_out[8]));
-  LUT2 #(
-    .INIT(4'h8)) 
+  (* SOFT_HLUTNM = "soft_lutpair11" *) 
+  LUT3 #(
+    .INIT(8'h32)) 
     \rbg_out[9]_INST_0 
-       (.I0(is_mur),
-        .I1(rbg_in[9]),
+       (.I0(rbg_in[9]),
+        .I1(is_pixel_joueur),
+        .I2(is_mur),
         .O(rbg_out[9]));
 endmodule
 `ifndef GLBL

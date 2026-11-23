@@ -1,10 +1,10 @@
 // Copyright 1986-2018 Xilinx, Inc. All Rights Reserved.
 // --------------------------------------------------------------------------------
 // Tool Version: Vivado v.2018.2.1 (win64) Build 2288692 Thu Jul 26 18:24:02 MDT 2018
-// Date        : Fri Nov 20 19:12:50 2026
-// Host        : pcetu-149 running 64-bit major release  (build 9200)
+// Date        : Sun Nov 22 20:01:56 2026
+// Host        : pcetu-129 running 64-bit major release  (build 9200)
 // Command     : write_verilog -force -mode funcsim
-//               C:/Users/juroy185/Documents/project_lab4/project_lab4.srcs/sources_1/bd/HDMI_bd/ip/HDMI_bd_rgb2dvi_0_0/HDMI_bd_rgb2dvi_0_0_sim_netlist.v
+//               U:/Documents/FPGA/Lab4_GIF-4202/project_lab4/project_lab4.srcs/sources_1/bd/HDMI_bd/ip/HDMI_bd_rgb2dvi_0_0/HDMI_bd_rgb2dvi_0_0_sim_netlist.v
 // Design      : HDMI_bd_rgb2dvi_0_0
 // Purpose     : This verilog netlist is a functional simulation representation of the design and should not be modified
 //               or synthesized. This netlist cannot be used for SDF annotated simulation.

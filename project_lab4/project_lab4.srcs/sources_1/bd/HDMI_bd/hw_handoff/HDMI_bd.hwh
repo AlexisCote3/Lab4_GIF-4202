@@ -1,28 +1,18 @@
 ﻿<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
-<EDKSYSTEM EDWVERSION="1.2" TIMESTAMP="Fri Nov 20 19:26:28 2026" VIVADOVERSION="2018.2.1">
+<EDKSYSTEM EDWVERSION="1.2" TIMESTAMP="Sun Nov 22 20:04:51 2026" VIVADOVERSION="2018.2.1">
 
   <SYSTEMINFO ARCH="zynq" DEVICE="7z020" NAME="HDMI_bd" PACKAGE="clg400" SPEEDGRADE="-1"/>
 
   <EXTERNALPORTS>
-    <PORT CLKFREQUENCY="100000000" DIR="I" NAME="hdmi_in_clk_p" SIGIS="clk"/>
-    <PORT CLKFREQUENCY="100000000" DIR="I" NAME="hdmi_in_clk_n" SIGIS="clk"/>
-    <PORT DIR="I" LEFT="2" NAME="hdmi_in_data_p" RIGHT="0" SIGIS="undef"/>
-    <PORT DIR="I" LEFT="2" NAME="hdmi_in_data_n" RIGHT="0" SIGIS="undef"/>
     <PORT DIR="I" NAME="hdmi_in_ddc_scl_i" SIGIS="undef"/>
     <PORT DIR="O" NAME="hdmi_in_ddc_scl_o" SIGIS="undef"/>
     <PORT DIR="O" NAME="hdmi_in_ddc_scl_t" SIGIS="undef"/>
     <PORT DIR="I" NAME="hdmi_in_ddc_sda_i" SIGIS="undef"/>
     <PORT DIR="O" NAME="hdmi_in_ddc_sda_o" SIGIS="undef"/>
     <PORT DIR="O" NAME="hdmi_in_ddc_sda_t" SIGIS="undef"/>
-    <PORT CLKFREQUENCY="100000000" DIR="O" NAME="hdmi_out_clk_p" SIGIS="clk"/>
-    <PORT CLKFREQUENCY="100000000" DIR="O" NAME="hdmi_out_clk_n" SIGIS="clk"/>
-    <PORT DIR="O" LEFT="2" NAME="hdmi_out_data_p" RIGHT="0" SIGIS="undef"/>
-    <PORT DIR="O" LEFT="2" NAME="hdmi_out_data_n" RIGHT="0" SIGIS="undef"/>
-    <PORT CLKFREQUENCY="125000000" DIR="I" NAME="CLK" SIGIS="clk" SIGNAME="External_Ports_CLK">
-      <CONNECTIONS>
-        <CONNECTION INSTANCE="clk_wiz_0" PORT="clk_in1"/>
-      </CONNECTIONS>
-    </PORT>
+    <PORT DIR="I" NAME="btn1" SIGIS="undef"/>
+    <PORT DIR="I" NAME="btn2" SIGIS="undef"/>
+    <PORT DIR="I" NAME="sw3" SIGIS="undef"/>
     <PORT DIR="I" NAME="reset" SIGIS="rst" SIGNAME="External_Ports_reset">
       <CONNECTIONS>
         <CONNECTION INSTANCE="clk_wiz_0" PORT="reset"/>
@@ -37,16 +27,19 @@
         <CONNECTION INSTANCE="xlconstant_0" PORT="dout"/>
       </CONNECTIONS>
     </PORT>
-    <PORT DIR="I" NAME="btn0" SIGIS="undef" SIGNAME="External_Ports_btn0">
+    <PORT CLKFREQUENCY="125000000" DIR="I" NAME="CLK" SIGIS="clk" SIGNAME="External_Ports_CLK">
       <CONNECTIONS>
-        <CONNECTION INSTANCE="FSM_0" PORT="quit"/>
+        <CONNECTION INSTANCE="clk_wiz_0" PORT="clk_in1"/>
       </CONNECTIONS>
     </PORT>
-    <PORT DIR="I" NAME="btn1" SIGIS="undef"/>
-    <PORT DIR="I" NAME="btn2" SIGIS="undef"/>
     <PORT DIR="I" NAME="sw0" SIGIS="undef" SIGNAME="External_Ports_sw0">
       <CONNECTIONS>
         <CONNECTION INSTANCE="FSM_0" PORT="run"/>
+      </CONNECTIONS>
+    </PORT>
+    <PORT DIR="I" NAME="btn0" SIGIS="undef" SIGNAME="External_Ports_btn0">
+      <CONNECTIONS>
+        <CONNECTION INSTANCE="FSM_0" PORT="quit"/>
       </CONNECTIONS>
     </PORT>
     <PORT DIR="I" NAME="sw1" SIGIS="undef" SIGNAME="External_Ports_sw1">
@@ -59,18 +52,9 @@
         <CONNECTION INSTANCE="FSM_0" PORT="difficulty"/>
       </CONNECTIONS>
     </PORT>
-    <PORT DIR="I" NAME="sw3" SIGIS="undef"/>
   </EXTERNALPORTS>
 
   <EXTERNALINTERFACES>
-    <BUSINTERFACE BUSNAME="External_Interface_hdmi_in" NAME="hdmi_in" TYPE="TARGET">
-      <PORTMAPS>
-        <PORTMAP LOGICAL="CLK_P" PHYSICAL="hdmi_in_clk_p"/>
-        <PORTMAP LOGICAL="CLK_N" PHYSICAL="hdmi_in_clk_n"/>
-        <PORTMAP LOGICAL="DATA_P" PHYSICAL="hdmi_in_data_p"/>
-        <PORTMAP LOGICAL="DATA_N" PHYSICAL="hdmi_in_data_n"/>
-      </PORTMAPS>
-    </BUSINTERFACE>
     <BUSINTERFACE BUSNAME="dvi2rgb_0_DDC" NAME="hdmi_in_ddc" TYPE="INITIATOR">
       <PORTMAPS>
         <PORTMAP LOGICAL="SCL_I" PHYSICAL="hdmi_in_ddc_scl_i"/>
@@ -79,14 +63,6 @@
         <PORTMAP LOGICAL="SDA_I" PHYSICAL="hdmi_in_ddc_sda_i"/>
         <PORTMAP LOGICAL="SDA_O" PHYSICAL="hdmi_in_ddc_sda_o"/>
         <PORTMAP LOGICAL="SDA_T" PHYSICAL="hdmi_in_ddc_sda_t"/>
-      </PORTMAPS>
-    </BUSINTERFACE>
-    <BUSINTERFACE BUSNAME="rgb2dvi_0_TMDS" NAME="hdmi_out" TYPE="INITIATOR">
-      <PORTMAPS>
-        <PORTMAP LOGICAL="CLK_P" PHYSICAL="hdmi_out_clk_p"/>
-        <PORTMAP LOGICAL="CLK_N" PHYSICAL="hdmi_out_clk_n"/>
-        <PORTMAP LOGICAL="DATA_P" PHYSICAL="hdmi_out_data_p"/>
-        <PORTMAP LOGICAL="DATA_N" PHYSICAL="hdmi_out_data_n"/>
       </PORTMAPS>
     </BUSINTERFACE>
   </EXTERNALINTERFACES>
@@ -828,10 +804,29 @@
       </PORTS>
       <BUSINTERFACES/>
     </MODULE>
+    <MODULE FULLNAME="/detection_joueur_0" HWVERSION="1.0" INSTANCE="detection_joueur_0" IPTYPE="PERIPHERAL" IS_ENABLE="1" MODCLASS="PERIPHERAL" MODTYPE="detection_joueur" VLNV="xilinx.com:module_ref:detection_joueur:1.0">
+      <DOCUMENTS/>
+      <PARAMETERS>
+        <PARAMETER NAME="DARK_THRESH" VALUE="50"/>
+        <PARAMETER NAME="Component_Name" VALUE="HDMI_bd_detection_joueur_0_0"/>
+        <PARAMETER NAME="EDK_IPTYPE" VALUE="PERIPHERAL"/>
+      </PARAMETERS>
+      <PORTS>
+        <PORT DIR="I" LEFT="23" NAME="rgb_in" RIGHT="0" SIGIS="undef" SIGNAME="dvi2rgb_0_vid_pData">
+          <CONNECTIONS>
+            <CONNECTION INSTANCE="dvi2rgb_0" PORT="vid_pData"/>
+          </CONNECTIONS>
+        </PORT>
+        <PORT DIR="O" NAME="is_pixel_joueur" SIGIS="undef" SIGNAME="detection_joueur_0_is_pixel_joueur">
+          <CONNECTIONS>
+            <CONNECTION INSTANCE="test_0" PORT="is_pixel_joueur"/>
+          </CONNECTIONS>
+        </PORT>
+      </PORTS>
+      <BUSINTERFACES/>
+    </MODULE>
     <MODULE FULLNAME="/dvi2rgb_0" HWVERSION="1.8" INSTANCE="dvi2rgb_0" IPTYPE="PERIPHERAL" IS_ENABLE="1" MODCLASS="PERIPHERAL" MODTYPE="dvi2rgb" VLNV="digilentinc.com:ip:dvi2rgb:1.8">
-      <DOCUMENTS>
-        <DOCUMENT SOURCE="c:/Users/juroy185/Downloads/ZYBO_HDMI_MGA_2018_2/ZYBO_HDMI_MGA_2018_2/repo/vivado-library/ip/dvi2rgb/docs/dvi2rgb.pdf"/>
-      </DOCUMENTS>
+      <DOCUMENTS/>
       <PARAMETERS>
         <PARAMETER NAME="kEmulateDDC" VALUE="true"/>
         <PARAMETER NAME="kRstActiveHigh" VALUE="true"/>
@@ -864,6 +859,7 @@
         <PORT DIR="O" LEFT="23" NAME="vid_pData" RIGHT="0" SIGIS="undef" SIGNAME="dvi2rgb_0_vid_pData">
           <CONNECTIONS>
             <CONNECTION INSTANCE="test_0" PORT="rbg_in"/>
+            <CONNECTION INSTANCE="detection_joueur_0" PORT="rgb_in"/>
           </CONNECTIONS>
           <CONNECTIONS>
             <CONNECTION INSTANCE="rgb2dvi_0" PORT="vid_pData"/>
@@ -915,7 +911,7 @@
         </PORT>
       </PORTS>
       <BUSINTERFACES>
-        <BUSINTERFACE BUSNAME="External_Interface_hdmi_in" NAME="TMDS" TYPE="TARGET" VLNV="digilentinc.com:interface:tmds:1.0">
+        <BUSINTERFACE BUSNAME="__NOC__" NAME="TMDS" TYPE="TARGET" VLNV="digilentinc.com:interface:tmds:1.0">
           <PORTMAPS>
             <PORTMAP LOGICAL="CLK_P" PHYSICAL="TMDS_Clk_p"/>
             <PORTMAP LOGICAL="CLK_N" PHYSICAL="TMDS_Clk_n"/>
@@ -944,9 +940,7 @@
       </BUSINTERFACES>
     </MODULE>
     <MODULE FULLNAME="/rgb2dvi_0" HWVERSION="1.4" INSTANCE="rgb2dvi_0" IPTYPE="PERIPHERAL" IS_ENABLE="1" MODCLASS="PERIPHERAL" MODTYPE="rgb2dvi" VLNV="digilentinc.com:ip:rgb2dvi:1.4">
-      <DOCUMENTS>
-        <DOCUMENT SOURCE="c:/Users/juroy185/Downloads/ZYBO_HDMI_MGA_2018_2/ZYBO_HDMI_MGA_2018_2/repo/vivado-library/ip/rgb2dvi/docs/rgb2dvi.pdf"/>
-      </DOCUMENTS>
+      <DOCUMENTS/>
       <PARAMETERS>
         <PARAMETER NAME="kGenerateSerialClk" VALUE="true"/>
         <PARAMETER NAME="kClkPrimitive" VALUE="MMCM"/>
@@ -1007,7 +1001,7 @@
         </PORT>
       </PORTS>
       <BUSINTERFACES>
-        <BUSINTERFACE BUSNAME="rgb2dvi_0_TMDS" NAME="TMDS" TYPE="INITIATOR" VLNV="digilentinc.com:interface:tmds:1.0">
+        <BUSINTERFACE BUSNAME="__NOC__" NAME="TMDS" TYPE="INITIATOR" VLNV="digilentinc.com:interface:tmds:1.0">
           <PORTMAPS>
             <PORTMAP LOGICAL="CLK_P" PHYSICAL="TMDS_Clk_p"/>
             <PORTMAP LOGICAL="CLK_N" PHYSICAL="TMDS_Clk_n"/>
@@ -1035,6 +1029,11 @@
         <PORT DIR="I" NAME="is_mur" SIGIS="undef" SIGNAME="Presence_mur_0_is_mur">
           <CONNECTIONS>
             <CONNECTION INSTANCE="Presence_mur_0" PORT="is_mur"/>
+          </CONNECTIONS>
+        </PORT>
+        <PORT DIR="I" NAME="is_pixel_joueur" SIGIS="undef" SIGNAME="detection_joueur_0_is_pixel_joueur">
+          <CONNECTIONS>
+            <CONNECTION INSTANCE="detection_joueur_0" PORT="is_pixel_joueur"/>
           </CONNECTIONS>
         </PORT>
         <PORT DIR="I" LEFT="23" NAME="rbg_in" RIGHT="0" SIGIS="undef" SIGNAME="dvi2rgb_0_vid_pData">

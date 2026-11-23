@@ -40,7 +40,7 @@ if { [string first $scripts_vivado_version $current_vivado_version] == -1 } {
 
 # The design that will be created by this Tcl script contains the following 
 # module references:
-# FSM, Generateur_mur, Pixel_counter, Presence_mur, test
+# FSM, Generateur_mur, Pixel_counter, Presence_mur, detection_joueur, test
 
 # Please add the sources of those modules before sourcing this Tcl script.
 
@@ -162,9 +162,7 @@ proc create_root_design { parentCell } {
 
 
   # Create interface ports
-  set hdmi_in [ create_bd_intf_port -mode Slave -vlnv digilentinc.com:interface:tmds_rtl:1.0 hdmi_in ]
   set hdmi_in_ddc [ create_bd_intf_port -mode Master -vlnv xilinx.com:interface:iic_rtl:1.0 hdmi_in_ddc ]
-  set hdmi_out [ create_bd_intf_port -mode Master -vlnv digilentinc.com:interface:tmds_rtl:1.0 hdmi_out ]
 
   # Create ports
   set CLK [ create_bd_port -dir I -type clk CLK ]
@@ -255,6 +253,17 @@ proc create_root_design { parentCell } {
    CONFIG.USE_INCLK_SWITCHOVER {false} \
  ] $clk_wiz_0
 
+  # Create instance: detection_joueur_0, and set properties
+  set block_name detection_joueur
+  set block_cell_name detection_joueur_0
+  if { [catch {set detection_joueur_0 [create_bd_cell -type module -reference $block_name $block_cell_name] } errmsg] } {
+     catch {common::send_msg_id "BD_TCL-105" "ERROR" "Unable to add referenced block <$block_name>. Please add the files for ${block_name}'s definition into the project."}
+     return 1
+   } elseif { $detection_joueur_0 eq "" } {
+     catch {common::send_msg_id "BD_TCL-106" "ERROR" "Unable to referenced block <$block_name>. Please add the files for ${block_name}'s definition into the project."}
+     return 1
+   }
+  
   # Create instance: dvi2rgb_0, and set properties
   set dvi2rgb_0 [ create_bd_cell -type ip -vlnv digilentinc.com:ip:dvi2rgb:1.8 dvi2rgb_0 ]
 
@@ -282,8 +291,6 @@ proc create_root_design { parentCell } {
   # Create interface connections
   connect_bd_intf_net -intf_net dvi2rgb_0_DDC [get_bd_intf_ports hdmi_in_ddc] [get_bd_intf_pins dvi2rgb_0/DDC]
   connect_bd_intf_net -intf_net dvi2rgb_0_RGB [get_bd_intf_pins dvi2rgb_0/RGB] [get_bd_intf_pins rgb2dvi_0/RGB]
-  connect_bd_intf_net -intf_net hdmi_in_1 [get_bd_intf_ports hdmi_in] [get_bd_intf_pins dvi2rgb_0/TMDS]
-  connect_bd_intf_net -intf_net rgb2dvi_0_TMDS [get_bd_intf_ports hdmi_out] [get_bd_intf_pins rgb2dvi_0/TMDS]
 
   # Create port connections
   connect_bd_net -net CLK_1 [get_bd_ports CLK] [get_bd_pins clk_wiz_0/clk_in1]
@@ -294,8 +301,9 @@ proc create_root_design { parentCell } {
   connect_bd_net -net Presence_mur_0_is_mur [get_bd_pins Presence_mur_0/is_mur] [get_bd_pins test_0/is_mur]
   connect_bd_net -net btn0_1 [get_bd_ports btn0] [get_bd_pins FSM_0/quit]
   connect_bd_net -net clk_wiz_0_clk_out1 [get_bd_pins FSM_0/clk] [get_bd_pins Generateur_mur_0/Clk] [get_bd_pins clk_wiz_0/clk_out1] [get_bd_pins dvi2rgb_0/RefClk]
+  connect_bd_net -net detection_joueur_0_is_pixel_joueur [get_bd_pins detection_joueur_0/is_pixel_joueur] [get_bd_pins test_0/is_pixel_joueur]
   connect_bd_net -net dvi2rgb_0_PixelClk [get_bd_pins Pixel_counter_0/clk_pixel] [get_bd_pins dvi2rgb_0/PixelClk] [get_bd_pins rgb2dvi_0/PixelClk]
-  connect_bd_net -net dvi2rgb_0_vid_pData [get_bd_pins dvi2rgb_0/vid_pData] [get_bd_pins test_0/rbg_in]
+  connect_bd_net -net dvi2rgb_0_vid_pData [get_bd_pins detection_joueur_0/rgb_in] [get_bd_pins dvi2rgb_0/vid_pData] [get_bd_pins test_0/rbg_in]
   connect_bd_net -net dvi2rgb_0_vid_pHSync [get_bd_pins dvi2rgb_0/vid_pHSync] [get_bd_pins rgb2dvi_0/vid_pHSync]
   connect_bd_net -net dvi2rgb_0_vid_pVDE [get_bd_pins Pixel_counter_0/vde] [get_bd_pins dvi2rgb_0/vid_pVDE] [get_bd_pins rgb2dvi_0/vid_pVDE]
   connect_bd_net -net dvi2rgb_0_vid_pVSync [get_bd_pins Pixel_counter_0/vsync] [get_bd_pins dvi2rgb_0/vid_pVSync] [get_bd_pins rgb2dvi_0/vid_pVSync]

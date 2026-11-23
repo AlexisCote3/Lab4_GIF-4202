@@ -56,6 +56,7 @@ USE ieee.numeric_std.ALL;
 ENTITY HDMI_bd_test_0_0 IS
   PORT (
     is_mur : IN STD_LOGIC;
+    is_pixel_joueur : IN STD_LOGIC;
     rbg_in : IN STD_LOGIC_VECTOR(23 DOWNTO 0);
     rbg_out : OUT STD_LOGIC_VECTOR(23 DOWNTO 0)
   );
@@ -67,6 +68,7 @@ ARCHITECTURE HDMI_bd_test_0_0_arch OF HDMI_bd_test_0_0 IS
   COMPONENT test IS
     PORT (
       is_mur : IN STD_LOGIC;
+      is_pixel_joueur : IN STD_LOGIC;
       rbg_in : IN STD_LOGIC_VECTOR(23 DOWNTO 0);
       rbg_out : OUT STD_LOGIC_VECTOR(23 DOWNTO 0)
     );
@@ -77,6 +79,7 @@ BEGIN
   U0 : test
     PORT MAP (
       is_mur => is_mur,
+      is_pixel_joueur => is_pixel_joueur,
       rbg_in => rbg_in,
       rbg_out => rbg_out
     );
