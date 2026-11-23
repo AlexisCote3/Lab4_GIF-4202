@@ -7,14 +7,14 @@ entity Pixel_counter is
         clk_pixel  : in  STD_LOGIC;
         vsync      : in  STD_LOGIC;  -- actif à '1' (inverser si ton flux est actif bas)
         vde        : in  STD_LOGIC;  -- '1' quand le pixel courant est dans la zone active
-        pixel_x    : out STD_LOGIC_VECTOR (11 downto 0);
-        pixel_y    : out STD_LOGIC_VECTOR (11 downto 0)
+        pixel_x    : out STD_LOGIC_VECTOR (10 downto 0);
+        pixel_y    : out STD_LOGIC_VECTOR (10 downto 0)
     );
 end Pixel_counter;
 
 architecture Behavioral of Pixel_counter is
-    signal x_cnt    : unsigned (11 downto 0) := (others => '0');
-    signal y_cnt    : unsigned (11 downto 0) := (others => '0');
+    signal x_cnt    : unsigned (10 downto 0) := (others => '0');
+    signal y_cnt    : unsigned (10 downto 0) := (others => '0');
     signal vde_prev : STD_LOGIC := '0';
 begin
 

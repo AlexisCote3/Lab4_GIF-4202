@@ -10,8 +10,8 @@ entity Presence_mur is
         screen_width  : integer := 1600
     );
     Port (
-        pixel_x   : in  STD_LOGIC_VECTOR (11 downto 0);
-        pixel_y   : in  STD_LOGIC_VECTOR (11 downto 0);
+        pixel_x   : in  STD_LOGIC_VECTOR (10 downto 0);
+        pixel_y   : in  STD_LOGIC_VECTOR (10 downto 0);
         wall_mask : in  STD_LOGIC_VECTOR (wall_height * wall_width - 1 downto 0);
         is_mur    : out STD_LOGIC
     );

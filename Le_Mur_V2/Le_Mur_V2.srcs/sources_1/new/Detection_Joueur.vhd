@@ -42,7 +42,7 @@ entity detection_joueur is
 
     generic (
         -- Seuil moyen de luminosite, entre 0 et 255.
-        DARK_THRESH : natural := 50
+        DARK_THRESH : natural := 25
     );
 
     port (

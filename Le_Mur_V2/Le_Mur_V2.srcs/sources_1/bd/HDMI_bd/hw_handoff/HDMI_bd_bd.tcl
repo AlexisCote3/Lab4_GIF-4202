@@ -40,7 +40,7 @@ if { [string first $scripts_vivado_version $current_vivado_version] == -1 } {
 
 # The design that will be created by this Tcl script contains the following 
 # module references:
-# FSM, Generateur_mur, Pixel_counter, Presence_mur, detection_joueur, test
+# DSP, FSM, Generateur_mur, Mesure_timing_video, Pixel_counter, Presence_mur, detection_joueur, test
 
 # Please add the sources of those modules before sourcing this Tcl script.
 
@@ -175,7 +175,7 @@ proc create_root_design { parentCell } {
   set btn1 [ create_bd_port -dir I btn1 ]
   set btn2 [ create_bd_port -dir I btn2 ]
   set hdmi_in_hpd [ create_bd_port -dir O -from 0 -to 0 hdmi_in_hpd ]
-  set led [ create_bd_port -dir O -from 3 -to 0 led ]
+  set led0 [ create_bd_port -dir O led0 ]
   set reset [ create_bd_port -dir I -type rst reset ]
   set_property -dict [ list \
    CONFIG.POLARITY {ACTIVE_HIGH} \
@@ -185,6 +185,17 @@ proc create_root_design { parentCell } {
   set sw2 [ create_bd_port -dir I sw2 ]
   set sw3 [ create_bd_port -dir I sw3 ]
 
+  # Create instance: DSP_0, and set properties
+  set block_name DSP
+  set block_cell_name DSP_0
+  if { [catch {set DSP_0 [create_bd_cell -type module -reference $block_name $block_cell_name] } errmsg] } {
+     catch {common::send_msg_id "BD_TCL-105" "ERROR" "Unable to add referenced block <$block_name>. Please add the files for ${block_name}'s definition into the project."}
+     return 1
+   } elseif { $DSP_0 eq "" } {
+     catch {common::send_msg_id "BD_TCL-106" "ERROR" "Unable to referenced block <$block_name>. Please add the files for ${block_name}'s definition into the project."}
+     return 1
+   }
+  
   # Create instance: FSM_0, and set properties
   set block_name FSM
   set block_cell_name FSM_0
@@ -203,6 +214,17 @@ proc create_root_design { parentCell } {
      catch {common::send_msg_id "BD_TCL-105" "ERROR" "Unable to add referenced block <$block_name>. Please add the files for ${block_name}'s definition into the project."}
      return 1
    } elseif { $Generateur_mur_0 eq "" } {
+     catch {common::send_msg_id "BD_TCL-106" "ERROR" "Unable to referenced block <$block_name>. Please add the files for ${block_name}'s definition into the project."}
+     return 1
+   }
+  
+  # Create instance: Mesure_timing_video_0, and set properties
+  set block_name Mesure_timing_video
+  set block_cell_name Mesure_timing_video_0
+  if { [catch {set Mesure_timing_video_0 [create_bd_cell -type module -reference $block_name $block_cell_name] } errmsg] } {
+     catch {common::send_msg_id "BD_TCL-105" "ERROR" "Unable to add referenced block <$block_name>. Please add the files for ${block_name}'s definition into the project."}
+     return 1
+   } elseif { $Mesure_timing_video_0 eq "" } {
      catch {common::send_msg_id "BD_TCL-106" "ERROR" "Unable to referenced block <$block_name>. Please add the files for ${block_name}'s definition into the project."}
      return 1
    }
@@ -272,7 +294,25 @@ proc create_root_design { parentCell } {
   set_property -dict [ list \
    CONFIG.kClkPrimitive {MMCM} \
    CONFIG.kClkRange {3} \
+   CONFIG.kD0Swap {false} \
+   CONFIG.kD1Swap {false} \
+   CONFIG.kD2Swap {false} \
  ] $rgb2dvi_0
+
+  # Create instance: system_ila_0, and set properties
+  set system_ila_0 [ create_bd_cell -type ip -vlnv xilinx.com:ip:system_ila:1.1 system_ila_0 ]
+  set_property -dict [ list \
+   CONFIG.C_BRAM_CNT {2.5} \
+   CONFIG.C_MON_TYPE {NATIVE} \
+   CONFIG.C_NUM_OF_PROBES {8} \
+   CONFIG.C_PROBE0_WIDTH {12} \
+   CONFIG.C_PROBE1_WIDTH {12} \
+   CONFIG.C_PROBE2_WIDTH {12} \
+   CONFIG.C_PROBE4_WIDTH {12} \
+   CONFIG.C_PROBE5_WIDTH {12} \
+   CONFIG.C_PROBE6_WIDTH {12} \
+   CONFIG.C_PROBE_WIDTH_PROPAGATION {MANUAL} \
+ ] $system_ila_0
 
   # Create instance: test_0, and set properties
   set block_name test
@@ -296,23 +336,30 @@ proc create_root_design { parentCell } {
 
   # Create port connections
   connect_bd_net -net CLK_1 [get_bd_ports CLK] [get_bd_pins clk_wiz_0/clk_in1]
+  connect_bd_net -net DSP_0_q_pass [get_bd_ports led0] [get_bd_pins DSP_0/q_pass] [get_bd_pins FSM_0/q_pass]
   connect_bd_net -net FSM_0_new_round [get_bd_pins FSM_0/new_round] [get_bd_pins Generateur_mur_0/NewRandom]
-  connect_bd_net -net FSM_0_record_perso [get_bd_ports led] [get_bd_pins FSM_0/record_perso]
   connect_bd_net -net Generateur_mur_0_Mur_out [get_bd_pins Generateur_mur_0/Mur_out] [get_bd_pins Presence_mur_0/wall_mask]
+  connect_bd_net -net Mesure_timing_video_0_frame_valid [get_bd_pins Mesure_timing_video_0/frame_valid] [get_bd_pins system_ila_0/probe7]
+  connect_bd_net -net Mesure_timing_video_0_h_active [get_bd_pins Mesure_timing_video_0/h_active] [get_bd_pins system_ila_0/probe1]
+  connect_bd_net -net Mesure_timing_video_0_h_blank [get_bd_pins Mesure_timing_video_0/h_blank] [get_bd_pins system_ila_0/probe2]
+  connect_bd_net -net Mesure_timing_video_0_h_total [get_bd_pins Mesure_timing_video_0/h_total] [get_bd_pins system_ila_0/probe0]
+  connect_bd_net -net Mesure_timing_video_0_mesure_valid [get_bd_pins Mesure_timing_video_0/mesure_valid] [get_bd_pins system_ila_0/probe3]
+  connect_bd_net -net Mesure_timing_video_0_v_active [get_bd_pins Mesure_timing_video_0/v_active] [get_bd_pins system_ila_0/probe5]
+  connect_bd_net -net Mesure_timing_video_0_v_blank [get_bd_pins Mesure_timing_video_0/v_blank] [get_bd_pins system_ila_0/probe6]
+  connect_bd_net -net Mesure_timing_video_0_v_total [get_bd_pins Mesure_timing_video_0/v_total] [get_bd_pins system_ila_0/probe4]
   connect_bd_net -net Pixel_counter_0_pixel_x [get_bd_pins Pixel_counter_0/pixel_x] [get_bd_pins Presence_mur_0/pixel_x]
   connect_bd_net -net Pixel_counter_0_pixel_y [get_bd_pins Pixel_counter_0/pixel_y] [get_bd_pins Presence_mur_0/pixel_y]
-  connect_bd_net -net Presence_mur_0_is_mur [get_bd_pins Presence_mur_0/is_mur] [get_bd_pins test_0/is_mur]
+  connect_bd_net -net Presence_mur_0_is_mur [get_bd_pins DSP_0/is_pixel_mur] [get_bd_pins Presence_mur_0/is_mur] [get_bd_pins test_0/is_mur]
   connect_bd_net -net btn0_1 [get_bd_ports btn0] [get_bd_pins FSM_0/quit]
   connect_bd_net -net clk_wiz_0_clk_out1 [get_bd_pins FSM_0/clk] [get_bd_pins Generateur_mur_0/Clk] [get_bd_pins clk_wiz_0/clk_out1] [get_bd_pins dvi2rgb_0/RefClk]
-  connect_bd_net -net detection_joueur_0_is_pixel_joueur [get_bd_pins detection_joueur_0/is_pixel_joueur] [get_bd_pins test_0/is_pixel_joueur]
-  connect_bd_net -net dvi2rgb_0_PixelClk [get_bd_pins Pixel_counter_0/clk_pixel] [get_bd_pins dvi2rgb_0/PixelClk] [get_bd_pins rgb2dvi_0/PixelClk]
+  connect_bd_net -net detection_joueur_0_is_pixel_joueur [get_bd_pins DSP_0/is_pixel_joueur] [get_bd_pins detection_joueur_0/is_pixel_joueur] [get_bd_pins test_0/is_pixel_joueur]
+  connect_bd_net -net dvi2rgb_0_PixelClk [get_bd_pins DSP_0/clk_pixel] [get_bd_pins Mesure_timing_video_0/clk_pixel] [get_bd_pins Pixel_counter_0/clk_pixel] [get_bd_pins dvi2rgb_0/PixelClk] [get_bd_pins rgb2dvi_0/PixelClk] [get_bd_pins system_ila_0/clk]
   connect_bd_net -net dvi2rgb_0_vid_pData [get_bd_pins detection_joueur_0/rgb_in] [get_bd_pins dvi2rgb_0/vid_pData] [get_bd_pins test_0/rbg_in]
-  connect_bd_net -net dvi2rgb_0_vid_pHSync [get_bd_pins dvi2rgb_0/vid_pHSync] [get_bd_pins rgb2dvi_0/vid_pHSync]
-  connect_bd_net -net dvi2rgb_0_vid_pVDE [get_bd_pins Pixel_counter_0/vde] [get_bd_pins dvi2rgb_0/vid_pVDE] [get_bd_pins rgb2dvi_0/vid_pVDE]
-  connect_bd_net -net dvi2rgb_0_vid_pVSync [get_bd_pins Pixel_counter_0/vsync] [get_bd_pins dvi2rgb_0/vid_pVSync] [get_bd_pins rgb2dvi_0/vid_pVSync]
-  connect_bd_net -net reset_1 [get_bd_ports reset] [get_bd_pins FSM_0/reset] [get_bd_pins clk_wiz_0/reset] [get_bd_pins dvi2rgb_0/aRst] [get_bd_pins dvi2rgb_0/pRst] [get_bd_pins rgb2dvi_0/aRst]
+  connect_bd_net -net dvi2rgb_0_vid_pHSync [get_bd_pins DSP_0/hsync] [get_bd_pins Mesure_timing_video_0/hsync] [get_bd_pins dvi2rgb_0/vid_pHSync] [get_bd_pins rgb2dvi_0/vid_pHSync]
+  connect_bd_net -net dvi2rgb_0_vid_pVDE [get_bd_pins DSP_0/vde] [get_bd_pins Mesure_timing_video_0/vde] [get_bd_pins Pixel_counter_0/vde] [get_bd_pins dvi2rgb_0/vid_pVDE] [get_bd_pins rgb2dvi_0/vid_pVDE]
+  connect_bd_net -net dvi2rgb_0_vid_pVSync [get_bd_pins DSP_0/vsync] [get_bd_pins Mesure_timing_video_0/vsync] [get_bd_pins Pixel_counter_0/vsync] [get_bd_pins dvi2rgb_0/vid_pVSync] [get_bd_pins rgb2dvi_0/vid_pVSync]
+  connect_bd_net -net reset_1 [get_bd_ports reset] [get_bd_pins DSP_0/reset] [get_bd_pins FSM_0/reset] [get_bd_pins Mesure_timing_video_0/reset] [get_bd_pins clk_wiz_0/reset] [get_bd_pins dvi2rgb_0/aRst] [get_bd_pins dvi2rgb_0/pRst] [get_bd_pins rgb2dvi_0/aRst]
   connect_bd_net -net sw0_1 [get_bd_ports sw0] [get_bd_pins FSM_0/run]
-  connect_bd_net -net sw1_1 [get_bd_ports sw1] [get_bd_pins FSM_0/q_pass]
   connect_bd_net -net test_0_rbg_out [get_bd_pins rgb2dvi_0/vid_pData] [get_bd_pins test_0/rbg_out]
   connect_bd_net -net xlconstant_0_dout [get_bd_ports hdmi_in_hpd] [get_bd_pins xlconstant_0/dout]
 

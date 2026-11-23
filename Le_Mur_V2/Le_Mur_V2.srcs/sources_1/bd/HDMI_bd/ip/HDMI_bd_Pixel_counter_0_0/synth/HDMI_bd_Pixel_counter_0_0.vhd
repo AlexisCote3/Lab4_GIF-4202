@@ -58,8 +58,8 @@ ENTITY HDMI_bd_Pixel_counter_0_0 IS
     clk_pixel : IN STD_LOGIC;
     vsync : IN STD_LOGIC;
     vde : IN STD_LOGIC;
-    pixel_x : OUT STD_LOGIC_VECTOR(11 DOWNTO 0);
-    pixel_y : OUT STD_LOGIC_VECTOR(11 DOWNTO 0)
+    pixel_x : OUT STD_LOGIC_VECTOR(10 DOWNTO 0);
+    pixel_y : OUT STD_LOGIC_VECTOR(10 DOWNTO 0)
   );
 END HDMI_bd_Pixel_counter_0_0;
 
@@ -71,8 +71,8 @@ ARCHITECTURE HDMI_bd_Pixel_counter_0_0_arch OF HDMI_bd_Pixel_counter_0_0 IS
       clk_pixel : IN STD_LOGIC;
       vsync : IN STD_LOGIC;
       vde : IN STD_LOGIC;
-      pixel_x : OUT STD_LOGIC_VECTOR(11 DOWNTO 0);
-      pixel_y : OUT STD_LOGIC_VECTOR(11 DOWNTO 0)
+      pixel_x : OUT STD_LOGIC_VECTOR(10 DOWNTO 0);
+      pixel_y : OUT STD_LOGIC_VECTOR(10 DOWNTO 0)
     );
   END COMPONENT Pixel_counter;
   ATTRIBUTE X_CORE_INFO : STRING;

@@ -2,76 +2,53 @@
 --------------------------------------------------------------------------------
 -- PROJET : LE MUR
 -- MODULE : DSP
--- CARTE  : Zybo Z7-20 (Zynq-7000)
+-- CARTE  : Zybo Z7-20
 --------------------------------------------------------------------------------
 --
 -- DESCRIPTION GENERALE
 --
--- Ce module analyse les images provenant d'une camera HDMI afin de
--- determiner si un joueur peut passer a travers un mur virtuel.
+-- Ce module determine si le joueur peut passer dans le mur.
 --
--- L'ecran est divise en une grille configurable :
+-- Il utilise deux signaux de detection deja calcules :
 --
---     GRID_COLS = 16 colonnes
---     GRID_ROWS = 8 lignes
+--   is_pixel_joueur : 1 si le pixel appartient au joueur
+--   is_pixel_mur    : 1 si le pixel appartient au mur
 --
--- La configuration par defaut produit donc :
+-- Le DSP possede deux compteurs :
 --
---     16 x 8 = 128 zones
+--   player_count    : nombre de pixels du joueur
+--   collision_count : nombre de pixels en collision
 --
--- Chaque zone est representee par un bit dans deux vecteurs :
+-- Les compteurs accumulent les detections pendant une image.
 --
---     wall_mask(i)   : 1 = mur, 0 = trou
---     player_mask(i) : 1 = joueur detecte, 0 = zone libre
+-- A chaque nouvelle image, le DSP :
 --
--- Le joueur reussit si :
+--   1. Verifie si le joueur est suffisamment present
+--   2. Verifie si les collisions restent sous le seuil
+--   3. Enregistre le resultat PASS / FAIL
+--   4. Remet les compteurs a zero
 --
---     1. Il est detecte dans au moins une zone
---     2. Aucune zone occupee par le joueur ne contient de mur
+-- Les resultats restent stables entre deux images.
 --
---------------------------------------------------------------------------------
---
--- PRINCIPE DE DETECTION
---
--- Pour chaque pixel valide de la camera :
---
---     1. Recuperer ses coordonnees X et Y
---     2. Effectuer un echantillonnage spatial
---     3. Calculer sa luminosite a partir de R, G et B
---     4. Determiner si le pixel est suffisamment sombre
---     5. Trouver la zone du quadrillage contenant le pixel
---     6. Incrementer le compteur de cette zone
---
--- A la fin de l'image :
---
---     1. Examiner les compteurs des zones
---     2. Generer le vecteur player_mask
---     3. Verifier la presence du joueur
---     4. Comparer player_mask avec wall_mask
---     5. Mettre a jour q_pass
---     6. Remettre les compteurs a zero pour l'image suivante
+-- IMPORTANT :
+--   - Aucun calcul de coordonnees X/Y
+--   - Aucun tableau de 128 compteurs
+--   - Aucune variable VHDL
+--   - Aucune memoire BRAM necessaire
 --
 --------------------------------------------------------------------------------
+-- SYNCHRONISATION
 --
--- HYPOTHESES ET LIMITATIONS
+-- clk_pixel : horloge du flux video
+-- VDE       : indique un pixel actif
+-- VSYNC     : delimite les images
+-- HSYNC     : synchronisation horizontale
 --
--- 1. Le fond reel de la camera doit etre suffisamment clair.
---    Les pixels sombres sont consideres comme appartenant au joueur.
+-- On suppose que VSYNC marque le debut d'une image
+-- par un front montant.
 --
--- 2. Les coordonnees X/Y commencent a zero dans la zone active.
---
--- 3. Les signaux RGB, X, Y et VDE sont synchronises sur pixel_clk.
---
--- 4. Un front montant de vsync_in indique une nouvelle image.
---    Cette hypothese doit etre verifiee avec le bloc dvi2rgb.
---
--- 5. wall_mask doit rester stable pendant la comparaison.
---    Le generateur de mur devrait modifier le masque uniquement
---    lorsque le jeu change de niveau.
---
--- 6. Le module travaille dans le domaine de pixel_clk.
---    Si la FSM utilise une autre horloge, une synchronisation
---    entre domaines d'horloge sera necessaire.
+-- Le flux video et les signaux de detection doivent
+-- correspondre au meme pixel et au meme cycle d'horloge.
 --
 --------------------------------------------------------------------------------
 
@@ -81,12 +58,7 @@ use IEEE.NUMERIC_STD.ALL;
 
 
 --------------------------------------------------------------------------------
--- ENTITY : DSP
---
--- Cette section definit :
---     - Les parametres configurables du module (generic)
---     - Les entrees provenant des autres modules
---     - Les sorties utilisees par la FSM et le compositeur
+-- ENTITY
 --------------------------------------------------------------------------------
 
 entity DSP is
@@ -94,117 +66,51 @@ entity DSP is
     generic (
 
         ------------------------------------------------------------------------
-        -- RESOLUTION DE L'IMAGE
+        -- SEUIL MINIMAL DE PRESENCE
         --
-        -- Nombre de pixels dans la zone active de l'image.
-        -- Ces valeurs doivent correspondre a la resolution de la camera.
-        ------------------------------------------------------------------------
-
-        IMG_WIDTH  : positive := 1600;
-        IMG_HEIGHT : positive := 900;
-
-
-        ------------------------------------------------------------------------
-        -- DIMENSIONS DU QUADRILLAGE
-        --
-        -- Configuration par defaut : 16 x 8 = 128 zones.
-        --
-        -- Pour modifier la grille, il suffit de modifier ces parametres.
-        -- La largeur de wall_mask et player_mask s'ajuste automatiquement.
-        --
-        -- IMPORTANT :
-        -- Le generateur de mur doit utiliser les memes dimensions.
-        ------------------------------------------------------------------------
-
-        GRID_COLS : positive := 16;
-        GRID_ROWS : positive := 8;
-
-
-        ------------------------------------------------------------------------
-        -- ECHANTILLONNAGE SPATIAL
-        --
-        -- SAMPLE_STEP = 8 :
-        --
-        -- On examine les pixels dont :
-        --
-        --     X est un multiple de 8
-        --     Y est un multiple de 8
-        --
-        -- On traite donc environ 1 pixel sur 64.
-        --
-        -- Cela reduit le nombre de pixels analyses tout en conservant
-        -- une representation approximative de la silhouette du joueur.
-        --
-        -- SAMPLE_STEP = 1 :
-        -- Tous les pixels sont analyses.
-        ------------------------------------------------------------------------
-
-        SAMPLE_STEP : positive := 8;
-
-
-        ------------------------------------------------------------------------
-        -- SEUIL DE LUMINOSITE
-        --
-        -- Chaque composante RGB est codee sur 8 bits (0 a 255).
-        --
-        -- On calcule :
-        --
-        --     luminosite = R + G + B
-        --
-        -- Le pixel est considere sombre lorsque :
-        --
-        --     luminosite < 3 * DARK_THRESH
-        --
-        -- Exemple avec DARK_THRESH = 100 :
-        --
-        --     R + G + B < 300
-        --
-        -- Un pixel noir (0,0,0) sera detecte.
-        -- Un pixel blanc (255,255,255) ne le sera pas.
-        --
-        -- Ce seuil pourra etre ajuste experimentalement.
-        ------------------------------------------------------------------------
-
-        DARK_THRESH : natural := 100;
-
-
-        ------------------------------------------------------------------------
-        -- SEUIL DE PRESENCE DANS UNE ZONE
-        --
-        -- Une zone est consideree occupee lorsqu'au moins MIN_PIXELS
-        -- pixels sombres echantillonnes ont ete detectes.
+        -- Nombre minimal de pixels detectes pour considerer
+        -- que le joueur est present dans l'image.
         --
         -- Exemple :
+        --   MIN_PLAYER_PIXELS = 1000
         --
-        --     MIN_PIXELS = 12
-        --
-        -- Une zone avec 11 pixels sombres reste a 0.
-        -- Une zone avec 12 pixels sombres passe a 1.
-        --
-        -- Cette methode reduit l'effet des pixels isoles.
+        -- Si moins de 1000 pixels sont detectes :
+        --   FAIL, meme en absence de collision.
         ------------------------------------------------------------------------
 
-        MIN_PIXELS : positive := 12;
+        MIN_PLAYER_PIXELS : natural := 1000;
 
 
         ------------------------------------------------------------------------
-        -- NOMBRE DE BITS PAR COMPTEUR
+        -- SEUIL MAXIMAL DE COLLISION
         --
-        -- ACC_BITS = 4 :
+        -- Nombre maximal de pixels en collision autorises.
         --
-        -- Chaque compteur peut representer les valeurs 0 a 15.
+        -- Exemple :
+        --   MAX_COLLISION_PIXELS = 500
         --
-        -- Avec MIN_PIXELS = 12, quatre bits sont suffisants.
+        -- Si 500 pixels ou moins sont en collision :
+        --   La condition de collision est respectee.
         --
-        -- Pour 128 zones :
+        -- Si plus de 500 pixels sont en collision :
+        --   FAIL.
         --
-        --     128 x 4 = 512 bits de stockage
-        --
-        -- Les compteurs sont saturants : ils ne depassent jamais
-        -- MIN_PIXELS.
+        -- ATTENTION :
+        -- Les valeurs sont des points de depart experimentaux.
         ------------------------------------------------------------------------
 
-        ACC_BITS : positive := 4
+        MAX_COLLISION_PIXELS : natural := 500;
+
+
+        ------------------------------------------------------------------------
+        -- LARGEUR DES COMPTEURS
+        --
+        -- 21 bits permettent de compter jusqu'a 2 097 151.
+        --
+        -- C'est suffisant pour une image 1600 x 900.
+        ------------------------------------------------------------------------
+
+        COUNT_BITS : positive := 21
 
     );
 
@@ -213,129 +119,94 @@ entity DSP is
         ------------------------------------------------------------------------
         -- HORLOGE ET RESET
         --
-        -- pixel_clk :
-        -- Horloge associee au flux video entrant.
-        --
-        -- reset :
         -- Reset synchrone actif a 1.
         ------------------------------------------------------------------------
 
-        pixel_clk : in STD_LOGIC;
+        clk_pixel : in STD_LOGIC;
         reset     : in STD_LOGIC;
 
 
         ------------------------------------------------------------------------
-        -- IMAGE PROVENANT DE LA CAMERA
+        -- SYNCHRONISATION VIDEO
         --
-        -- rgb_in[23:16] = rouge
-        -- rgb_in[15:8]  = vert
-        -- rgb_in[7:0]   = bleu
+        -- VDE :
+        --   1 = pixel actif
+        --   0 = blanking / pixel ignore
         --
-        -- vde_in :
-        -- Indique qu'un pixel RGB est valide et appartient
-        -- a la zone active de l'image.
+        -- VSYNC :
+        --   Utilise pour detecter une nouvelle image.
         --
-        -- vsync_in :
-        -- Signal de synchronisation verticale.
+        -- HSYNC :
+        --   Disponible pour la synchronisation horizontale.
+        --   Il n'est pas necessaire au comptage actuel.
         ------------------------------------------------------------------------
 
-        rgb_in   : in STD_LOGIC_VECTOR(23 downto 0);
-        vde_in   : in STD_LOGIC;
-        vsync_in : in STD_LOGIC;
-
-
-        ------------------------------------------------------------------------
-        -- COORDONNEES DU PIXEL ACTUEL
-        --
-        -- Ces signaux proviennent du module COMPTEUR XY.
-        --
-        -- Exemple pour une image de 1600 x 900 :
-        --
-        --     pixel_x = 0 a 1599
-        --     pixel_y = 0 a 899
-        --
-        -- Les valeurs sont codees sur 12 bits.
-        ------------------------------------------------------------------------
-
-        pixel_x : in STD_LOGIC_VECTOR(11 downto 0);
-        pixel_y : in STD_LOGIC_VECTOR(11 downto 0);
+        vde   : in STD_LOGIC;
+        vsync : in STD_LOGIC;
+        hsync : in STD_LOGIC;
 
 
         ------------------------------------------------------------------------
-        -- MASQUE DU MUR
+        -- DETECTION DES PIXELS
         --
-        -- Vecteur provenant du GENERATEUR DE MUR.
+        -- Provenance :
         --
-        -- Chaque bit correspond a une zone du quadrillage.
-        --
-        --     1 = mur
-        --     0 = trou
-        --
-        -- Convention d'indexation :
-        --
-        --     index = ligne * GRID_COLS + colonne
-        --
-        -- Le bit 0 correspond au coin superieur gauche.
+        -- is_pixel_joueur -> detection_joueur
+        -- is_pixel_mur    -> Presence_mur
         ------------------------------------------------------------------------
 
-        wall_mask : in STD_LOGIC_VECTOR(
-            GRID_COLS*GRID_ROWS-1 downto 0
-        );
+        is_pixel_joueur : in STD_LOGIC;
+        is_pixel_mur    : in STD_LOGIC;
 
 
         ------------------------------------------------------------------------
-        -- MASQUE DU JOUEUR
-        --
-        -- Vecteur produit par le DSP.
-        --
-        --     1 = presence detectee
-        --     0 = absence detectee
-        --
-        -- Le masque est mis a jour une fois par image complete.
-        ------------------------------------------------------------------------
-
-        player_mask : out STD_LOGIC_VECTOR(
-            GRID_COLS*GRID_ROWS-1 downto 0
-        );
-
-
-        ------------------------------------------------------------------------
-        -- PRESENCE DU JOUEUR
-        --
-        -- 1 = au moins une zone contient le joueur
-        -- 0 = aucune zone ne contient le joueur
-        ------------------------------------------------------------------------
-
-        player_present : out STD_LOGIC;
-
-
-        ------------------------------------------------------------------------
-        -- RESULTAT DE LA COMPARAISON
+        -- RESULTAT PASS / FAIL
         --
         -- q_pass = 1 :
-        -- Le joueur est present et ne touche aucune zone du mur.
+        --   Joueur present et collisions sous le seuil.
         --
         -- q_pass = 0 :
-        -- Le joueur est absent OU touche le mur.
+        --   Joueur absent ou trop de collisions.
         ------------------------------------------------------------------------
 
         q_pass : out STD_LOGIC;
 
 
         ------------------------------------------------------------------------
-        -- VALIDITE DU RESULTAT
+        -- PRESENCE DU JOUEUR
         --
-        -- result_valid produit une impulsion d'un cycle pixel_clk
-        -- lorsqu'une nouvelle image vient d'etre analysee.
-        --
-        -- La FSM peut utiliser cette impulsion pour savoir
-        -- qu'un nouveau resultat est disponible.
-        --
-        -- q_pass et player_mask restent stables entre deux
-        -- impulsions result_valid.
+        -- 1 si le seuil de presence a ete atteint.
         ------------------------------------------------------------------------
 
-        result_valid : out STD_LOGIC
+        player_present : out STD_LOGIC;
+
+
+        ------------------------------------------------------------------------
+        -- RESULTAT VALIDE
+        --
+        -- Impulsion de 1 cycle lorsque le DSP termine
+        -- l'evaluation d'une image complete.
+        ------------------------------------------------------------------------
+
+        result_valid : out STD_LOGIC;
+
+
+        ------------------------------------------------------------------------
+        -- SORTIES DE DIAGNOSTIC
+        --
+        -- Ces sorties permettent de voir les compteurs
+        -- de la derniere image analysee.
+        --
+        -- Elles sont facultatives pour la FSM.
+        ------------------------------------------------------------------------
+
+        player_pixels : out STD_LOGIC_VECTOR(
+            COUNT_BITS-1 downto 0
+        );
+
+        collision_pixels : out STD_LOGIC_VECTOR(
+            COUNT_BITS-1 downto 0
+        )
 
     );
 
@@ -343,423 +214,255 @@ end DSP;
 
 
 --------------------------------------------------------------------------------
--- ARCHITECTURE : Behavioral
---
--- Contient :
---     - Les constantes internes
---     - Les compteurs de zones
---     - Les registres de sortie
---     - Le processus de traitement video
+-- ARCHITECTURE
 --------------------------------------------------------------------------------
 
 architecture Behavioral of DSP is
 
+    ---------------------------------------------------------------------------
+    -- TYPE DES COMPTEURS
+    --
+    -- unsigned permet les additions et comparaisons numeriques.
+    ---------------------------------------------------------------------------
 
-    ----------------------------------------------------------------------------
-    -- CONSTANTE : N_ZONES
-    --
-    -- Nombre total de zones dans le quadrillage.
-    --
-    -- Par defaut :
-    --
-    --     N_ZONES = 16 * 8 = 128
-    ----------------------------------------------------------------------------
-
-    constant N_ZONES : positive := GRID_COLS * GRID_ROWS;
+    subtype count_t is unsigned(COUNT_BITS-1 downto 0);
 
 
-    ----------------------------------------------------------------------------
-    -- TYPE : count_t
+    ---------------------------------------------------------------------------
+    -- COMPTEURS ACTIFS
     --
-    -- Definit le format d'un compteur.
+    -- Ces compteurs sont incrementes pendant l'image courante.
     --
-    -- Un compteur est un entier non signe sur ACC_BITS bits.
+    -- player_count :
+    --   Nombre de pixels appartenant au joueur.
     --
-    -- Avec ACC_BITS = 4 :
-    --
-    --     count_t = unsigned(3 downto 0)
-    ----------------------------------------------------------------------------
+    -- collision_count :
+    --   Nombre de pixels appartenant au joueur ET au mur.
+    ---------------------------------------------------------------------------
 
-    subtype count_t is unsigned(ACC_BITS-1 downto 0);
+    signal player_count : count_t := (others => '0');
 
-
-    ----------------------------------------------------------------------------
-    -- TYPE : count_array_t
-    --
-    -- Tableau contenant un compteur par zone.
-    --
-    -- Avec N_ZONES = 128 :
-    --
-    --     zone_counts(0)   = compteur de la zone 0
-    --     zone_counts(1)   = compteur de la zone 1
-    --     ...
-    --     zone_counts(127) = compteur de la zone 127
-    ----------------------------------------------------------------------------
-
-    type count_array_t is array (0 to N_ZONES-1) of count_t;
+    signal collision_count : count_t := (others => '0');
 
 
-    ----------------------------------------------------------------------------
-    -- SIGNAL : zone_counts
+    ---------------------------------------------------------------------------
+    -- REGISTRES DE RESULTATS
     --
-    -- Tableau des compteurs de pixels sombres.
-    --
-    -- Tous les compteurs commencent a zero.
-    --
-    -- Les compteurs sont remis a zero a chaque nouvelle image.
-    ----------------------------------------------------------------------------
+    -- Memorisation des resultats de la derniere image complete.
+    ---------------------------------------------------------------------------
 
-    signal zone_counts : count_array_t :=
-        (others => (others => '0'));
+    signal player_pixels_reg : count_t := (others => '0');
+
+    signal collision_pixels_reg : count_t := (others => '0');
+
+    signal pass_reg    : STD_LOGIC := '0';
+    signal present_reg : STD_LOGIC := '0';
+    signal valid_reg   : STD_LOGIC := '0';
 
 
-    ----------------------------------------------------------------------------
-    -- SIGNAL : vsync_prev
+    ---------------------------------------------------------------------------
+    -- SYNCHRONISATION VERTICALE
     --
-    -- Memorise la valeur precedente de vsync_in.
+    -- vsync_prev permet de detecter un front montant.
     --
-    -- Permet de detecter un front montant :
-    --
-    --     vsync_prev = 0
-    --     vsync_in   = 1
-    --
-    -- Cette condition indique le debut d'une nouvelle image.
-    ----------------------------------------------------------------------------
+    -- frame_seen empeche d'evaluer une premiere image
+    -- potentiellement incomplete apres le reset.
+    ---------------------------------------------------------------------------
 
     signal vsync_prev : STD_LOGIC := '0';
-
-
-    ----------------------------------------------------------------------------
-    -- SIGNAL : frame_seen
-    --
-    -- Indique si un premier front VSYNC a deja ete observe.
-    --
-    -- Apres un reset, la premiere image peut etre incomplete.
-    --
-    -- On attend donc un premier front VSYNC avant de commencer
-    -- a accumuler les pixels, puis un second front pour publier
-    -- un premier resultat.
-    ----------------------------------------------------------------------------
-
     signal frame_seen : STD_LOGIC := '0';
 
+    signal frame_start : STD_LOGIC;
 
-    ----------------------------------------------------------------------------
-    -- REGISTRES DE SORTIE
+
+    ---------------------------------------------------------------------------
+    -- DETECTION DES COLLISIONS AU PIXEL
     --
-    -- Ces registres conservent les resultats de la derniere
-    -- image analysee.
-    ----------------------------------------------------------------------------
+    -- collision_pixel = 1 lorsque :
+    --   is_pixel_joueur = 1
+    --   ET is_pixel_mur = 1
+    ---------------------------------------------------------------------------
 
-    signal mask_reg : STD_LOGIC_VECTOR(N_ZONES-1 downto 0)
-        := (others => '0');
+    signal collision_pixel : STD_LOGIC;
 
-    signal present_reg : STD_LOGIC := '0';
-    signal pass_reg    : STD_LOGIC := '0';
-    signal valid_reg   : STD_LOGIC := '0';
+
+    ---------------------------------------------------------------------------
+    -- CONDITIONS DE REUSSITE
+    --
+    -- Conditions calculees a partir des compteurs actifs.
+    ---------------------------------------------------------------------------
+
+    signal presence_ok  : STD_LOGIC;
+    signal collision_ok : STD_LOGIC;
 
 
 begin
 
-
-    ----------------------------------------------------------------------------
-    -- VERIFICATIONS DES PARAMETRES
+    ---------------------------------------------------------------------------
+    -- VERIFICATION DES PARAMETRES
     --
-    -- Ces assertions permettent de detecter des configurations
-    -- incompatibles pendant la simulation ou l'elaboration.
-    ----------------------------------------------------------------------------
+    -- On s'assure que les seuils peuvent etre representes
+    -- par les compteurs.
+    ---------------------------------------------------------------------------
 
-    assert IMG_WIDTH <= 4096 and IMG_HEIGHT <= 4096
-        report "DSP : les coordonnees X/Y depassent 12 bits"
+    assert MIN_PLAYER_PIXELS < 2**COUNT_BITS
+        report "DSP : MIN_PLAYER_PIXELS depasse le compteur"
         severity failure;
 
-    assert GRID_COLS <= IMG_WIDTH and GRID_ROWS <= IMG_HEIGHT
-        report "DSP : la grille depasse la resolution de l'image"
-        severity failure;
-
-    assert DARK_THRESH <= 255
-        report "DSP : DARK_THRESH doit etre entre 0 et 255"
-        severity failure;
-
-    assert MIN_PIXELS <= 2**ACC_BITS-1
-        report "DSP : ACC_BITS est insuffisant pour MIN_PIXELS"
+    assert MAX_COLLISION_PIXELS < 2**COUNT_BITS
+        report "DSP : MAX_COLLISION_PIXELS depasse le compteur"
         severity failure;
 
 
-    ----------------------------------------------------------------------------
-    -- CONNEXION DES REGISTRES AUX SORTIES
+    ---------------------------------------------------------------------------
+    -- ETAPE 1 : COLLISION ENTRE JOUEUR ET MUR
     --
-    -- Les sorties refletent les registres internes.
+    -- Operation AND entre les deux signaux de detection.
     --
-    -- Ces assignations sont concurrentes : elles sont actives
-    -- en permanence et ne dependent pas du processus principal.
-    ----------------------------------------------------------------------------
+    -- Le resultat concerne uniquement le pixel actuel.
+    ---------------------------------------------------------------------------
 
-    player_mask    <= mask_reg;
-    player_present <= present_reg;
-    q_pass         <= pass_reg;
-    result_valid   <= valid_reg;
+    collision_pixel <= is_pixel_joueur and is_pixel_mur;
 
 
-    ----------------------------------------------------------------------------
-    -- PROCESSUS PRINCIPAL : TRAITEMENT VIDEO
+    ---------------------------------------------------------------------------
+    -- ETAPE 2 : COMPARAISON DES COMPTEURS AUX SEUILS
     --
-    -- Ce processus est synchrone sur le front montant de pixel_clk.
+    -- presence_ok = 1 :
+    --   Suffisamment de pixels du joueur sont detectes.
     --
-    -- Il effectue deux operations principales :
+    -- collision_ok = 1 :
+    --   Le nombre de collisions ne depasse pas la limite.
     --
-    -- A. Pendant une image :
-    --      Compter les pixels sombres dans chaque zone.
+    -- Ces comparaisons sont combinatoires.
+    ---------------------------------------------------------------------------
+
+    presence_ok <= '1'
+        when player_count >=
+             to_unsigned(MIN_PLAYER_PIXELS, COUNT_BITS)
+        else '0';
+
+    collision_ok <= '1'
+        when collision_count <=
+             to_unsigned(MAX_COLLISION_PIXELS, COUNT_BITS)
+        else '0';
+
+
+    ---------------------------------------------------------------------------
+    -- ETAPE 3 : DETECTION DU DEBUT D'UNE IMAGE
     --
-    -- B. Au debut de l'image suivante :
-    --      Construire player_mask et calculer q_pass.
+    -- Un front montant de VSYNC indique une nouvelle image.
+    ---------------------------------------------------------------------------
+
+    frame_start <= '1'
+        when vsync = '1' and vsync_prev = '0'
+        else '0';
+
+
+    ---------------------------------------------------------------------------
+    -- ETAPE 4 : PROCESSUS SEQUENTIEL
     --
-    -- Les deux operations sont separees par VSYNC.
-    ----------------------------------------------------------------------------
+    -- Un seul processus synchrone controle les compteurs
+    -- et l'enregistrement des resultats.
+    ---------------------------------------------------------------------------
 
-    process(pixel_clk)
-
-        ------------------------------------------------------------------------
-        -- Variables de position
-        --
-        -- x, y :
-        -- Coordonnees du pixel actuel.
-        --
-        -- col, row :
-        -- Colonne et ligne de la zone contenant ce pixel.
-        --
-        -- zone_idx :
-        -- Indice du compteur associe a cette zone.
-        ------------------------------------------------------------------------
-
-        variable x        : integer;
-        variable y        : integer;
-        variable col      : integer;
-        variable row      : integer;
-        variable zone_idx : integer;
-
-
-        ------------------------------------------------------------------------
-        -- Variable de luminosite
-        --
-        -- Somme des composantes R, G et B.
-        --
-        -- Valeurs possibles :
-        --
-        --     Minimum = 0
-        --     Maximum = 765
-        ------------------------------------------------------------------------
-
-        variable luminosity : integer;
-
-
-        ------------------------------------------------------------------------
-        -- Variables temporaires de comparaison
-        --
-        -- next_mask :
-        -- Vecteur construit a partir des compteurs.
-        --
-        -- found_player :
-        -- Indique si au moins une zone contient le joueur.
-        --
-        -- collision :
-        -- Indique si au moins une zone du joueur touche le mur.
-        --
-        -- Les variables permettent de calculer toutes les conditions
-        -- pendant le meme cycle de validation de l'image.
-        ------------------------------------------------------------------------
-
-        variable next_mask : STD_LOGIC_VECTOR(
-            N_ZONES-1 downto 0
-        );
-
-        variable found_player : STD_LOGIC;
-        variable collision    : STD_LOGIC;
-
+    process(clk_pixel)
     begin
 
-        -- Toutes les operations se produisent au front montant
-        -- de l'horloge video.
-        if rising_edge(pixel_clk) then
-
+        if rising_edge(clk_pixel) then
 
             --------------------------------------------------------------------
-            -- ETAPE 0 : RESET
-            --
-            -- Lorsque reset = 1 :
-            --
-            --     - Tous les compteurs sont remis a zero
-            --     - Le masque du joueur est efface
-            --     - La presence du joueur est remise a zero
-            --     - q_pass est remis a zero
-            --     - Le resultat est invalide
-            --
-            -- Le module attend ensuite une nouvelle image.
+            -- RESET
             --------------------------------------------------------------------
 
             if reset = '1' then
 
-                zone_counts <= (others => (others => '0'));
+                player_count    <= (others => '0');
+                collision_count <= (others => '0');
+
+                player_pixels_reg    <= (others => '0');
+                collision_pixels_reg <= (others => '0');
+
+                pass_reg    <= '0';
+                present_reg <= '0';
+                valid_reg   <= '0';
 
                 vsync_prev <= '0';
                 frame_seen <= '0';
 
-                mask_reg    <= (others => '0');
-                present_reg <= '0';
-                pass_reg    <= '0';
-                valid_reg   <= '0';
-
 
             else
 
+                ----------------------------------------------------------------
+                -- MEMORISATION DE VSYNC
+                --
+                -- Utilisee au cycle suivant pour la detection
+                -- du front montant.
+                ----------------------------------------------------------------
+
+                vsync_prev <= vsync;
+
 
                 ----------------------------------------------------------------
-                -- ETAPE 1 : MEMORISER VSYNC
+                -- result_valid = 0 PAR DEFAUT
                 --
-                -- La valeur precedente de VSYNC sera utilisee
-                -- au prochain cycle pour detecter un front montant.
-                ----------------------------------------------------------------
-
-                vsync_prev <= vsync_in;
-
-
-                ----------------------------------------------------------------
-                -- ETAPE 2 : VALEUR PAR DEFAUT DE result_valid
-                --
-                -- On force result_valid a zero a chaque cycle.
-                --
-                -- Il sera mis a 1 uniquement lorsque le resultat
-                -- d'une nouvelle image complete est disponible.
+                -- L'impulsion sera activee uniquement lors
+                -- de la validation d'une nouvelle image.
                 ----------------------------------------------------------------
 
                 valid_reg <= '0';
 
 
                 ----------------------------------------------------------------
-                -- ETAPE 3 : DETECTION D'UNE NOUVELLE IMAGE
+                -- ETAPE 5 : FIN DE L'IMAGE PRECEDENTE
                 --
-                -- Un front montant de VSYNC est detecte lorsque :
+                -- Au front montant de VSYNC :
                 --
-                --     vsync_in   = 1
-                --     vsync_prev = 0
-                --
-                -- Ce front marque la fin de l'accumulation des pixels
-                -- de l'image precedente et le debut de la suivante.
+                --   1. Memoriser les compteurs
+                --   2. Evaluer PASS / FAIL
+                --   3. Produire result_valid
+                --   4. Reinitialiser les compteurs
                 ----------------------------------------------------------------
 
-                if vsync_in = '1' and vsync_prev = '0' then
-
-
-                    ------------------------------------------------------------
-                    -- 3.1 : INITIALISATION DES VARIABLES TEMPORAIRES
-                    --
-                    -- On commence avec :
-                    --
-                    --     - Un masque du joueur vide
-                    --     - Aucune presence detectee
-                    --     - Aucune collision detectee
-                    ------------------------------------------------------------
-
-                    next_mask    := (others => '0');
-                    found_player := '0';
-                    collision    := '0';
-
+                if frame_start = '1' then
 
                     ------------------------------------------------------------
-                    -- 3.2 : ANALYSE DES COMPTEURS
-                    --
-                    -- On examine les N_ZONES compteurs.
-                    --
-                    -- Si un compteur a atteint MIN_PIXELS :
-                    --
-                    --     - La zone est consideree occupee
-                    --     - Le bit correspondant est mis a 1
-                    --     - On confirme la presence du joueur
-                    --
-                    -- On verifie egalement si cette zone contient
-                    -- un mur.
-                    --
-                    -- IMPORTANT :
-                    -- La boucle FOR est synthétisee en logique
-                    -- materielle. Elle ne necessite pas 128 cycles
-                    -- d'horloge pour examiner les 128 compteurs.
-                    ------------------------------------------------------------
-
-                    for i in 0 to N_ZONES-1 loop
-
-                        -- Verification du nombre de pixels sombres
-                        if zone_counts(i) >=
-                           to_unsigned(MIN_PIXELS, ACC_BITS) then
-
-                            -- La zone contient suffisamment
-                            -- de pixels sombres.
-                            next_mask(i) := '1';
-
-                            -- Au moins une zone contient le joueur.
-                            found_player := '1';
-
-                            -- Si le mur occupe aussi cette zone,
-                            -- une collision est detectee.
-                            if wall_mask(i) = '1' then
-                                collision := '1';
-                            end if;
-
-                        end if;
-
-                    end loop;
-
-
-                    ------------------------------------------------------------
-                    -- 3.3 : VALIDATION DE L'IMAGE
-                    --
-                    -- On publie les resultats seulement si un premier
-                    -- VSYNC avait deja ete observe.
-                    --
-                    -- Cela evite de traiter une image partielle
-                    -- immediatement apres un reset.
+                    -- On ignore la premiere image apres reset
+                    -- car elle peut etre incomplete.
                     ------------------------------------------------------------
 
                     if frame_seen = '1' then
 
-                        -- Memoriser le masque du joueur.
-                        mask_reg <= next_mask;
+                        --------------------------------------------------------
+                        -- MEMORISER LES RESULTATS
+                        --
+                        -- Ces sorties demeurent constantes
+                        -- jusqu'a l'image suivante.
+                        --------------------------------------------------------
 
-                        -- Memoriser la presence du joueur.
-                        present_reg <= found_player;
+                        player_pixels_reg <= player_count;
+
+                        collision_pixels_reg <= collision_count;
 
 
                         --------------------------------------------------------
-                        -- 3.4 : DECISION PASS / FAIL
-                        --
-                        -- PASS uniquement si :
-                        --
-                        --     found_player = 1
-                        --     collision    = 0
-                        --
-                        -- Tous les autres cas donnent FAIL.
-                        --
-                        -- La condition de presence empeche un joueur
-                        -- absent de reussir automatiquement.
+                        -- VERIFICATION DE LA PRESENCE
                         --------------------------------------------------------
 
-                        if found_player = '1' and
-                           collision = '0' then
-
-                            pass_reg <= '1';
-
-                        else
-
-                            pass_reg <= '0';
-
-                        end if;
+                        present_reg <= presence_ok;
 
 
                         --------------------------------------------------------
-                        -- 3.5 : SIGNALER UN NOUVEAU RESULTAT
+                        -- DECISION PASS / FAIL
                         --
-                        -- result_valid = 1 pendant un seul cycle.
-                        --
-                        -- La FSM peut maintenant consulter q_pass.
+                        -- PASS si les deux conditions sont vraies.
+                        --------------------------------------------------------
+
+                        pass_reg <= presence_ok and collision_ok;
+
+
+                        --------------------------------------------------------
+                        -- SIGNALER UN NOUVEAU RESULTAT
                         --------------------------------------------------------
 
                         valid_reg <= '1';
@@ -768,218 +471,89 @@ begin
 
 
                     ------------------------------------------------------------
-                    -- 3.6 : PREPARATION DE L'IMAGE SUIVANTE
-                    --
-                    -- On indique qu'un premier VSYNC a ete observe.
-                    --
-                    -- Puis on remet tous les compteurs a zero.
-                    --
-                    -- IMPORTANT :
-                    -- Les registres de sortie ne sont pas effaces.
-                    -- Ils conservent le resultat precedent.
+                    -- PREPARATION DE L'IMAGE SUIVANTE
                     ------------------------------------------------------------
+
+                    player_count    <= (others => '0');
+                    collision_count <= (others => '0');
 
                     frame_seen <= '1';
 
-                    zone_counts <= (others => (others => '0'));
-
 
                 ----------------------------------------------------------------
-                -- ETAPE 4 : TRAITEMENT DES PIXELS
+                -- ETAPE 6 : COMPTAGE DES PIXELS
                 --
-                -- Cette partie est executee pendant l'image.
+                -- On compte uniquement lorsque :
                 --
-                -- Conditions :
+                --   VDE = 1
+                --   Une premiere image a ete synchronisee
                 --
-                --     vde_in = 1
-                --     frame_seen = 1
-                --
-                -- On ignore les pixels invalides et les pixels
-                -- recus avant la premiere synchronisation VSYNC.
+                -- Les deux compteurs sont independants.
                 ----------------------------------------------------------------
 
-                elsif vde_in = '1' and frame_seen = '1' then
+                elsif vde = '1' and frame_seen = '1' then
 
 
                     ------------------------------------------------------------
-                    -- 4.1 : LECTURE DES COORDONNEES
+                    -- COMPTEUR DE PRESENCE
                     --
-                    -- Conversion des vecteurs X et Y en entiers
-                    -- pour faciliter les calculs de position.
-                    ------------------------------------------------------------
-
-                    x := to_integer(unsigned(pixel_x));
-                    y := to_integer(unsigned(pixel_y));
-
-
-                    ------------------------------------------------------------
-                    -- 4.2 : VERIFICATION DES LIMITES
+                    -- Incrementer si le pixel est detecte
+                    -- comme appartenant au joueur.
                     --
-                    -- On s'assure que le pixel appartient bien
-                    -- a la resolution active configuree.
-                    --
-                    -- Cela evite de calculer une zone invalide.
+                    -- Le compteur sature a sa valeur maximale
+                    -- pour eviter un debordement.
                     ------------------------------------------------------------
 
-                    if x < IMG_WIDTH and y < IMG_HEIGHT then
+                    if is_pixel_joueur = '1' then
+
+                        if player_count /= (player_count'range => '1') then
+
+                            player_count <= player_count + 1;
+
+                        end if;
+
+                    end if;
 
 
-                        --------------------------------------------------------
-                        -- 4.3 : ECHANTILLONNAGE SPATIAL
-                        --
-                        -- On ne traite qu'une partie des pixels.
-                        --
-                        -- Exemple avec SAMPLE_STEP = 8 :
-                        --
-                        --     X = 0, 8, 16, 24, ...
-                        --     Y = 0, 8, 16, 24, ...
-                        --
-                        -- Les autres pixels sont ignores.
-                        --
-                        -- L'operation MOD donne le reste
-                        -- d'une division entiere.
-                        --
-                        -- x mod 8 = 0 signifie que x est
-                        -- un multiple de 8.
-                        --------------------------------------------------------
+                    ------------------------------------------------------------
+                    -- COMPTEUR DE COLLISION
+                    --
+                    -- Incrementer si le meme pixel appartient
+                    -- au joueur ET au mur.
+                    ------------------------------------------------------------
 
-                        if (x mod SAMPLE_STEP = 0) and
-                           (y mod SAMPLE_STEP = 0) then
+                    if collision_pixel = '1' then
 
+                        if collision_count /=
+                           (collision_count'range => '1') then
 
-                            ----------------------------------------------------
-                            -- 4.4 : CALCUL DE LA LUMINOSITE
-                            --
-                            -- Extraction des trois composantes :
-                            --
-                            --     R = rgb_in(23 downto 16)
-                            --     G = rgb_in(15 downto 8)
-                            --     B = rgb_in(7 downto 0)
-                            --
-                            -- On additionne les trois valeurs.
-                            --
-                            -- Cette approximation evite d'utiliser
-                            -- des multiplications pour calculer
-                            -- une luminance ponderee.
-                            ----------------------------------------------------
+                            collision_count <= collision_count + 1;
 
-                            luminosity :=
-                                to_integer(unsigned(
-                                    rgb_in(23 downto 16))) +
+                        end if;
 
-                                to_integer(unsigned(
-                                    rgb_in(15 downto 8))) +
+                    end if;
 
-                                to_integer(unsigned(
-                                    rgb_in(7 downto 0)));
+                end if;
 
+            end if;
 
-                            ----------------------------------------------------
-                            -- 4.5 : DETECTION D'UN PIXEL SOMBRE
-                            --
-                            -- Si luminosity < 3 * DARK_THRESH :
-                            --
-                            -- Le pixel est potentiellement une
-                            -- partie de la silhouette du joueur.
-                            --
-                            -- Sinon, il est ignore.
-                            ----------------------------------------------------
-
-                            if luminosity < 3 * DARK_THRESH then
-
-
-                                ------------------------------------------------
-                                -- 4.6 : CALCUL DE LA ZONE
-                                --
-                                -- Conversion des coordonnees X/Y
-                                -- vers les coordonnees de la grille.
-                                --
-                                -- Formules :
-                                --
-                                -- col = X * GRID_COLS / IMG_WIDTH
-                                -- row = Y * GRID_ROWS / IMG_HEIGHT
-                                --
-                                -- Les divisions sont entieres.
-                                --
-                                -- Exemple avec X = 250, Y = 300 :
-                                --
-                                -- col = 250 * 16 / 1600 = 2
-                                -- row = 300 * 8 / 900   = 2
-                                --
-                                -- Le pixel se trouve dans :
-                                --
-                                --     colonne 2
-                                --     ligne 2
-                                ------------------------------------------------
-
-                                col := (x * GRID_COLS) / IMG_WIDTH;
-                                row := (y * GRID_ROWS) / IMG_HEIGHT;
-
-
-                                ------------------------------------------------
-                                -- 4.7 : CONVERSION VERS UN INDICE
-                                --
-                                -- Le quadrillage 2D est represente
-                                -- par un vecteur 1D.
-                                --
-                                -- Formule :
-                                --
-                                -- index = row * GRID_COLS + col
-                                --
-                                -- Exemple :
-                                --
-                                --     row = 2
-                                --     col = 2
-                                --
-                                --     index = 2 * 16 + 2 = 34
-                                --
-                                -- On doit donc incrementer
-                                -- zone_counts(34).
-                                ------------------------------------------------
-
-                                zone_idx := row * GRID_COLS + col;
-
-
-                                ------------------------------------------------
-                                -- 4.8 : INCREMENTATION DU COMPTEUR
-                                --
-                                -- Chaque zone possede un compteur.
-                                --
-                                -- Si le compteur n'a pas encore atteint
-                                -- MIN_PIXELS, il est incremente de 1.
-                                --
-                                -- Exemple :
-                                --
-                                --     0 -> 1 -> 2 -> ... -> 12
-                                --
-                                -- Lorsque 12 est atteint, on arrete
-                                -- d'incrementer.
-                                --
-                                -- Cela empeche un debordement du compteur
-                                -- et reduit la taille necessaire.
-                                ------------------------------------------------
-
-                                if zone_counts(zone_idx) <
-                                   to_unsigned(MIN_PIXELS, ACC_BITS) then
-
-                                    zone_counts(zone_idx) <=
-                                        zone_counts(zone_idx) + 1;
-
-                                end if;
-
-
-                            end if; -- Fin du test de luminosite
-
-                        end if; -- Fin de l'echantillonnage
-
-                    end if; -- Fin de la verification des limites
-
-                end if; -- Fin du traitement VSYNC / pixels
-
-            end if; -- Fin du reset
-
-        end if; -- Fin du front montant pixel_clk
+        end if;
 
     end process;
+
+
+    ---------------------------------------------------------------------------
+    -- ETAPE 7 : ASSIGNATION DES SORTIES
+    --
+    -- Les sorties correspondent aux resultats enregistres,
+    -- et non aux compteurs en cours d'accumulation.
+    ---------------------------------------------------------------------------
+
+    q_pass         <= pass_reg;
+    player_present <= present_reg;
+    result_valid   <= valid_reg;
+
+    player_pixels    <= std_logic_vector(player_pixels_reg);
+    collision_pixels <= std_logic_vector(collision_pixels_reg);
 
 end Behavioral;

@@ -55,8 +55,8 @@ USE ieee.numeric_std.ALL;
 
 ENTITY HDMI_bd_Presence_mur_0_0 IS
   PORT (
-    pixel_x : IN STD_LOGIC_VECTOR(11 DOWNTO 0);
-    pixel_y : IN STD_LOGIC_VECTOR(11 DOWNTO 0);
+    pixel_x : IN STD_LOGIC_VECTOR(10 DOWNTO 0);
+    pixel_y : IN STD_LOGIC_VECTOR(10 DOWNTO 0);
     wall_mask : IN STD_LOGIC_VECTOR(31 DOWNTO 0);
     is_mur : OUT STD_LOGIC
   );
@@ -73,8 +73,8 @@ ARCHITECTURE HDMI_bd_Presence_mur_0_0_arch OF HDMI_bd_Presence_mur_0_0 IS
       screen_width : INTEGER
     );
     PORT (
-      pixel_x : IN STD_LOGIC_VECTOR(11 DOWNTO 0);
-      pixel_y : IN STD_LOGIC_VECTOR(11 DOWNTO 0);
+      pixel_x : IN STD_LOGIC_VECTOR(10 DOWNTO 0);
+      pixel_y : IN STD_LOGIC_VECTOR(10 DOWNTO 0);
       wall_mask : IN STD_LOGIC_VECTOR(31 DOWNTO 0);
       is_mur : OUT STD_LOGIC
     );

@@ -1,7 +1,7 @@
 --Copyright 1986-2018 Xilinx, Inc. All Rights Reserved.
 ----------------------------------------------------------------------------------
 --Tool Version: Vivado v.2018.2.1 (win64) Build 2288692 Thu Jul 26 18:24:02 MDT 2018
---Date        : Sun Nov 22 20:52:32 2026
+--Date        : Mon Nov 23 17:51:08 2026
 --Host        : pcetu-129 running 64-bit major release  (build 9200)
 --Command     : generate_target HDMI_bd.bd
 --Design      : HDMI_bd
@@ -32,7 +32,7 @@ entity HDMI_bd is
     hdmi_out_clk_p : out STD_LOGIC;
     hdmi_out_data_n : out STD_LOGIC_VECTOR ( 2 downto 0 );
     hdmi_out_data_p : out STD_LOGIC_VECTOR ( 2 downto 0 );
-    led : out STD_LOGIC_VECTOR ( 3 downto 0 );
+    led0 : out STD_LOGIC;
     reset : in STD_LOGIC;
     sw0 : in STD_LOGIC;
     sw1 : in STD_LOGIC;
@@ -40,7 +40,7 @@ entity HDMI_bd is
     sw3 : in STD_LOGIC
   );
   attribute CORE_GENERATION_INFO : string;
-  attribute CORE_GENERATION_INFO of HDMI_bd : entity is "HDMI_bd,IP_Integrator,{x_ipVendor=xilinx.com,x_ipLibrary=BlockDiagram,x_ipName=HDMI_bd,x_ipVersion=1.00.a,x_ipLanguage=VHDL,numBlks=10,numReposBlks=10,numNonXlnxBlks=2,numHierBlks=0,maxHierDepth=0,numSysgenBlks=0,numHlsBlks=0,numHdlrefBlks=6,numPkgbdBlks=0,bdsource=USER,synth_mode=OOC_per_IP}";
+  attribute CORE_GENERATION_INFO of HDMI_bd : entity is "HDMI_bd,IP_Integrator,{x_ipVendor=xilinx.com,x_ipLibrary=BlockDiagram,x_ipName=HDMI_bd,x_ipVersion=1.00.a,x_ipLanguage=VHDL,numBlks=13,numReposBlks=13,numNonXlnxBlks=2,numHierBlks=0,maxHierDepth=0,numSysgenBlks=0,numHlsBlks=0,numHdlrefBlks=8,numPkgbdBlks=0,bdsource=USER,synth_mode=OOC_per_IP}";
   attribute HW_HANDOFF : string;
   attribute HW_HANDOFF of HDMI_bd : entity is "HDMI_bd.hwdef";
 end HDMI_bd;
@@ -103,23 +103,6 @@ architecture STRUCTURE of HDMI_bd is
     Clk : in STD_LOGIC
   );
   end component HDMI_bd_Generateur_mur_0_0;
-  component HDMI_bd_Pixel_counter_0_0 is
-  port (
-    clk_pixel : in STD_LOGIC;
-    vsync : in STD_LOGIC;
-    vde : in STD_LOGIC;
-    pixel_x : out STD_LOGIC_VECTOR ( 11 downto 0 );
-    pixel_y : out STD_LOGIC_VECTOR ( 11 downto 0 )
-  );
-  end component HDMI_bd_Pixel_counter_0_0;
-  component HDMI_bd_Presence_mur_0_0 is
-  port (
-    pixel_x : in STD_LOGIC_VECTOR ( 11 downto 0 );
-    pixel_y : in STD_LOGIC_VECTOR ( 11 downto 0 );
-    wall_mask : in STD_LOGIC_VECTOR ( 31 downto 0 );
-    is_mur : out STD_LOGIC
-  );
-  end component HDMI_bd_Presence_mur_0_0;
   component HDMI_bd_test_0_0 is
   port (
     is_mur : in STD_LOGIC;
@@ -128,12 +111,6 @@ architecture STRUCTURE of HDMI_bd is
     rbg_out : out STD_LOGIC_VECTOR ( 23 downto 0 )
   );
   end component HDMI_bd_test_0_0;
-  component HDMI_bd_detection_joueur_0_0 is
-  port (
-    rgb_in : in STD_LOGIC_VECTOR ( 23 downto 0 );
-    is_pixel_joueur : out STD_LOGIC
-  );
-  end component HDMI_bd_detection_joueur_0_0;
   component HDMI_bd_FSM_0_0 is
   port (
     clk : in STD_LOGIC;
@@ -150,12 +127,89 @@ architecture STRUCTURE of HDMI_bd is
     record_perso : out STD_LOGIC_VECTOR ( 3 downto 0 )
   );
   end component HDMI_bd_FSM_0_0;
+  component HDMI_bd_detection_joueur_0_0 is
+  port (
+    rgb_in : in STD_LOGIC_VECTOR ( 23 downto 0 );
+    is_pixel_joueur : out STD_LOGIC
+  );
+  end component HDMI_bd_detection_joueur_0_0;
+  component HDMI_bd_DSP_0_0 is
+  port (
+    clk_pixel : in STD_LOGIC;
+    reset : in STD_LOGIC;
+    vde : in STD_LOGIC;
+    vsync : in STD_LOGIC;
+    hsync : in STD_LOGIC;
+    is_pixel_joueur : in STD_LOGIC;
+    is_pixel_mur : in STD_LOGIC;
+    q_pass : out STD_LOGIC;
+    player_present : out STD_LOGIC;
+    result_valid : out STD_LOGIC;
+    player_pixels : out STD_LOGIC_VECTOR ( 20 downto 0 );
+    collision_pixels : out STD_LOGIC_VECTOR ( 20 downto 0 )
+  );
+  end component HDMI_bd_DSP_0_0;
+  component HDMI_bd_Pixel_counter_0_0 is
+  port (
+    clk_pixel : in STD_LOGIC;
+    vsync : in STD_LOGIC;
+    vde : in STD_LOGIC;
+    pixel_x : out STD_LOGIC_VECTOR ( 10 downto 0 );
+    pixel_y : out STD_LOGIC_VECTOR ( 10 downto 0 )
+  );
+  end component HDMI_bd_Pixel_counter_0_0;
+  component HDMI_bd_Presence_mur_0_0 is
+  port (
+    pixel_x : in STD_LOGIC_VECTOR ( 10 downto 0 );
+    pixel_y : in STD_LOGIC_VECTOR ( 10 downto 0 );
+    wall_mask : in STD_LOGIC_VECTOR ( 31 downto 0 );
+    is_mur : out STD_LOGIC
+  );
+  end component HDMI_bd_Presence_mur_0_0;
+  component HDMI_bd_system_ila_0_0 is
+  port (
+    clk : in STD_LOGIC;
+    probe0 : in STD_LOGIC_VECTOR ( 11 downto 0 );
+    probe1 : in STD_LOGIC_VECTOR ( 11 downto 0 );
+    probe2 : in STD_LOGIC_VECTOR ( 11 downto 0 );
+    probe3 : in STD_LOGIC_VECTOR ( 0 to 0 );
+    probe4 : in STD_LOGIC_VECTOR ( 11 downto 0 );
+    probe5 : in STD_LOGIC_VECTOR ( 11 downto 0 );
+    probe6 : in STD_LOGIC_VECTOR ( 11 downto 0 );
+    probe7 : in STD_LOGIC_VECTOR ( 0 to 0 )
+  );
+  end component HDMI_bd_system_ila_0_0;
+  component HDMI_bd_Mesure_timing_video_0_0 is
+  port (
+    clk_pixel : in STD_LOGIC;
+    reset : in STD_LOGIC;
+    vde : in STD_LOGIC;
+    hsync : in STD_LOGIC;
+    vsync : in STD_LOGIC;
+    h_total : out STD_LOGIC_VECTOR ( 11 downto 0 );
+    h_active : out STD_LOGIC_VECTOR ( 11 downto 0 );
+    h_blank : out STD_LOGIC_VECTOR ( 11 downto 0 );
+    mesure_valid : out STD_LOGIC;
+    v_total : out STD_LOGIC_VECTOR ( 11 downto 0 );
+    v_active : out STD_LOGIC_VECTOR ( 11 downto 0 );
+    v_blank : out STD_LOGIC_VECTOR ( 11 downto 0 );
+    frame_valid : out STD_LOGIC
+  );
+  end component HDMI_bd_Mesure_timing_video_0_0;
   signal CLK_1 : STD_LOGIC;
+  signal DSP_0_q_pass : STD_LOGIC;
   signal FSM_0_new_round : STD_LOGIC;
-  signal FSM_0_record_perso : STD_LOGIC_VECTOR ( 3 downto 0 );
   signal Generateur_mur_0_Mur_out : STD_LOGIC_VECTOR ( 31 downto 0 );
-  signal Pixel_counter_0_pixel_x : STD_LOGIC_VECTOR ( 11 downto 0 );
-  signal Pixel_counter_0_pixel_y : STD_LOGIC_VECTOR ( 11 downto 0 );
+  signal Mesure_timing_video_0_frame_valid : STD_LOGIC;
+  signal Mesure_timing_video_0_h_active : STD_LOGIC_VECTOR ( 11 downto 0 );
+  signal Mesure_timing_video_0_h_blank : STD_LOGIC_VECTOR ( 11 downto 0 );
+  signal Mesure_timing_video_0_h_total : STD_LOGIC_VECTOR ( 11 downto 0 );
+  signal Mesure_timing_video_0_mesure_valid : STD_LOGIC;
+  signal Mesure_timing_video_0_v_active : STD_LOGIC_VECTOR ( 11 downto 0 );
+  signal Mesure_timing_video_0_v_blank : STD_LOGIC_VECTOR ( 11 downto 0 );
+  signal Mesure_timing_video_0_v_total : STD_LOGIC_VECTOR ( 11 downto 0 );
+  signal Pixel_counter_0_pixel_x : STD_LOGIC_VECTOR ( 10 downto 0 );
+  signal Pixel_counter_0_pixel_y : STD_LOGIC_VECTOR ( 10 downto 0 );
   signal Presence_mur_0_is_mur : STD_LOGIC;
   signal btn0_1 : STD_LOGIC;
   signal clk_wiz_0_clk_out1 : STD_LOGIC;
@@ -181,11 +235,15 @@ architecture STRUCTURE of HDMI_bd is
   signal rgb2dvi_0_TMDS_DATA_N : STD_LOGIC_VECTOR ( 2 downto 0 );
   signal rgb2dvi_0_TMDS_DATA_P : STD_LOGIC_VECTOR ( 2 downto 0 );
   signal sw0_1 : STD_LOGIC;
-  signal sw1_1 : STD_LOGIC;
   signal test_0_rbg_out : STD_LOGIC_VECTOR ( 23 downto 0 );
   signal xlconstant_0_dout : STD_LOGIC_VECTOR ( 0 to 0 );
+  signal NLW_DSP_0_player_present_UNCONNECTED : STD_LOGIC;
+  signal NLW_DSP_0_result_valid_UNCONNECTED : STD_LOGIC;
+  signal NLW_DSP_0_collision_pixels_UNCONNECTED : STD_LOGIC_VECTOR ( 20 downto 0 );
+  signal NLW_DSP_0_player_pixels_UNCONNECTED : STD_LOGIC_VECTOR ( 20 downto 0 );
   signal NLW_FSM_0_diff_out_UNCONNECTED : STD_LOGIC_VECTOR ( 1 downto 0 );
   signal NLW_FSM_0_mode_ui_UNCONNECTED : STD_LOGIC_VECTOR ( 2 downto 0 );
+  signal NLW_FSM_0_record_perso_UNCONNECTED : STD_LOGIC_VECTOR ( 3 downto 0 );
   signal NLW_FSM_0_score_courant_UNCONNECTED : STD_LOGIC_VECTOR ( 3 downto 0 );
   signal NLW_FSM_0_sec_UNCONNECTED : STD_LOGIC_VECTOR ( 3 downto 0 );
   signal NLW_clk_wiz_0_locked_UNCONNECTED : STD_LOGIC;
@@ -228,10 +286,24 @@ begin
   hdmi_out_clk_p <= rgb2dvi_0_TMDS_CLK_P;
   hdmi_out_data_n(2 downto 0) <= rgb2dvi_0_TMDS_DATA_N(2 downto 0);
   hdmi_out_data_p(2 downto 0) <= rgb2dvi_0_TMDS_DATA_P(2 downto 0);
-  led(3 downto 0) <= FSM_0_record_perso(3 downto 0);
+  led0 <= DSP_0_q_pass;
   reset_1 <= reset;
   sw0_1 <= sw0;
-  sw1_1 <= sw1;
+DSP_0: component HDMI_bd_DSP_0_0
+     port map (
+      clk_pixel => dvi2rgb_0_PixelClk,
+      collision_pixels(20 downto 0) => NLW_DSP_0_collision_pixels_UNCONNECTED(20 downto 0),
+      hsync => dvi2rgb_0_vid_pHSync,
+      is_pixel_joueur => detection_joueur_0_is_pixel_joueur,
+      is_pixel_mur => Presence_mur_0_is_mur,
+      player_pixels(20 downto 0) => NLW_DSP_0_player_pixels_UNCONNECTED(20 downto 0),
+      player_present => NLW_DSP_0_player_present_UNCONNECTED,
+      q_pass => DSP_0_q_pass,
+      reset => reset_1,
+      result_valid => NLW_DSP_0_result_valid_UNCONNECTED,
+      vde => dvi2rgb_0_vid_pVDE,
+      vsync => dvi2rgb_0_vid_pVSync
+    );
 FSM_0: component HDMI_bd_FSM_0_0
      port map (
       clk => clk_wiz_0_clk_out1,
@@ -239,9 +311,9 @@ FSM_0: component HDMI_bd_FSM_0_0
       difficulty(1 downto 0) => B"00",
       mode_ui(2 downto 0) => NLW_FSM_0_mode_ui_UNCONNECTED(2 downto 0),
       new_round => FSM_0_new_round,
-      q_pass => sw1_1,
+      q_pass => DSP_0_q_pass,
       quit => btn0_1,
-      record_perso(3 downto 0) => FSM_0_record_perso(3 downto 0),
+      record_perso(3 downto 0) => NLW_FSM_0_record_perso_UNCONNECTED(3 downto 0),
       reset => reset_1,
       run => sw0_1,
       score_courant(3 downto 0) => NLW_FSM_0_score_courant_UNCONNECTED(3 downto 0),
@@ -253,19 +325,35 @@ Generateur_mur_0: component HDMI_bd_Generateur_mur_0_0
       Mur_out(31 downto 0) => Generateur_mur_0_Mur_out(31 downto 0),
       NewRandom => FSM_0_new_round
     );
+Mesure_timing_video_0: component HDMI_bd_Mesure_timing_video_0_0
+     port map (
+      clk_pixel => dvi2rgb_0_PixelClk,
+      frame_valid => Mesure_timing_video_0_frame_valid,
+      h_active(11 downto 0) => Mesure_timing_video_0_h_active(11 downto 0),
+      h_blank(11 downto 0) => Mesure_timing_video_0_h_blank(11 downto 0),
+      h_total(11 downto 0) => Mesure_timing_video_0_h_total(11 downto 0),
+      hsync => dvi2rgb_0_vid_pHSync,
+      mesure_valid => Mesure_timing_video_0_mesure_valid,
+      reset => reset_1,
+      v_active(11 downto 0) => Mesure_timing_video_0_v_active(11 downto 0),
+      v_blank(11 downto 0) => Mesure_timing_video_0_v_blank(11 downto 0),
+      v_total(11 downto 0) => Mesure_timing_video_0_v_total(11 downto 0),
+      vde => dvi2rgb_0_vid_pVDE,
+      vsync => dvi2rgb_0_vid_pVSync
+    );
 Pixel_counter_0: component HDMI_bd_Pixel_counter_0_0
      port map (
       clk_pixel => dvi2rgb_0_PixelClk,
-      pixel_x(11 downto 0) => Pixel_counter_0_pixel_x(11 downto 0),
-      pixel_y(11 downto 0) => Pixel_counter_0_pixel_y(11 downto 0),
+      pixel_x(10 downto 0) => Pixel_counter_0_pixel_x(10 downto 0),
+      pixel_y(10 downto 0) => Pixel_counter_0_pixel_y(10 downto 0),
       vde => dvi2rgb_0_vid_pVDE,
       vsync => dvi2rgb_0_vid_pVSync
     );
 Presence_mur_0: component HDMI_bd_Presence_mur_0_0
      port map (
       is_mur => Presence_mur_0_is_mur,
-      pixel_x(11 downto 0) => Pixel_counter_0_pixel_x(11 downto 0),
-      pixel_y(11 downto 0) => Pixel_counter_0_pixel_y(11 downto 0),
+      pixel_x(10 downto 0) => Pixel_counter_0_pixel_x(10 downto 0),
+      pixel_y(10 downto 0) => Pixel_counter_0_pixel_y(10 downto 0),
       wall_mask(31 downto 0) => Generateur_mur_0_Mur_out(31 downto 0)
     );
 clk_wiz_0: component HDMI_bd_clk_wiz_0_0
@@ -314,6 +402,18 @@ rgb2dvi_0: component HDMI_bd_rgb2dvi_0_0
       vid_pHSync => dvi2rgb_0_vid_pHSync,
       vid_pVDE => dvi2rgb_0_vid_pVDE,
       vid_pVSync => dvi2rgb_0_vid_pVSync
+    );
+system_ila_0: component HDMI_bd_system_ila_0_0
+     port map (
+      clk => dvi2rgb_0_PixelClk,
+      probe0(11 downto 0) => Mesure_timing_video_0_h_total(11 downto 0),
+      probe1(11 downto 0) => Mesure_timing_video_0_h_active(11 downto 0),
+      probe2(11 downto 0) => Mesure_timing_video_0_h_blank(11 downto 0),
+      probe3(0) => Mesure_timing_video_0_mesure_valid,
+      probe4(11 downto 0) => Mesure_timing_video_0_v_total(11 downto 0),
+      probe5(11 downto 0) => Mesure_timing_video_0_v_active(11 downto 0),
+      probe6(11 downto 0) => Mesure_timing_video_0_v_blank(11 downto 0),
+      probe7(0) => Mesure_timing_video_0_frame_valid
     );
 test_0: component HDMI_bd_test_0_0
      port map (

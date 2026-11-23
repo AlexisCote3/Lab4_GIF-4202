@@ -77,13 +77,13 @@ ARCHITECTURE HDMI_bd_detection_joueur_0_0_arch OF HDMI_bd_detection_joueur_0_0 I
   ATTRIBUTE CHECK_LICENSE_TYPE : STRING;
   ATTRIBUTE CHECK_LICENSE_TYPE OF HDMI_bd_detection_joueur_0_0_arch : ARCHITECTURE IS "HDMI_bd_detection_joueur_0_0,detection_joueur,{}";
   ATTRIBUTE CORE_GENERATION_INFO : STRING;
-  ATTRIBUTE CORE_GENERATION_INFO OF HDMI_bd_detection_joueur_0_0_arch: ARCHITECTURE IS "HDMI_bd_detection_joueur_0_0,detection_joueur,{x_ipProduct=Vivado 2018.2.1,x_ipVendor=xilinx.com,x_ipLibrary=module_ref,x_ipName=detection_joueur,x_ipVersion=1.0,x_ipCoreRevision=1,x_ipLanguage=VHDL,x_ipSimLanguage=MIXED,DARK_THRESH=50}";
+  ATTRIBUTE CORE_GENERATION_INFO OF HDMI_bd_detection_joueur_0_0_arch: ARCHITECTURE IS "HDMI_bd_detection_joueur_0_0,detection_joueur,{x_ipProduct=Vivado 2018.2.1,x_ipVendor=xilinx.com,x_ipLibrary=module_ref,x_ipName=detection_joueur,x_ipVersion=1.0,x_ipCoreRevision=1,x_ipLanguage=VHDL,x_ipSimLanguage=MIXED,DARK_THRESH=25}";
   ATTRIBUTE IP_DEFINITION_SOURCE : STRING;
   ATTRIBUTE IP_DEFINITION_SOURCE OF HDMI_bd_detection_joueur_0_0_arch: ARCHITECTURE IS "module_ref";
 BEGIN
   U0 : detection_joueur
     GENERIC MAP (
-      DARK_THRESH => 50
+      DARK_THRESH => 25
     )
     PORT MAP (
       rgb_in => rgb_in,

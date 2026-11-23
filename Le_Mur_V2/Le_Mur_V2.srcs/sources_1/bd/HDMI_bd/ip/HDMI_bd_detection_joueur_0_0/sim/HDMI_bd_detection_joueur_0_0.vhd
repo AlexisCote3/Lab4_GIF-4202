@@ -77,7 +77,7 @@ ARCHITECTURE HDMI_bd_detection_joueur_0_0_arch OF HDMI_bd_detection_joueur_0_0 I
 BEGIN
   U0 : detection_joueur
     GENERIC MAP (
-      DARK_THRESH => 50
+      DARK_THRESH => 25
     )
     PORT MAP (
       rgb_in => rgb_in,
