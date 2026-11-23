@@ -5,10 +5,13 @@
 -- Le compositeur NE genere PAS : mur aleatoire, score, minuteur, decision DSP.
 -- Il choisit simplement la couleur du pixel a afficher.
 --
--- Convention du mur : 16 colonnes x 8 lignes, wall_mask(0) = case haut-gauche.
--- index = ligne * 16 + colonne. '1' = mur, '0' = ouverture/camera.
+-- Le masque de mur est deja decode par Presence_mur, qui donne is_mur.
+-- ATTENTION : la version Presence_mur du depot renvoie '1' pour les
+-- cellules ou wall_mask = '1'. Compositeur_pc interprete ces cellules
+-- comme des OUVERTURES; WALL_ONE_IS_OPENING vaut donc true par defaut.
+-- Ajuster ce generic a false si is_pixel_mur signifie reellement 'mur'.
 --
--- VHDL-93/2002 compatible; aucune variable / fonction dans ce module.
+-- VHDL-93/2002 compatible; aucune variable / fonction utilisateur.
 -- La sortie est enregistree avec une latence de 1 cycle pixel_clk.
 -- IMPORTANT: pixel_x, pixel_y, rgb_in, de_in, hsync_in et vsync_in
 -- doivent etre alignes SUR LE MEME pixel a l'entree du compositeur.
@@ -19,10 +22,10 @@ use IEEE.NUMERIC_STD.ALL;
 
 entity compositeur is
     generic (
-        WALL_X   : natural  := 128;
-        WALL_Y   : natural  := 128;
-        CELL_W   : positive := 64;
-        CELL_H   : positive := 64
+        SCREEN_WIDTH        : positive := 1600;
+        SCREEN_HEIGHT       : positive := 900;
+        WALL_ONE_IS_OPENING : boolean  := true;
+        DEBUG_JOUEUR        : boolean  := false
     );
     port (
         pixel_clk         : in  std_logic;
@@ -38,16 +41,18 @@ entity compositeur is
         pixel_x           : in  std_logic_vector(11 downto 0);
         pixel_y           : in  std_logic_vector(11 downto 0);
 
-        -- Generateur de mur + FSM
-        wall_mask         : in  std_logic_vector(127 downto 0);
-        wall_enable       : in  std_logic;
+        -- Sorties des blocs Presence_mur et detection_joueur
+        is_pixel_mur      : in  std_logic;
+        is_pixel_joueur   : in  std_logic;
 
-        -- 00=Accueil, 01=Jeu, 10=Pause, 11=Resultat
-        mode_ui           : in  std_logic_vector(1 downto 0);
-        score_courant     : in  std_logic_vector(6 downto 0);
-        temps_restant     : in  std_logic_vector(7 downto 0);
-        score_dernier     : in  std_logic_vector(6 downto 0);
-        record_personnel  : in  std_logic_vector(6 downto 0);
+        -- Modes emis par game_state (FSM) :
+        -- 000 accueil, 001 lancement, 010 jeu, 011 mur reussi,
+        -- 100 partie terminee, 110 pause, 111 reset.
+        mode_ui           : in  std_logic_vector(2 downto 0);
+        score_courant     : in  std_logic_vector(3 downto 0);
+        temps_restant     : in  std_logic_vector(3 downto 0);
+        score_dernier     : in  std_logic_vector(3 downto 0);
+        record_personnel  : in  std_logic_vector(3 downto 0);
 
         -- Video vers rgb2dvi
         rgb_out           : out std_logic_vector(23 downto 0);
@@ -64,9 +69,11 @@ architecture RTL of compositeur is
     constant C_PAUSE   : std_logic_vector(23 downto 0) := x"22577B";
     constant C_WHITE   : std_logic_vector(23 downto 0) := x"FFFFFF";
     constant C_ACCENT  : std_logic_vector(23 downto 0) := x"FFD166";
+    constant C_PLAYER  : std_logic_vector(23 downto 0) := x"00FF00";
+    constant C_HIT     : std_logic_vector(23 downto 0) := x"FF00FF";
 
     signal px, py : integer range 0 to 4095;
-    signal wall_pixel : std_logic;
+    signal wall_pixel : std_logic; -- '1' signifie un pixel solide du mur
     signal rgb_pixel  : std_logic_vector(23 downto 0);
 
     -- Valeurs bornees a 99 (2 chiffres a l'ecran)
@@ -85,29 +92,15 @@ begin
     px <= to_integer(unsigned(pixel_x));
     py <= to_integer(unsigned(pixel_y));
 
-    -- Lecture combinatoire du masque de mur a partir des coordonnees.
-    -- Indice = (ligne * 16) + colonne, bit 0 en haut a gauche.
-    process (px, py, wall_mask)
-    begin
-        wall_pixel <= '0';
-        if (px >= WALL_X) and (px < WALL_X + 16 * CELL_W) and
-           (py >= WALL_Y) and (py < WALL_Y + 8 * CELL_H) then
-            wall_pixel <= wall_mask(
-                ((py - WALL_Y) / CELL_H) * 16 + ((px - WALL_X) / CELL_W)
-            );
-        end if;
-    end process;
+    -- Ne pas recalculer les zones du mur ici : Presence_mur le fait deja.
+    -- Conformite avec le sens de la sortie is_mur du depot existant.
+    wall_pixel <= not is_pixel_mur when WALL_ONE_IS_OPENING else is_pixel_mur;
 
-    -- Conversion binaire -> deux chiffres BCD pour l'affichage.
-    -- La division /10 et mod 10 sont par constantes : synthese possible.
-    score_num <= 99 when unsigned(score_courant) > to_unsigned(99, 7)
-                    else to_integer(unsigned(score_courant));
-    dernier_num <= 99 when unsigned(score_dernier) > to_unsigned(99, 7)
-                      else to_integer(unsigned(score_dernier));
-    record_num <= 99 when unsigned(record_personnel) > to_unsigned(99, 7)
-                     else to_integer(unsigned(record_personnel));
-    temps_num <= 99 when unsigned(temps_restant) > to_unsigned(99, 8)
-                    else to_integer(unsigned(temps_restant));
+    -- Conversion binaire -> BCD (2 chiffres): ports 4 bits de la FSM.
+    score_num   <= to_integer(unsigned(score_courant));
+    dernier_num <= to_integer(unsigned(score_dernier));
+    record_num  <= to_integer(unsigned(record_personnel));
+    temps_num   <= to_integer(unsigned(temps_restant));
 
     score_diz   <= std_logic_vector(to_unsigned(score_num / 10, 4));
     score_uni   <= std_logic_vector(to_unsigned(score_num mod 10, 4));
@@ -128,24 +121,24 @@ begin
         generic map (X_ORIGIN => 190, Y_ORIGIN => 12, SCALE => 3)
         port map (x => pixel_x, y => pixel_y, chiffre => score_uni, pixel_on => num_sc_u);
     TM_D : entity work.chiffre_7seg
-        generic map (X_ORIGIN => 1080, Y_ORIGIN => 12, SCALE => 3)
+        generic map (X_ORIGIN => SCREEN_WIDTH - 200, Y_ORIGIN => 12, SCALE => 3)
         port map (x => pixel_x, y => pixel_y, chiffre => temps_diz, pixel_on => num_tm_d);
     TM_U : entity work.chiffre_7seg
-        generic map (X_ORIGIN => 1120, Y_ORIGIN => 12, SCALE => 3)
+        generic map (X_ORIGIN => SCREEN_WIDTH - 160, Y_ORIGIN => 12, SCALE => 3)
         port map (x => pixel_x, y => pixel_y, chiffre => temps_uni, pixel_on => num_tm_u);
 
     -- Sous-modules chiffres 7 segments (dernier score / record accueil)
     LAST_D : entity work.chiffre_7seg
-        generic map (X_ORIGIN => 345, Y_ORIGIN => 453, SCALE => 3)
+        generic map (X_ORIGIN => SCREEN_WIDTH/4 - 45, Y_ORIGIN => SCREEN_HEIGHT/2 + 3, SCALE => 3)
         port map (x => pixel_x, y => pixel_y, chiffre => dernier_diz, pixel_on => num_last_d);
     LAST_U : entity work.chiffre_7seg
-        generic map (X_ORIGIN => 385, Y_ORIGIN => 453, SCALE => 3)
+        generic map (X_ORIGIN => SCREEN_WIDTH/4 - 5, Y_ORIGIN => SCREEN_HEIGHT/2 + 3, SCALE => 3)
         port map (x => pixel_x, y => pixel_y, chiffre => dernier_uni, pixel_on => num_last_u);
     REC_D : entity work.chiffre_7seg
-        generic map (X_ORIGIN => 845, Y_ORIGIN => 453, SCALE => 3)
+        generic map (X_ORIGIN => 3*SCREEN_WIDTH/4 - 45, Y_ORIGIN => SCREEN_HEIGHT/2 + 3, SCALE => 3)
         port map (x => pixel_x, y => pixel_y, chiffre => record_diz, pixel_on => num_rec_d);
     REC_U : entity work.chiffre_7seg
-        generic map (X_ORIGIN => 885, Y_ORIGIN => 453, SCALE => 3)
+        generic map (X_ORIGIN => 3*SCREEN_WIDTH/4 - 5, Y_ORIGIN => SCREEN_HEIGHT/2 + 3, SCALE => 3)
         port map (x => pixel_x, y => pixel_y, chiffre => record_uni, pixel_on => num_rec_u);
 
     -- ========================================================================
@@ -155,32 +148,32 @@ begin
         generic map (TEXT => "SCORE", X_ORIGIN => 30, Y_ORIGIN => 20, SCALE => 2)
         port map (x => pixel_x, y => pixel_y, pixel_on => txt_score);
     TXT_TM : entity work.texte_5x7
-        generic map (TEXT => "TEMPS", X_ORIGIN => 960, Y_ORIGIN => 20, SCALE => 2)
+        generic map (TEXT => "TEMPS", X_ORIGIN => SCREEN_WIDTH - 320, Y_ORIGIN => 20, SCALE => 2)
         port map (x => pixel_x, y => pixel_y, pixel_on => txt_temps);
-    TXT_TITLE : entity work.texte_5x7
-        generic map (TEXT => "LE MUR", X_ORIGIN => 545, Y_ORIGIN => 210, SCALE => 5)
+    TXT_TITLE1 : entity work.texte_5x7
+        generic map (TEXT => "LE MUR", X_ORIGIN => (SCREEN_WIDTH-180)/2, Y_ORIGIN => SCREEN_HEIGHT/4, SCALE => 5)
         port map (x => pixel_x, y => pixel_y, pixel_on => txt_title);
-    TXT_START : entity work.texte_5x7
-        generic map (TEXT => "START", X_ORIGIN => 570, Y_ORIGIN => 330, SCALE => 4)
+    TXT_START1 : entity work.texte_5x7
+        generic map (TEXT => "START", X_ORIGIN => (SCREEN_WIDTH-120)/2, Y_ORIGIN => SCREEN_HEIGHT/2 - 80, SCALE => 4)
         port map (x => pixel_x, y => pixel_y, pixel_on => txt_start);
-    TXT_LAST : entity work.texte_5x7
-        generic map (TEXT => "DERNIER", X_ORIGIN => 315, Y_ORIGIN => 420, SCALE => 2)
+    TXT_LAST1 : entity work.texte_5x7
+        generic map (TEXT => "DERNIER", X_ORIGIN => SCREEN_WIDTH/4 - 75, Y_ORIGIN => SCREEN_HEIGHT/2 - 30, SCALE => 2)
         port map (x => pixel_x, y => pixel_y, pixel_on => txt_dernier);
     TXT_REC : entity work.texte_5x7
-        generic map (TEXT => "RECORD", X_ORIGIN => 805, Y_ORIGIN => 420, SCALE => 2)
+        generic map (TEXT => "RECORD", X_ORIGIN => 3*SCREEN_WIDTH/4 - 75, Y_ORIGIN => SCREEN_HEIGHT/2 - 30, SCALE => 2)
         port map (x => pixel_x, y => pixel_y, pixel_on => txt_record);
-    TXT_PAUSE : entity work.texte_5x7
-        generic map (TEXT => "PAUSE", X_ORIGIN => 555, Y_ORIGIN => 330, SCALE => 4)
+    TXT_PAUSE1 : entity work.texte_5x7
+        generic map (TEXT => "PAUSE", X_ORIGIN => (SCREEN_WIDTH-120)/2, Y_ORIGIN => SCREEN_HEIGHT/2 - 80, SCALE => 4)
         port map (x => pixel_x, y => pixel_y, pixel_on => txt_pause);
-    TXT_FIN : entity work.texte_5x7
-        generic map (TEXT => "FIN", X_ORIGIN => 595, Y_ORIGIN => 230, SCALE => 5)
+    TXT_FIN1 : entity work.texte_5x7
+        generic map (TEXT => "FIN", X_ORIGIN => (SCREEN_WIDTH-90)/2, Y_ORIGIN => SCREEN_HEIGHT/4 + 20, SCALE => 5)
         port map (x => pixel_x, y => pixel_y, pixel_on => txt_fin);
 
     -- ========================================================================
     -- Composition combinatoire des pixels.
     -- Priorite : interface utilisateur > mur > camera.
     -- ========================================================================
-    process (rgb_in, de_in, px, py, mode_ui, wall_enable, wall_pixel,
+    process (rgb_in, de_in, px, py, mode_ui, wall_pixel, is_pixel_joueur,
              txt_score, txt_temps, txt_title, txt_start,
              txt_dernier, txt_record, txt_pause, txt_fin,
              num_sc_d, num_sc_u, num_tm_d, num_tm_u,
@@ -191,8 +184,9 @@ begin
             rgb_pixel <= (others => '0'); -- Noir pendant le blanking
         else
             case mode_ui is
-                when "00" => -- Accueil, avec score precedent et record
-                    if (px >= 180 and px < 1100 and py >= 150 and py < 600) then
+                when "000" | "111" => -- Accueil ou reset
+                    if (px >= SCREEN_WIDTH/8 and px < 7*SCREEN_WIDTH/8 and
+                        py >= SCREEN_HEIGHT/6 and py < 5*SCREEN_HEIGHT/6) then
                         rgb_pixel <= C_PANEL;
                     end if;
                     if (txt_title = '1' or txt_start = '1') then
@@ -204,9 +198,17 @@ begin
                         rgb_pixel <= C_WHITE;
                     end if;
 
-                when "01" | "10" => -- Partie et pause
-                    if wall_enable = '1' and wall_pixel = '1' then
+                when "001" | "010" | "011" | "110" => -- Jeu et pause
+                    if wall_pixel = '1' then
                         rgb_pixel <= C_MUR;
+                    end if;
+                    -- Surcouche de diagnostic optionnelle, sans toucher au DSP.
+                    if DEBUG_JOUEUR and is_pixel_joueur = '1' then
+                        if wall_pixel = '1' then
+                            rgb_pixel <= C_HIT;
+                        else
+                            rgb_pixel <= C_PLAYER;
+                        end if;
                     end if;
                     -- HUD fixe au-dessus du mur
                     if py < 90 then
@@ -218,8 +220,9 @@ begin
                         rgb_pixel <= C_WHITE;
                     end if;
                     -- Panneau PAUSE par-dessus camera / mur / HUD
-                    if mode_ui = "10" then
-                        if px >= 410 and px < 870 and py >= 265 and py < 450 then
+                    if mode_ui = "110" then
+                        if px >= SCREEN_WIDTH/2 - 230 and px < SCREEN_WIDTH/2 + 230 and
+                            py >= SCREEN_HEIGHT/2 - 120 and py < SCREEN_HEIGHT/2 + 65 then
                             rgb_pixel <= C_PAUSE;
                         end if;
                         if txt_pause = '1' then
@@ -227,8 +230,9 @@ begin
                         end if;
                     end if;
 
-                when others => -- "11" : ecran de resultat (optionnel)
-                    if px >= 180 and px < 1100 and py >= 150 and py < 600 then
+                when "100" => -- Partie terminee
+                    if (px >= SCREEN_WIDTH/8 and px < 7*SCREEN_WIDTH/8 and
+                        py >= SCREEN_HEIGHT/6 and py < 5*SCREEN_HEIGHT/6) then
                         rgb_pixel <= C_PANEL;
                     end if;
                     if txt_fin = '1' then
@@ -239,11 +243,14 @@ begin
                         num_rec_d = '1' or num_rec_u = '1') then
                         rgb_pixel <= C_WHITE;
                     end if;
+
+                when others => -- "101" (non defini): camera seulement
+                    null;
             end case;
         end if;
     end process;
 
-    -- RGB et synchronisations registers ENSEMBLE : latence de 1 cycle.
+    -- RGB et synchronisations registres ENSEMBLE : latence de 1 cycle.
     process (pixel_clk)
     begin
         if rising_edge(pixel_clk) then
