@@ -1,48 +1,79 @@
+
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
 use IEEE.NUMERIC_STD.ALL;
 
 entity score is
-    Port ( clk           : in  STD_LOGIC;
-           reset         : in  STD_LOGIC;
-           stop          : in  STD_LOGIC;
-           inc           : in  STD_LOGIC;
-           score_courant : out STD_LOGIC_VECTOR (3 downto 0);
-           record_perso  : out STD_LOGIC_VECTOR (3 downto 0));
+    Port (
+        clk           : in  STD_LOGIC;
+        reset         : in  STD_LOGIC;
+        stop          : in  STD_LOGIC;
+        inc           : in  STD_LOGIC;
+        score_courant : out STD_LOGIC_VECTOR(3 downto 0);
+        record_perso  : out STD_LOGIC_VECTOR(3 downto 0)
+    );
 end score;
 
 architecture Behavioral of score is
 
-signal score_courant_sig : unsigned(3 downto 0) := (others => '0');
-signal record_perso_sig  : unsigned(3 downto 0) := (others => '0');
-signal score_suivant     : unsigned(3 downto 0);
+    -- Registres internes
+    signal score_courant_sig : unsigned(3 downto 0) := (others => '0');
+    signal record_perso_sig  : unsigned(3 downto 0) := (others => '0');
+
+    -- Calcul du prochain score
+    signal score_suivant : unsigned(3 downto 0);
 
 begin
 
-score_suivant <= score_courant_sig + 1;
+    --------------------------------------------------
+    -- Calcul du prochain score (maximum 15)
+    --------------------------------------------------
+    score_suivant <= score_courant_sig + 1
+                     when score_courant_sig < 15
+                     else score_courant_sig;
 
-process (clk, reset)
-begin
-    if reset = '1' then
-
-        score_courant_sig <= (others => '0');
-        record_perso_sig  <= (others => '0');
-
-    elsif rising_edge(clk) then
-
-        if stop = '1' then
+    --------------------------------------------------
+    -- PROCESSUS 1 : SCORE COURANT
+    -- Reset remet seulement le score courant a zero
+    --------------------------------------------------
+    process(clk, reset)
+    begin
+        if reset = '1' then
             score_courant_sig <= (others => '0');
-        elsif inc = '1' then
-            score_courant_sig <= score_suivant;
-            if score_suivant > record_perso_sig then
-                record_perso_sig <= score_suivant;
+
+        elsif rising_edge(clk) then
+            if stop = '1' then
+                score_courant_sig <= (others => '0');
+
+            elsif inc = '1' then
+                score_courant_sig <= score_suivant;
+
             end if;
         end if;
+    end process;
 
-    end if;
-end process;
+    --------------------------------------------------
+    -- PROCESSUS 2 : RECORD PERSONNEL
+    -- Le record est conserve lors du Reset
+    --------------------------------------------------
+    process(clk)
+    begin
+        if rising_edge(clk) then
 
-score_courant <= std_logic_vector(score_courant_sig);
-record_perso  <= std_logic_vector(record_perso_sig);
+            if reset = '0' and stop = '0' and inc = '1' then
+
+                if score_suivant > record_perso_sig then
+                    record_perso_sig <= score_suivant;
+                end if;
+
+            end if;
+        end if;
+    end process;
+
+    --------------------------------------------------
+    -- SORTIES
+    --------------------------------------------------
+    score_courant <= std_logic_vector(score_courant_sig);
+    record_perso  <= std_logic_vector(record_perso_sig);
 
 end Behavioral;
