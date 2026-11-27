@@ -1,10 +1,10 @@
 // Copyright 1986-2018 Xilinx, Inc. All Rights Reserved.
 // --------------------------------------------------------------------------------
 // Tool Version: Vivado v.2018.2.1 (win64) Build 2288692 Thu Jul 26 18:24:02 MDT 2018
-// Date        : Wed Nov 25 16:02:12 2026
-// Host        : pcetu-129 running 64-bit major release  (build 9200)
-// Command     : write_verilog -force -mode funcsim
-//               c:/Users/juroy185/Downloads/basic/ZYBO_HDMI_MGA_2018_2/project_1/project_1.srcs/sources_1/bd/HDMI_bd/ip/HDMI_bd_blk_mem_gen_0_0/HDMI_bd_blk_mem_gen_0_0_sim_netlist.v
+// Date        : Fri Nov 27 12:20:36 2026
+// Host        : pcetu-183 running 64-bit major release  (build 9200)
+// Command     : write_verilog -force -mode funcsim -rename_top HDMI_bd_blk_mem_gen_0_0 -prefix
+//               HDMI_bd_blk_mem_gen_0_0_ HDMI_bd_blk_mem_gen_0_0_sim_netlist.v
 // Design      : HDMI_bd_blk_mem_gen_0_0
 // Purpose     : This verilog netlist is a functional simulation representation of the design and should not be modified
 //               or synthesized. This netlist cannot be used for SDF annotated simulation.
@@ -192,7 +192,6 @@ module HDMI_bd_blk_mem_gen_0_0
         .web(1'b0));
 endmodule
 
-(* ORIG_REF_NAME = "blk_mem_gen_generic_cstr" *) 
 module HDMI_bd_blk_mem_gen_0_0_blk_mem_gen_generic_cstr
    (douta,
     clka,
@@ -225,7 +224,6 @@ module HDMI_bd_blk_mem_gen_0_0_blk_mem_gen_generic_cstr
         .wea(wea));
 endmodule
 
-(* ORIG_REF_NAME = "blk_mem_gen_prim_width" *) 
 module HDMI_bd_blk_mem_gen_0_0_blk_mem_gen_prim_width
    (douta,
     clka,
@@ -279,7 +277,6 @@ module HDMI_bd_blk_mem_gen_0_0_blk_mem_gen_prim_width__parameterized0
         .wea(wea));
 endmodule
 
-(* ORIG_REF_NAME = "blk_mem_gen_prim_wrapper" *) 
 module HDMI_bd_blk_mem_gen_0_0_blk_mem_gen_prim_wrapper
    (douta,
     clka,
@@ -672,7 +669,6 @@ module HDMI_bd_blk_mem_gen_0_0_blk_mem_gen_prim_wrapper__parameterized0
         .WEBWE({1'b0,1'b0,1'b0,1'b0,1'b0,1'b0,1'b0,1'b0}));
 endmodule
 
-(* ORIG_REF_NAME = "blk_mem_gen_top" *) 
 module HDMI_bd_blk_mem_gen_0_0_blk_mem_gen_top
    (douta,
     clka,
@@ -723,7 +719,7 @@ endmodule
 (* C_USE_URAM = "0" *) (* C_WEA_WIDTH = "1" *) (* C_WEB_WIDTH = "1" *) 
 (* C_WRITE_DEPTH_A = "1600" *) (* C_WRITE_DEPTH_B = "1600" *) (* C_WRITE_MODE_A = "READ_FIRST" *) 
 (* C_WRITE_MODE_B = "WRITE_FIRST" *) (* C_WRITE_WIDTH_A = "24" *) (* C_WRITE_WIDTH_B = "24" *) 
-(* C_XDEVICEFAMILY = "zynq" *) (* ORIG_REF_NAME = "blk_mem_gen_v8_4_1" *) (* downgradeipidentifiedwarnings = "yes" *) 
+(* C_XDEVICEFAMILY = "zynq" *) (* downgradeipidentifiedwarnings = "yes" *) 
 module HDMI_bd_blk_mem_gen_0_0_blk_mem_gen_v8_4_1
    (clka,
     rsta,
@@ -963,7 +959,6 @@ module HDMI_bd_blk_mem_gen_0_0_blk_mem_gen_v8_4_1
         .wea(wea));
 endmodule
 
-(* ORIG_REF_NAME = "blk_mem_gen_v8_4_1_synth" *) 
 module HDMI_bd_blk_mem_gen_0_0_blk_mem_gen_v8_4_1_synth
    (douta,
     clka,

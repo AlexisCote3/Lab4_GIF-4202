@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
-<EDKSYSTEM EDWVERSION="1.2" TIMESTAMP="Wed Nov 25 16:56:17 2026" VIVADOVERSION="2018.2.1">
+<EDKSYSTEM EDWVERSION="1.2" TIMESTAMP="Fri Nov 27 13:25:16 2026" VIVADOVERSION="2018.2.1">
 
   <SYSTEMINFO ARCH="zynq" DEVICE="7z020" NAME="HDMI_bd" PACKAGE="clg400" SPEEDGRADE="-1"/>
 
@@ -18,9 +18,13 @@
     <PORT CLKFREQUENCY="100000000" DIR="O" NAME="hdmi_out_clk_n" SIGIS="clk"/>
     <PORT DIR="O" LEFT="2" NAME="hdmi_out_data_p" RIGHT="0" SIGIS="undef"/>
     <PORT DIR="O" LEFT="2" NAME="hdmi_out_data_n" RIGHT="0" SIGIS="undef"/>
-    <PORT CLKFREQUENCY="125000000" DIR="I" NAME="CLK" SIGIS="clk" SIGNAME="External_Ports_CLK">
+    <PORT DIR="O" LEFT="3" NAME="led" RIGHT="0" SIGIS="undef"/>
+    <PORT DIR="I" NAME="btn2" SIGIS="undef"/>
+    <PORT DIR="I" NAME="sw2" SIGIS="undef"/>
+    <PORT DIR="I" NAME="sw3" SIGIS="undef"/>
+    <PORT DIR="O" LEFT="0" NAME="hdmi_in_hpd" RIGHT="0" SIGIS="undef" SIGNAME="xlconstant_dout">
       <CONNECTIONS>
-        <CONNECTION INSTANCE="clk_wiz" PORT="clk_in1"/>
+        <CONNECTION INSTANCE="xlconstant" PORT="dout"/>
       </CONNECTIONS>
     </PORT>
     <PORT DIR="I" NAME="reset" SIGIS="rst" SIGNAME="External_Ports_reset">
@@ -32,12 +36,11 @@
         <CONNECTION INSTANCE="top_level_0" PORT="reset"/>
       </CONNECTIONS>
     </PORT>
-    <PORT DIR="O" LEFT="0" NAME="hdmi_in_hpd" RIGHT="0" SIGIS="undef" SIGNAME="xlconstant_dout">
+    <PORT CLKFREQUENCY="125000000" DIR="I" NAME="CLK" SIGIS="clk" SIGNAME="External_Ports_CLK">
       <CONNECTIONS>
-        <CONNECTION INSTANCE="xlconstant" PORT="dout"/>
+        <CONNECTION INSTANCE="clk_wiz" PORT="clk_in1"/>
       </CONNECTIONS>
     </PORT>
-    <PORT DIR="O" LEFT="3" NAME="led" RIGHT="0" SIGIS="undef"/>
     <PORT DIR="I" NAME="btn0" SIGIS="undef" SIGNAME="External_Ports_btn0">
       <CONNECTIONS>
         <CONNECTION INSTANCE="top_level_0" PORT="quit"/>
@@ -48,7 +51,6 @@
         <CONNECTION INSTANCE="top_level_0" PORT="run"/>
       </CONNECTIONS>
     </PORT>
-    <PORT DIR="I" NAME="btn2" SIGIS="undef"/>
     <PORT DIR="I" NAME="sw0" SIGIS="undef" SIGNAME="External_Ports_sw0">
       <CONNECTIONS>
         <CONNECTION INSTANCE="xlconcat_0" PORT="In0"/>
@@ -59,8 +61,6 @@
         <CONNECTION INSTANCE="xlconcat_0" PORT="In1"/>
       </CONNECTIONS>
     </PORT>
-    <PORT DIR="I" NAME="sw2" SIGIS="undef"/>
-    <PORT DIR="I" NAME="sw3" SIGIS="undef"/>
   </EXTERNALPORTS>
 
   <EXTERNALINTERFACES>
@@ -879,7 +879,7 @@
     </MODULE>
     <MODULE FULLNAME="/dvi2rgb" HWVERSION="1.8" INSTANCE="dvi2rgb" IPTYPE="PERIPHERAL" IS_ENABLE="1" MODCLASS="PERIPHERAL" MODTYPE="dvi2rgb" VLNV="digilentinc.com:ip:dvi2rgb:1.8">
       <DOCUMENTS>
-        <DOCUMENT SOURCE="c:/Users/juroy185/Downloads/basic/ZYBO_HDMI_MGA_2018_2/repo/vivado-library/ip/dvi2rgb/docs/dvi2rgb.pdf"/>
+        <DOCUMENT SOURCE="c:/Users/juroy185.GEL.000/Downloads/basic/ZYBO_HDMI_MGA_2018_2/repo/vivado-library/ip/dvi2rgb/docs/dvi2rgb.pdf"/>
       </DOCUMENTS>
       <PARAMETERS>
         <PARAMETER NAME="kEmulateDDC" VALUE="true"/>
@@ -1042,7 +1042,7 @@
     </MODULE>
     <MODULE FULLNAME="/rgb2dvi" HWVERSION="1.4" INSTANCE="rgb2dvi" IPTYPE="PERIPHERAL" IS_ENABLE="1" MODCLASS="PERIPHERAL" MODTYPE="rgb2dvi" VLNV="digilentinc.com:ip:rgb2dvi:1.4">
       <DOCUMENTS>
-        <DOCUMENT SOURCE="c:/Users/juroy185/Downloads/basic/ZYBO_HDMI_MGA_2018_2/repo/vivado-library/ip/rgb2dvi/docs/rgb2dvi.pdf"/>
+        <DOCUMENT SOURCE="c:/Users/juroy185.GEL.000/Downloads/basic/ZYBO_HDMI_MGA_2018_2/repo/vivado-library/ip/rgb2dvi/docs/rgb2dvi.pdf"/>
       </DOCUMENTS>
       <PARAMETERS>
         <PARAMETER NAME="kGenerateSerialClk" VALUE="true"/>

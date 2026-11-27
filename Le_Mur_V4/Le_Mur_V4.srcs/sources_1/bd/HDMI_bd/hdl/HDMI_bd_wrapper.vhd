@@ -1,8 +1,8 @@
 --Copyright 1986-2018 Xilinx, Inc. All Rights Reserved.
 ----------------------------------------------------------------------------------
 --Tool Version: Vivado v.2018.2.1 (win64) Build 2288692 Thu Jul 26 18:24:02 MDT 2018
---Date        : Wed Nov 25 16:56:17 2026
---Host        : pcetu-129 running 64-bit major release  (build 9200)
+--Date        : Fri Nov 27 13:25:16 2026
+--Host        : pcetu-183 running 64-bit major release  (build 9200)
 --Command     : generate_target HDMI_bd_wrapper.bd
 --Design      : HDMI_bd_wrapper
 --Purpose     : IP block netlist
@@ -54,17 +54,17 @@ architecture STRUCTURE of HDMI_bd_wrapper is
     hdmi_out_clk_n : out STD_LOGIC;
     hdmi_out_data_p : out STD_LOGIC_VECTOR ( 2 downto 0 );
     hdmi_out_data_n : out STD_LOGIC_VECTOR ( 2 downto 0 );
-    CLK : in STD_LOGIC;
-    reset : in STD_LOGIC;
-    hdmi_in_hpd : out STD_LOGIC_VECTOR ( 0 to 0 );
     led : out STD_LOGIC_VECTOR ( 3 downto 0 );
+    btn2 : in STD_LOGIC;
+    sw2 : in STD_LOGIC;
+    sw3 : in STD_LOGIC;
+    hdmi_in_hpd : out STD_LOGIC_VECTOR ( 0 to 0 );
+    reset : in STD_LOGIC;
+    CLK : in STD_LOGIC;
     btn0 : in STD_LOGIC;
     btn1 : in STD_LOGIC;
-    btn2 : in STD_LOGIC;
     sw0 : in STD_LOGIC;
-    sw1 : in STD_LOGIC;
-    sw2 : in STD_LOGIC;
-    sw3 : in STD_LOGIC
+    sw1 : in STD_LOGIC
   );
   end component HDMI_bd;
   component IOBUF is
