@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+<Runs Version="1" Minor="0">
+	<Run Id="HDMI_bd_miroir_0_0_synth_1" LaunchDir="C:/Users/juroy185.GEL.000/Documents/Lab4_GIF-4202/Le_Mur_V4/Le_Mur_V4.runs/HDMI_bd_miroir_0_0_synth_1" FlowId="Vivado_Synthesis" FromStepId="vivado" ToStepId="vivado"/>
+	<Run Id="HDMI_bd_top_level_0_0_synth_1" LaunchDir="C:/Users/juroy185.GEL.000/Documents/Lab4_GIF-4202/Le_Mur_V4/Le_Mur_V4.runs/HDMI_bd_top_level_0_0_synth_1" FlowId="Vivado_Synthesis" FromStepId="vivado" ToStepId="vivado"/>
+</Runs>
+

@@ -1,0 +1,1 @@
+--relax --debug typical --mt auto -L xlconstant_v1_1_5 -L xil_defaultlib -L blk_mem_gen_v8_4_1 -L xlconcat_v2_1_1 -L unisims_ver -L unimacro_ver -L secureip -L xpm --snapshot HDMI_bd xil_defaultlib.HDMI_bd xil_defaultlib.glbl -log elaborate.log

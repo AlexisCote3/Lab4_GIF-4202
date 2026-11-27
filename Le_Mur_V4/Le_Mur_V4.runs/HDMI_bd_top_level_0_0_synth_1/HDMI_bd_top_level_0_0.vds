@@ -1,0 +1,721 @@
+#-----------------------------------------------------------
+# Vivado v2018.2.1 (64-bit)
+# SW Build 2288692 on Thu Jul 26 18:24:02 MDT 2018
+# IP Build 2289599 on Thu Jul 26 21:09:20 MDT 2018
+# Start of session at: Fri Nov 27 13:25:20 2026
+# Process ID: 10344
+# Current directory: C:/Users/juroy185.GEL.000/Documents/Lab4_GIF-4202/Le_Mur_V4/Le_Mur_V4.runs/HDMI_bd_top_level_0_0_synth_1
+# Command line: vivado.exe -log HDMI_bd_top_level_0_0.vds -product Vivado -mode batch -messageDb vivado.pb -notrace -source HDMI_bd_top_level_0_0.tcl
+# Log file: C:/Users/juroy185.GEL.000/Documents/Lab4_GIF-4202/Le_Mur_V4/Le_Mur_V4.runs/HDMI_bd_top_level_0_0_synth_1/HDMI_bd_top_level_0_0.vds
+# Journal file: C:/Users/juroy185.GEL.000/Documents/Lab4_GIF-4202/Le_Mur_V4/Le_Mur_V4.runs/HDMI_bd_top_level_0_0_synth_1\vivado.jou
+#-----------------------------------------------------------
+source HDMI_bd_top_level_0_0.tcl -notrace
+Command: synth_design -top HDMI_bd_top_level_0_0 -part xc7z020clg400-1 -mode out_of_context
+Starting synth_design
+Attempting to get a license for feature 'Synthesis' and/or device 'xc7z020'
+INFO: [Common 17-349] Got license for feature 'Synthesis' and/or device 'xc7z020'
+INFO: Launching helper process for spawning children vivado processes
+INFO: Helper process launched with PID 15272 
+---------------------------------------------------------------------------------
+Starting RTL Elaboration : Time (s): cpu = 00:00:01 ; elapsed = 00:00:00.923 . Memory (MB): peak = 410.379 ; gain = 103.137
+---------------------------------------------------------------------------------
+INFO: [Synth 8-638] synthesizing module 'HDMI_bd_top_level_0_0' [c:/Users/juroy185.GEL.000/Documents/Lab4_GIF-4202/Le_Mur_V4/Le_Mur_V4.srcs/sources_1/bd/HDMI_bd/ip/HDMI_bd_top_level_0_0/synth/HDMI_bd_top_level_0_0.vhd:72]
+	Parameter SCREEN_WIDTH bound to: 1600 - type: integer 
+	Parameter SCREEN_HEIGHT bound to: 900 - type: integer 
+	Parameter wall_height bound to: 4 - type: integer 
+	Parameter wall_width bound to: 8 - type: integer 
+	Parameter WALL_ONE_IS_OPENING bound to: 1 - type: bool 
+	Parameter DEBUG_JOUEUR bound to: 0 - type: bool 
+	Parameter MIN_PLAYER_PIXELS bound to: 1000 - type: integer 
+	Parameter MAX_COLLISION_PIXELS bound to: 500 - type: integer 
+	Parameter COUNT_BITS bound to: 21 - type: integer 
+	Parameter DARK_THRESH bound to: 50 - type: integer 
+INFO: [Synth 8-3491] module 'top_level' declared at 'C:/Users/juroy185.GEL.000/Documents/Lab4_GIF-4202/Le_Mur_V4/Le_Mur_V4.srcs/sources_1/new/top_level.vhd:4' bound to instance 'U0' of component 'top_level' [c:/Users/juroy185.GEL.000/Documents/Lab4_GIF-4202/Le_Mur_V4/Le_Mur_V4.srcs/sources_1/bd/HDMI_bd/ip/HDMI_bd_top_level_0_0/synth/HDMI_bd_top_level_0_0.vhd:119]
+INFO: [Synth 8-638] synthesizing module 'top_level' [C:/Users/juroy185.GEL.000/Documents/Lab4_GIF-4202/Le_Mur_V4/Le_Mur_V4.srcs/sources_1/new/top_level.vhd:30]
+	Parameter SCREEN_WIDTH bound to: 1600 - type: integer 
+	Parameter SCREEN_HEIGHT bound to: 900 - type: integer 
+	Parameter wall_height bound to: 4 - type: integer 
+	Parameter wall_width bound to: 8 - type: integer 
+	Parameter WALL_ONE_IS_OPENING bound to: 1 - type: bool 
+	Parameter DEBUG_JOUEUR bound to: 0 - type: bool 
+	Parameter MIN_PLAYER_PIXELS bound to: 1000 - type: integer 
+	Parameter MAX_COLLISION_PIXELS bound to: 500 - type: integer 
+	Parameter COUNT_BITS bound to: 21 - type: integer 
+	Parameter DARK_THRESH bound to: 50 - type: integer 
+INFO: [Synth 8-3491] module 'Pixel_counter' declared at 'C:/Users/juroy185.GEL.000/Documents/Lab4_GIF-4202/Le_Mur_V4/Le_Mur_V4.srcs/sources_1/new/Pixel_counter.vhd:5' bound to instance 'u_pixel_counter' of component 'Pixel_counter' [C:/Users/juroy185.GEL.000/Documents/Lab4_GIF-4202/Le_Mur_V4/Le_Mur_V4.srcs/sources_1/new/top_level.vhd:169]
+INFO: [Synth 8-638] synthesizing module 'Pixel_counter' [C:/Users/juroy185.GEL.000/Documents/Lab4_GIF-4202/Le_Mur_V4/Le_Mur_V4.srcs/sources_1/new/Pixel_counter.vhd:15]
+INFO: [Synth 8-256] done synthesizing module 'Pixel_counter' (1#1) [C:/Users/juroy185.GEL.000/Documents/Lab4_GIF-4202/Le_Mur_V4/Le_Mur_V4.srcs/sources_1/new/Pixel_counter.vhd:15]
+	Parameter DARK_THRESH bound to: 50 - type: integer 
+INFO: [Synth 8-3491] module 'detection_joueur' declared at 'C:/Users/juroy185.GEL.000/Documents/Lab4_GIF-4202/Le_Mur_V4/Le_Mur_V4.srcs/sources_1/new/detection_joueur.vhd:41' bound to instance 'u_detection_joueur' of component 'detection_joueur' [C:/Users/juroy185.GEL.000/Documents/Lab4_GIF-4202/Le_Mur_V4/Le_Mur_V4.srcs/sources_1/new/top_level.vhd:178]
+INFO: [Synth 8-638] synthesizing module 'detection_joueur' [C:/Users/juroy185.GEL.000/Documents/Lab4_GIF-4202/Le_Mur_V4/Le_Mur_V4.srcs/sources_1/new/detection_joueur.vhd:66]
+	Parameter DARK_THRESH bound to: 50 - type: integer 
+INFO: [Synth 8-256] done synthesizing module 'detection_joueur' (2#1) [C:/Users/juroy185.GEL.000/Documents/Lab4_GIF-4202/Le_Mur_V4/Le_Mur_V4.srcs/sources_1/new/detection_joueur.vhd:66]
+	Parameter wall_height bound to: 4 - type: integer 
+	Parameter wall_width bound to: 8 - type: integer 
+INFO: [Synth 8-3491] module 'Generateur_mur' declared at 'C:/Users/juroy185.GEL.000/Documents/Lab4_GIF-4202/Le_Mur_V4/Le_Mur_V4.srcs/sources_1/new/Generateur_mur.vhd:6' bound to instance 'u_generateur_mur' of component 'Generateur_mur' [C:/Users/juroy185.GEL.000/Documents/Lab4_GIF-4202/Le_Mur_V4/Le_Mur_V4.srcs/sources_1/new/top_level.vhd:187]
+INFO: [Synth 8-638] synthesizing module 'Generateur_mur' [C:/Users/juroy185.GEL.000/Documents/Lab4_GIF-4202/Le_Mur_V4/Le_Mur_V4.srcs/sources_1/new/Generateur_mur.vhd:18]
+	Parameter wall_height bound to: 4 - type: integer 
+	Parameter wall_width bound to: 8 - type: integer 
+	Parameter N bound to: 32 - type: integer 
+INFO: [Synth 8-3491] module 'rdc_load_Nbits' declared at 'C:/Users/juroy185.GEL.000/Documents/Lab4_GIF-4202/Le_Mur_V4/Le_Mur_V4.srcs/sources_1/new/rdc_load_Nbits.vhd:34' bound to instance 'reg_mur' of component 'rdc_load_Nbits' [C:/Users/juroy185.GEL.000/Documents/Lab4_GIF-4202/Le_Mur_V4/Le_Mur_V4.srcs/sources_1/new/Generateur_mur.vhd:130]
+INFO: [Synth 8-638] synthesizing module 'rdc_load_Nbits' [C:/Users/juroy185.GEL.000/Documents/Lab4_GIF-4202/Le_Mur_V4/Le_Mur_V4.srcs/sources_1/new/rdc_load_Nbits.vhd:43]
+	Parameter N bound to: 32 - type: integer 
+INFO: [Synth 8-3491] module 'Registre_1B' declared at 'C:/Users/juroy185.GEL.000/Documents/Lab4_GIF-4202/Le_Mur_V4/Le_Mur_V4.srcs/sources_1/new/Registre_1B.vhd:34' bound to instance 'UREG_I' of component 'Registre_1B' [C:/Users/juroy185.GEL.000/Documents/Lab4_GIF-4202/Le_Mur_V4/Le_Mur_V4.srcs/sources_1/new/rdc_load_Nbits.vhd:61]
+INFO: [Synth 8-638] synthesizing module 'Registre_1B' [C:/Users/juroy185.GEL.000/Documents/Lab4_GIF-4202/Le_Mur_V4/Le_Mur_V4.srcs/sources_1/new/Registre_1B.vhd:42]
+INFO: [Synth 8-256] done synthesizing module 'Registre_1B' (3#1) [C:/Users/juroy185.GEL.000/Documents/Lab4_GIF-4202/Le_Mur_V4/Le_Mur_V4.srcs/sources_1/new/Registre_1B.vhd:42]
+INFO: [Synth 8-3491] module 'Registre_1B' declared at 'C:/Users/juroy185.GEL.000/Documents/Lab4_GIF-4202/Le_Mur_V4/Le_Mur_V4.srcs/sources_1/new/Registre_1B.vhd:34' bound to instance 'UREG_I' of component 'Registre_1B' [C:/Users/juroy185.GEL.000/Documents/Lab4_GIF-4202/Le_Mur_V4/Le_Mur_V4.srcs/sources_1/new/rdc_load_Nbits.vhd:61]
+INFO: [Synth 8-3491] module 'Registre_1B' declared at 'C:/Users/juroy185.GEL.000/Documents/Lab4_GIF-4202/Le_Mur_V4/Le_Mur_V4.srcs/sources_1/new/Registre_1B.vhd:34' bound to instance 'UREG_I' of component 'Registre_1B' [C:/Users/juroy185.GEL.000/Documents/Lab4_GIF-4202/Le_Mur_V4/Le_Mur_V4.srcs/sources_1/new/rdc_load_Nbits.vhd:61]
+INFO: [Synth 8-3491] module 'Registre_1B' declared at 'C:/Users/juroy185.GEL.000/Documents/Lab4_GIF-4202/Le_Mur_V4/Le_Mur_V4.srcs/sources_1/new/Registre_1B.vhd:34' bound to instance 'UREG_I' of component 'Registre_1B' [C:/Users/juroy185.GEL.000/Documents/Lab4_GIF-4202/Le_Mur_V4/Le_Mur_V4.srcs/sources_1/new/rdc_load_Nbits.vhd:61]
+INFO: [Synth 8-3491] module 'Registre_1B' declared at 'C:/Users/juroy185.GEL.000/Documents/Lab4_GIF-4202/Le_Mur_V4/Le_Mur_V4.srcs/sources_1/new/Registre_1B.vhd:34' bound to instance 'UREG_I' of component 'Registre_1B' [C:/Users/juroy185.GEL.000/Documents/Lab4_GIF-4202/Le_Mur_V4/Le_Mur_V4.srcs/sources_1/new/rdc_load_Nbits.vhd:61]
+INFO: [Synth 8-3491] module 'Registre_1B' declared at 'C:/Users/juroy185.GEL.000/Documents/Lab4_GIF-4202/Le_Mur_V4/Le_Mur_V4.srcs/sources_1/new/Registre_1B.vhd:34' bound to instance 'UREG_I' of component 'Registre_1B' [C:/Users/juroy185.GEL.000/Documents/Lab4_GIF-4202/Le_Mur_V4/Le_Mur_V4.srcs/sources_1/new/rdc_load_Nbits.vhd:61]
+INFO: [Synth 8-3491] module 'Registre_1B' declared at 'C:/Users/juroy185.GEL.000/Documents/Lab4_GIF-4202/Le_Mur_V4/Le_Mur_V4.srcs/sources_1/new/Registre_1B.vhd:34' bound to instance 'UREG_I' of component 'Registre_1B' [C:/Users/juroy185.GEL.000/Documents/Lab4_GIF-4202/Le_Mur_V4/Le_Mur_V4.srcs/sources_1/new/rdc_load_Nbits.vhd:61]
+INFO: [Synth 8-3491] module 'Registre_1B' declared at 'C:/Users/juroy185.GEL.000/Documents/Lab4_GIF-4202/Le_Mur_V4/Le_Mur_V4.srcs/sources_1/new/Registre_1B.vhd:34' bound to instance 'UREG_I' of component 'Registre_1B' [C:/Users/juroy185.GEL.000/Documents/Lab4_GIF-4202/Le_Mur_V4/Le_Mur_V4.srcs/sources_1/new/rdc_load_Nbits.vhd:61]
+INFO: [Synth 8-3491] module 'Registre_1B' declared at 'C:/Users/juroy185.GEL.000/Documents/Lab4_GIF-4202/Le_Mur_V4/Le_Mur_V4.srcs/sources_1/new/Registre_1B.vhd:34' bound to instance 'UREG_I' of component 'Registre_1B' [C:/Users/juroy185.GEL.000/Documents/Lab4_GIF-4202/Le_Mur_V4/Le_Mur_V4.srcs/sources_1/new/rdc_load_Nbits.vhd:61]
+INFO: [Synth 8-3491] module 'Registre_1B' declared at 'C:/Users/juroy185.GEL.000/Documents/Lab4_GIF-4202/Le_Mur_V4/Le_Mur_V4.srcs/sources_1/new/Registre_1B.vhd:34' bound to instance 'UREG_I' of component 'Registre_1B' [C:/Users/juroy185.GEL.000/Documents/Lab4_GIF-4202/Le_Mur_V4/Le_Mur_V4.srcs/sources_1/new/rdc_load_Nbits.vhd:61]
+INFO: [Synth 8-3491] module 'Registre_1B' declared at 'C:/Users/juroy185.GEL.000/Documents/Lab4_GIF-4202/Le_Mur_V4/Le_Mur_V4.srcs/sources_1/new/Registre_1B.vhd:34' bound to instance 'UREG_I' of component 'Registre_1B' [C:/Users/juroy185.GEL.000/Documents/Lab4_GIF-4202/Le_Mur_V4/Le_Mur_V4.srcs/sources_1/new/rdc_load_Nbits.vhd:61]
+INFO: [Synth 8-3491] module 'Registre_1B' declared at 'C:/Users/juroy185.GEL.000/Documents/Lab4_GIF-4202/Le_Mur_V4/Le_Mur_V4.srcs/sources_1/new/Registre_1B.vhd:34' bound to instance 'UREG_I' of component 'Registre_1B' [C:/Users/juroy185.GEL.000/Documents/Lab4_GIF-4202/Le_Mur_V4/Le_Mur_V4.srcs/sources_1/new/rdc_load_Nbits.vhd:61]
+INFO: [Synth 8-3491] module 'Registre_1B' declared at 'C:/Users/juroy185.GEL.000/Documents/Lab4_GIF-4202/Le_Mur_V4/Le_Mur_V4.srcs/sources_1/new/Registre_1B.vhd:34' bound to instance 'UREG_I' of component 'Registre_1B' [C:/Users/juroy185.GEL.000/Documents/Lab4_GIF-4202/Le_Mur_V4/Le_Mur_V4.srcs/sources_1/new/rdc_load_Nbits.vhd:61]
+INFO: [Synth 8-3491] module 'Registre_1B' declared at 'C:/Users/juroy185.GEL.000/Documents/Lab4_GIF-4202/Le_Mur_V4/Le_Mur_V4.srcs/sources_1/new/Registre_1B.vhd:34' bound to instance 'UREG_I' of component 'Registre_1B' [C:/Users/juroy185.GEL.000/Documents/Lab4_GIF-4202/Le_Mur_V4/Le_Mur_V4.srcs/sources_1/new/rdc_load_Nbits.vhd:61]
+INFO: [Synth 8-3491] module 'Registre_1B' declared at 'C:/Users/juroy185.GEL.000/Documents/Lab4_GIF-4202/Le_Mur_V4/Le_Mur_V4.srcs/sources_1/new/Registre_1B.vhd:34' bound to instance 'UREG_I' of component 'Registre_1B' [C:/Users/juroy185.GEL.000/Documents/Lab4_GIF-4202/Le_Mur_V4/Le_Mur_V4.srcs/sources_1/new/rdc_load_Nbits.vhd:61]
+INFO: [Synth 8-3491] module 'Registre_1B' declared at 'C:/Users/juroy185.GEL.000/Documents/Lab4_GIF-4202/Le_Mur_V4/Le_Mur_V4.srcs/sources_1/new/Registre_1B.vhd:34' bound to instance 'UREG_I' of component 'Registre_1B' [C:/Users/juroy185.GEL.000/Documents/Lab4_GIF-4202/Le_Mur_V4/Le_Mur_V4.srcs/sources_1/new/rdc_load_Nbits.vhd:61]
+INFO: [Synth 8-3491] module 'Registre_1B' declared at 'C:/Users/juroy185.GEL.000/Documents/Lab4_GIF-4202/Le_Mur_V4/Le_Mur_V4.srcs/sources_1/new/Registre_1B.vhd:34' bound to instance 'UREG_I' of component 'Registre_1B' [C:/Users/juroy185.GEL.000/Documents/Lab4_GIF-4202/Le_Mur_V4/Le_Mur_V4.srcs/sources_1/new/rdc_load_Nbits.vhd:61]
+INFO: [Synth 8-3491] module 'Registre_1B' declared at 'C:/Users/juroy185.GEL.000/Documents/Lab4_GIF-4202/Le_Mur_V4/Le_Mur_V4.srcs/sources_1/new/Registre_1B.vhd:34' bound to instance 'UREG_I' of component 'Registre_1B' [C:/Users/juroy185.GEL.000/Documents/Lab4_GIF-4202/Le_Mur_V4/Le_Mur_V4.srcs/sources_1/new/rdc_load_Nbits.vhd:61]
+INFO: [Synth 8-3491] module 'Registre_1B' declared at 'C:/Users/juroy185.GEL.000/Documents/Lab4_GIF-4202/Le_Mur_V4/Le_Mur_V4.srcs/sources_1/new/Registre_1B.vhd:34' bound to instance 'UREG_I' of component 'Registre_1B' [C:/Users/juroy185.GEL.000/Documents/Lab4_GIF-4202/Le_Mur_V4/Le_Mur_V4.srcs/sources_1/new/rdc_load_Nbits.vhd:61]
+INFO: [Synth 8-3491] module 'Registre_1B' declared at 'C:/Users/juroy185.GEL.000/Documents/Lab4_GIF-4202/Le_Mur_V4/Le_Mur_V4.srcs/sources_1/new/Registre_1B.vhd:34' bound to instance 'UREG_I' of component 'Registre_1B' [C:/Users/juroy185.GEL.000/Documents/Lab4_GIF-4202/Le_Mur_V4/Le_Mur_V4.srcs/sources_1/new/rdc_load_Nbits.vhd:61]
+INFO: [Synth 8-3491] module 'Registre_1B' declared at 'C:/Users/juroy185.GEL.000/Documents/Lab4_GIF-4202/Le_Mur_V4/Le_Mur_V4.srcs/sources_1/new/Registre_1B.vhd:34' bound to instance 'UREG_I' of component 'Registre_1B' [C:/Users/juroy185.GEL.000/Documents/Lab4_GIF-4202/Le_Mur_V4/Le_Mur_V4.srcs/sources_1/new/rdc_load_Nbits.vhd:61]
+INFO: [Synth 8-3491] module 'Registre_1B' declared at 'C:/Users/juroy185.GEL.000/Documents/Lab4_GIF-4202/Le_Mur_V4/Le_Mur_V4.srcs/sources_1/new/Registre_1B.vhd:34' bound to instance 'UREG_I' of component 'Registre_1B' [C:/Users/juroy185.GEL.000/Documents/Lab4_GIF-4202/Le_Mur_V4/Le_Mur_V4.srcs/sources_1/new/rdc_load_Nbits.vhd:61]
+INFO: [Synth 8-3491] module 'Registre_1B' declared at 'C:/Users/juroy185.GEL.000/Documents/Lab4_GIF-4202/Le_Mur_V4/Le_Mur_V4.srcs/sources_1/new/Registre_1B.vhd:34' bound to instance 'UREG_I' of component 'Registre_1B' [C:/Users/juroy185.GEL.000/Documents/Lab4_GIF-4202/Le_Mur_V4/Le_Mur_V4.srcs/sources_1/new/rdc_load_Nbits.vhd:61]
+INFO: [Synth 8-3491] module 'Registre_1B' declared at 'C:/Users/juroy185.GEL.000/Documents/Lab4_GIF-4202/Le_Mur_V4/Le_Mur_V4.srcs/sources_1/new/Registre_1B.vhd:34' bound to instance 'UREG_I' of component 'Registre_1B' [C:/Users/juroy185.GEL.000/Documents/Lab4_GIF-4202/Le_Mur_V4/Le_Mur_V4.srcs/sources_1/new/rdc_load_Nbits.vhd:61]
+INFO: [Synth 8-3491] module 'Registre_1B' declared at 'C:/Users/juroy185.GEL.000/Documents/Lab4_GIF-4202/Le_Mur_V4/Le_Mur_V4.srcs/sources_1/new/Registre_1B.vhd:34' bound to instance 'UREG_I' of component 'Registre_1B' [C:/Users/juroy185.GEL.000/Documents/Lab4_GIF-4202/Le_Mur_V4/Le_Mur_V4.srcs/sources_1/new/rdc_load_Nbits.vhd:61]
+INFO: [Synth 8-3491] module 'Registre_1B' declared at 'C:/Users/juroy185.GEL.000/Documents/Lab4_GIF-4202/Le_Mur_V4/Le_Mur_V4.srcs/sources_1/new/Registre_1B.vhd:34' bound to instance 'UREG_I' of component 'Registre_1B' [C:/Users/juroy185.GEL.000/Documents/Lab4_GIF-4202/Le_Mur_V4/Le_Mur_V4.srcs/sources_1/new/rdc_load_Nbits.vhd:61]
+INFO: [Synth 8-3491] module 'Registre_1B' declared at 'C:/Users/juroy185.GEL.000/Documents/Lab4_GIF-4202/Le_Mur_V4/Le_Mur_V4.srcs/sources_1/new/Registre_1B.vhd:34' bound to instance 'UREG_I' of component 'Registre_1B' [C:/Users/juroy185.GEL.000/Documents/Lab4_GIF-4202/Le_Mur_V4/Le_Mur_V4.srcs/sources_1/new/rdc_load_Nbits.vhd:61]
+INFO: [Synth 8-3491] module 'Registre_1B' declared at 'C:/Users/juroy185.GEL.000/Documents/Lab4_GIF-4202/Le_Mur_V4/Le_Mur_V4.srcs/sources_1/new/Registre_1B.vhd:34' bound to instance 'UREG_I' of component 'Registre_1B' [C:/Users/juroy185.GEL.000/Documents/Lab4_GIF-4202/Le_Mur_V4/Le_Mur_V4.srcs/sources_1/new/rdc_load_Nbits.vhd:61]
+INFO: [Synth 8-3491] module 'Registre_1B' declared at 'C:/Users/juroy185.GEL.000/Documents/Lab4_GIF-4202/Le_Mur_V4/Le_Mur_V4.srcs/sources_1/new/Registre_1B.vhd:34' bound to instance 'UREG_I' of component 'Registre_1B' [C:/Users/juroy185.GEL.000/Documents/Lab4_GIF-4202/Le_Mur_V4/Le_Mur_V4.srcs/sources_1/new/rdc_load_Nbits.vhd:61]
+INFO: [Synth 8-3491] module 'Registre_1B' declared at 'C:/Users/juroy185.GEL.000/Documents/Lab4_GIF-4202/Le_Mur_V4/Le_Mur_V4.srcs/sources_1/new/Registre_1B.vhd:34' bound to instance 'UREG_I' of component 'Registre_1B' [C:/Users/juroy185.GEL.000/Documents/Lab4_GIF-4202/Le_Mur_V4/Le_Mur_V4.srcs/sources_1/new/rdc_load_Nbits.vhd:61]
+INFO: [Synth 8-3491] module 'Registre_1B' declared at 'C:/Users/juroy185.GEL.000/Documents/Lab4_GIF-4202/Le_Mur_V4/Le_Mur_V4.srcs/sources_1/new/Registre_1B.vhd:34' bound to instance 'UREG_I' of component 'Registre_1B' [C:/Users/juroy185.GEL.000/Documents/Lab4_GIF-4202/Le_Mur_V4/Le_Mur_V4.srcs/sources_1/new/rdc_load_Nbits.vhd:61]
+INFO: [Synth 8-3491] module 'Registre_1B' declared at 'C:/Users/juroy185.GEL.000/Documents/Lab4_GIF-4202/Le_Mur_V4/Le_Mur_V4.srcs/sources_1/new/Registre_1B.vhd:34' bound to instance 'UREG_I' of component 'Registre_1B' [C:/Users/juroy185.GEL.000/Documents/Lab4_GIF-4202/Le_Mur_V4/Le_Mur_V4.srcs/sources_1/new/rdc_load_Nbits.vhd:61]
+INFO: [Synth 8-256] done synthesizing module 'rdc_load_Nbits' (4#1) [C:/Users/juroy185.GEL.000/Documents/Lab4_GIF-4202/Le_Mur_V4/Le_Mur_V4.srcs/sources_1/new/rdc_load_Nbits.vhd:43]
+INFO: [Synth 8-256] done synthesizing module 'Generateur_mur' (5#1) [C:/Users/juroy185.GEL.000/Documents/Lab4_GIF-4202/Le_Mur_V4/Le_Mur_V4.srcs/sources_1/new/Generateur_mur.vhd:18]
+	Parameter wall_height bound to: 4 - type: integer 
+	Parameter wall_width bound to: 8 - type: integer 
+	Parameter screen_height bound to: 900 - type: integer 
+	Parameter screen_width bound to: 1600 - type: integer 
+INFO: [Synth 8-3491] module 'Presence_mur' declared at 'C:/Users/juroy185.GEL.000/Documents/Lab4_GIF-4202/Le_Mur_V4/Le_Mur_V4.srcs/sources_1/new/Presence_mur.vhd:5' bound to instance 'u_presence_mur' of component 'Presence_mur' [C:/Users/juroy185.GEL.000/Documents/Lab4_GIF-4202/Le_Mur_V4/Le_Mur_V4.srcs/sources_1/new/top_level.vhd:198]
+INFO: [Synth 8-638] synthesizing module 'Presence_mur' [C:/Users/juroy185.GEL.000/Documents/Lab4_GIF-4202/Le_Mur_V4/Le_Mur_V4.srcs/sources_1/new/Presence_mur.vhd:20]
+	Parameter wall_height bound to: 4 - type: integer 
+	Parameter wall_width bound to: 8 - type: integer 
+	Parameter screen_height bound to: 900 - type: integer 
+	Parameter screen_width bound to: 1600 - type: integer 
+INFO: [Synth 8-256] done synthesizing module 'Presence_mur' (6#1) [C:/Users/juroy185.GEL.000/Documents/Lab4_GIF-4202/Le_Mur_V4/Le_Mur_V4.srcs/sources_1/new/Presence_mur.vhd:20]
+	Parameter MIN_PLAYER_PIXELS bound to: 1000 - type: integer 
+	Parameter MAX_COLLISION_PIXELS bound to: 500 - type: integer 
+	Parameter COUNT_BITS bound to: 21 - type: integer 
+INFO: [Synth 8-3491] module 'DSP' declared at 'C:/Users/juroy185.GEL.000/Documents/Lab4_GIF-4202/Le_Mur_V4/Le_Mur_V4.srcs/sources_1/new/DSP.vhd:64' bound to instance 'u_dsp' of component 'DSP' [C:/Users/juroy185.GEL.000/Documents/Lab4_GIF-4202/Le_Mur_V4/Le_Mur_V4.srcs/sources_1/new/top_level.vhd:212]
+INFO: [Synth 8-638] synthesizing module 'DSP' [C:/Users/juroy185.GEL.000/Documents/Lab4_GIF-4202/Le_Mur_V4/Le_Mur_V4.srcs/sources_1/new/DSP.vhd:220]
+	Parameter MIN_PLAYER_PIXELS bound to: 1000 - type: integer 
+	Parameter MAX_COLLISION_PIXELS bound to: 500 - type: integer 
+	Parameter COUNT_BITS bound to: 21 - type: integer 
+INFO: [Synth 8-256] done synthesizing module 'DSP' (7#1) [C:/Users/juroy185.GEL.000/Documents/Lab4_GIF-4202/Le_Mur_V4/Le_Mur_V4.srcs/sources_1/new/DSP.vhd:220]
+INFO: [Synth 8-3491] module 'FSM' declared at 'C:/Users/juroy185.GEL.000/Documents/Lab4_GIF-4202/Le_Mur_V4/Le_Mur_V4.srcs/sources_1/new/FSM.vhd:4' bound to instance 'u_fsm' of component 'FSM' [C:/Users/juroy185.GEL.000/Documents/Lab4_GIF-4202/Le_Mur_V4/Le_Mur_V4.srcs/sources_1/new/top_level.vhd:233]
+INFO: [Synth 8-638] synthesizing module 'FSM' [C:/Users/juroy185.GEL.000/Documents/Lab4_GIF-4202/Le_Mur_V4/Le_Mur_V4.srcs/sources_1/new/FSM.vhd:19]
+INFO: [Synth 8-3491] module 'game_state' declared at 'C:/Users/juroy185.GEL.000/Documents/Lab4_GIF-4202/Le_Mur_V4/Le_Mur_V4.srcs/sources_1/new/game_state.vhd:4' bound to instance 'u_game_state' of component 'game_state' [C:/Users/juroy185.GEL.000/Documents/Lab4_GIF-4202/Le_Mur_V4/Le_Mur_V4.srcs/sources_1/new/FSM.vhd:71]
+INFO: [Synth 8-638] synthesizing module 'game_state' [C:/Users/juroy185.GEL.000/Documents/Lab4_GIF-4202/Le_Mur_V4/Le_Mur_V4.srcs/sources_1/new/game_state.vhd:20]
+INFO: [Synth 8-256] done synthesizing module 'game_state' (8#1) [C:/Users/juroy185.GEL.000/Documents/Lab4_GIF-4202/Le_Mur_V4/Le_Mur_V4.srcs/sources_1/new/game_state.vhd:20]
+INFO: [Synth 8-3491] module 'score' declared at 'C:/Users/juroy185.GEL.000/Documents/Lab4_GIF-4202/Le_Mur_V4/Le_Mur_V4.srcs/sources_1/new/score.vhd:6' bound to instance 'u_score' of component 'score' [C:/Users/juroy185.GEL.000/Documents/Lab4_GIF-4202/Le_Mur_V4/Le_Mur_V4.srcs/sources_1/new/FSM.vhd:86]
+INFO: [Synth 8-638] synthesizing module 'score' [C:/Users/juroy185.GEL.000/Documents/Lab4_GIF-4202/Le_Mur_V4/Le_Mur_V4.srcs/sources_1/new/score.vhd:17]
+INFO: [Synth 8-256] done synthesizing module 'score' (9#1) [C:/Users/juroy185.GEL.000/Documents/Lab4_GIF-4202/Le_Mur_V4/Le_Mur_V4.srcs/sources_1/new/score.vhd:17]
+INFO: [Synth 8-3491] module 'sec_counter' declared at 'C:/Users/juroy185.GEL.000/Documents/Lab4_GIF-4202/Le_Mur_V4/Le_Mur_V4.srcs/sources_1/new/sec_counter.vhd:5' bound to instance 'u_sec_counter' of component 'sec_counter' [C:/Users/juroy185.GEL.000/Documents/Lab4_GIF-4202/Le_Mur_V4/Le_Mur_V4.srcs/sources_1/new/FSM.vhd:94]
+INFO: [Synth 8-638] synthesizing module 'sec_counter' [C:/Users/juroy185.GEL.000/Documents/Lab4_GIF-4202/Le_Mur_V4/Le_Mur_V4.srcs/sources_1/new/sec_counter.vhd:14]
+	Parameter CLK_FREQ_HZ bound to: 200000000 - type: integer 
+INFO: [Synth 8-256] done synthesizing module 'sec_counter' (10#1) [C:/Users/juroy185.GEL.000/Documents/Lab4_GIF-4202/Le_Mur_V4/Le_Mur_V4.srcs/sources_1/new/sec_counter.vhd:14]
+INFO: [Synth 8-256] done synthesizing module 'FSM' (11#1) [C:/Users/juroy185.GEL.000/Documents/Lab4_GIF-4202/Le_Mur_V4/Le_Mur_V4.srcs/sources_1/new/FSM.vhd:19]
+WARNING: [Synth 8-5640] Port 'decompte_ui' is missing in component declaration [C:/Users/juroy185.GEL.000/Documents/Lab4_GIF-4202/Le_Mur_V4/Le_Mur_V4.srcs/sources_1/new/top_level.vhd:32]
+WARNING: [Synth 8-5640] Port 'flash_on' is missing in component declaration [C:/Users/juroy185.GEL.000/Documents/Lab4_GIF-4202/Le_Mur_V4/Le_Mur_V4.srcs/sources_1/new/top_level.vhd:32]
+WARNING: [Synth 8-5640] Port 'de_out' is missing in component declaration [C:/Users/juroy185.GEL.000/Documents/Lab4_GIF-4202/Le_Mur_V4/Le_Mur_V4.srcs/sources_1/new/top_level.vhd:32]
+WARNING: [Synth 8-5640] Port 'hsync_out' is missing in component declaration [C:/Users/juroy185.GEL.000/Documents/Lab4_GIF-4202/Le_Mur_V4/Le_Mur_V4.srcs/sources_1/new/top_level.vhd:32]
+WARNING: [Synth 8-5640] Port 'vsync_out' is missing in component declaration [C:/Users/juroy185.GEL.000/Documents/Lab4_GIF-4202/Le_Mur_V4/Le_Mur_V4.srcs/sources_1/new/top_level.vhd:32]
+	Parameter SCREEN_WIDTH bound to: 1600 - type: integer 
+	Parameter SCREEN_HEIGHT bound to: 900 - type: integer 
+	Parameter WALL_ONE_IS_OPENING bound to: 1 - type: bool 
+	Parameter DEBUG_JOUEUR bound to: 0 - type: bool 
+INFO: [Synth 8-3491] module 'compositeur' declared at 'C:/Users/juroy185.GEL.000/Documents/Lab4_GIF-4202/Le_Mur_V4/Le_Mur_V4.srcs/sources_1/new/compositeur.vhd:23' bound to instance 'u_compositeur' of component 'compositeur' [C:/Users/juroy185.GEL.000/Documents/Lab4_GIF-4202/Le_Mur_V4/Le_Mur_V4.srcs/sources_1/new/top_level.vhd:249]
+INFO: [Synth 8-638] synthesizing module 'compositeur' [C:/Users/juroy185.GEL.000/Documents/Lab4_GIF-4202/Le_Mur_V4/Le_Mur_V4.srcs/sources_1/new/compositeur.vhd:67]
+	Parameter SCREEN_WIDTH bound to: 1600 - type: integer 
+	Parameter SCREEN_HEIGHT bound to: 900 - type: integer 
+	Parameter WALL_ONE_IS_OPENING bound to: 1 - type: bool 
+	Parameter DEBUG_JOUEUR bound to: 0 - type: bool 
+INFO: [Synth 8-638] synthesizing module 'chiffre_7seg' [C:/Users/juroy185.GEL.000/Documents/Lab4_GIF-4202/Le_Mur_V4/Le_Mur_V4.srcs/sources_1/new/chiffre_7seg.vhd:22]
+	Parameter X_ORIGIN bound to: 150 - type: integer 
+	Parameter Y_ORIGIN bound to: 12 - type: integer 
+	Parameter SCALE bound to: 3 - type: integer 
+INFO: [Synth 8-256] done synthesizing module 'chiffre_7seg' (12#1) [C:/Users/juroy185.GEL.000/Documents/Lab4_GIF-4202/Le_Mur_V4/Le_Mur_V4.srcs/sources_1/new/chiffre_7seg.vhd:22]
+INFO: [Synth 8-638] synthesizing module 'chiffre_7seg__parameterized0' [C:/Users/juroy185.GEL.000/Documents/Lab4_GIF-4202/Le_Mur_V4/Le_Mur_V4.srcs/sources_1/new/chiffre_7seg.vhd:22]
+	Parameter X_ORIGIN bound to: 190 - type: integer 
+	Parameter Y_ORIGIN bound to: 12 - type: integer 
+	Parameter SCALE bound to: 3 - type: integer 
+INFO: [Synth 8-256] done synthesizing module 'chiffre_7seg__parameterized0' (12#1) [C:/Users/juroy185.GEL.000/Documents/Lab4_GIF-4202/Le_Mur_V4/Le_Mur_V4.srcs/sources_1/new/chiffre_7seg.vhd:22]
+INFO: [Synth 8-638] synthesizing module 'chiffre_7seg__parameterized1' [C:/Users/juroy185.GEL.000/Documents/Lab4_GIF-4202/Le_Mur_V4/Le_Mur_V4.srcs/sources_1/new/chiffre_7seg.vhd:22]
+	Parameter X_ORIGIN bound to: 1400 - type: integer 
+	Parameter Y_ORIGIN bound to: 12 - type: integer 
+	Parameter SCALE bound to: 3 - type: integer 
+INFO: [Synth 8-256] done synthesizing module 'chiffre_7seg__parameterized1' (12#1) [C:/Users/juroy185.GEL.000/Documents/Lab4_GIF-4202/Le_Mur_V4/Le_Mur_V4.srcs/sources_1/new/chiffre_7seg.vhd:22]
+INFO: [Synth 8-638] synthesizing module 'chiffre_7seg__parameterized2' [C:/Users/juroy185.GEL.000/Documents/Lab4_GIF-4202/Le_Mur_V4/Le_Mur_V4.srcs/sources_1/new/chiffre_7seg.vhd:22]
+	Parameter X_ORIGIN bound to: 1440 - type: integer 
+	Parameter Y_ORIGIN bound to: 12 - type: integer 
+	Parameter SCALE bound to: 3 - type: integer 
+INFO: [Synth 8-256] done synthesizing module 'chiffre_7seg__parameterized2' (12#1) [C:/Users/juroy185.GEL.000/Documents/Lab4_GIF-4202/Le_Mur_V4/Le_Mur_V4.srcs/sources_1/new/chiffre_7seg.vhd:22]
+INFO: [Synth 8-638] synthesizing module 'chiffre_7seg__parameterized3' [C:/Users/juroy185.GEL.000/Documents/Lab4_GIF-4202/Le_Mur_V4/Le_Mur_V4.srcs/sources_1/new/chiffre_7seg.vhd:22]
+	Parameter X_ORIGIN bound to: 355 - type: integer 
+	Parameter Y_ORIGIN bound to: 453 - type: integer 
+	Parameter SCALE bound to: 3 - type: integer 
+INFO: [Synth 8-256] done synthesizing module 'chiffre_7seg__parameterized3' (12#1) [C:/Users/juroy185.GEL.000/Documents/Lab4_GIF-4202/Le_Mur_V4/Le_Mur_V4.srcs/sources_1/new/chiffre_7seg.vhd:22]
+INFO: [Synth 8-638] synthesizing module 'chiffre_7seg__parameterized4' [C:/Users/juroy185.GEL.000/Documents/Lab4_GIF-4202/Le_Mur_V4/Le_Mur_V4.srcs/sources_1/new/chiffre_7seg.vhd:22]
+	Parameter X_ORIGIN bound to: 395 - type: integer 
+	Parameter Y_ORIGIN bound to: 453 - type: integer 
+	Parameter SCALE bound to: 3 - type: integer 
+INFO: [Synth 8-256] done synthesizing module 'chiffre_7seg__parameterized4' (12#1) [C:/Users/juroy185.GEL.000/Documents/Lab4_GIF-4202/Le_Mur_V4/Le_Mur_V4.srcs/sources_1/new/chiffre_7seg.vhd:22]
+INFO: [Synth 8-638] synthesizing module 'chiffre_7seg__parameterized5' [C:/Users/juroy185.GEL.000/Documents/Lab4_GIF-4202/Le_Mur_V4/Le_Mur_V4.srcs/sources_1/new/chiffre_7seg.vhd:22]
+	Parameter X_ORIGIN bound to: 1155 - type: integer 
+	Parameter Y_ORIGIN bound to: 453 - type: integer 
+	Parameter SCALE bound to: 3 - type: integer 
+INFO: [Synth 8-256] done synthesizing module 'chiffre_7seg__parameterized5' (12#1) [C:/Users/juroy185.GEL.000/Documents/Lab4_GIF-4202/Le_Mur_V4/Le_Mur_V4.srcs/sources_1/new/chiffre_7seg.vhd:22]
+INFO: [Synth 8-638] synthesizing module 'chiffre_7seg__parameterized6' [C:/Users/juroy185.GEL.000/Documents/Lab4_GIF-4202/Le_Mur_V4/Le_Mur_V4.srcs/sources_1/new/chiffre_7seg.vhd:22]
+	Parameter X_ORIGIN bound to: 1195 - type: integer 
+	Parameter Y_ORIGIN bound to: 453 - type: integer 
+	Parameter SCALE bound to: 3 - type: integer 
+INFO: [Synth 8-256] done synthesizing module 'chiffre_7seg__parameterized6' (12#1) [C:/Users/juroy185.GEL.000/Documents/Lab4_GIF-4202/Le_Mur_V4/Le_Mur_V4.srcs/sources_1/new/chiffre_7seg.vhd:22]
+INFO: [Synth 8-638] synthesizing module 'texte_5x7' [C:/Users/juroy185.GEL.000/Documents/Lab4_GIF-4202/Le_Mur_V4/Le_Mur_V4.srcs/sources_1/new/texte_5x7.vhd:27]
+	Parameter TEXT bound to: SCORE - type: string 
+	Parameter X_ORIGIN bound to: 30 - type: integer 
+	Parameter Y_ORIGIN bound to: 20 - type: integer 
+	Parameter SCALE bound to: 2 - type: integer 
+INFO: [Synth 8-256] done synthesizing module 'texte_5x7' (13#1) [C:/Users/juroy185.GEL.000/Documents/Lab4_GIF-4202/Le_Mur_V4/Le_Mur_V4.srcs/sources_1/new/texte_5x7.vhd:27]
+INFO: [Synth 8-638] synthesizing module 'texte_5x7__parameterized0' [C:/Users/juroy185.GEL.000/Documents/Lab4_GIF-4202/Le_Mur_V4/Le_Mur_V4.srcs/sources_1/new/texte_5x7.vhd:27]
+	Parameter TEXT bound to: TEMPS - type: string 
+	Parameter X_ORIGIN bound to: 1280 - type: integer 
+	Parameter Y_ORIGIN bound to: 20 - type: integer 
+	Parameter SCALE bound to: 2 - type: integer 
+INFO: [Synth 8-256] done synthesizing module 'texte_5x7__parameterized0' (13#1) [C:/Users/juroy185.GEL.000/Documents/Lab4_GIF-4202/Le_Mur_V4/Le_Mur_V4.srcs/sources_1/new/texte_5x7.vhd:27]
+INFO: [Synth 8-638] synthesizing module 'texte_5x7__parameterized1' [C:/Users/juroy185.GEL.000/Documents/Lab4_GIF-4202/Le_Mur_V4/Le_Mur_V4.srcs/sources_1/new/texte_5x7.vhd:27]
+	Parameter TEXT bound to: LE MUR - type: string 
+	Parameter X_ORIGIN bound to: 710 - type: integer 
+	Parameter Y_ORIGIN bound to: 225 - type: integer 
+	Parameter SCALE bound to: 5 - type: integer 
+INFO: [Synth 8-256] done synthesizing module 'texte_5x7__parameterized1' (13#1) [C:/Users/juroy185.GEL.000/Documents/Lab4_GIF-4202/Le_Mur_V4/Le_Mur_V4.srcs/sources_1/new/texte_5x7.vhd:27]
+INFO: [Synth 8-638] synthesizing module 'texte_5x7__parameterized2' [C:/Users/juroy185.GEL.000/Documents/Lab4_GIF-4202/Le_Mur_V4/Le_Mur_V4.srcs/sources_1/new/texte_5x7.vhd:27]
+	Parameter TEXT bound to: START - type: string 
+	Parameter X_ORIGIN bound to: 740 - type: integer 
+	Parameter Y_ORIGIN bound to: 370 - type: integer 
+	Parameter SCALE bound to: 4 - type: integer 
+INFO: [Synth 8-256] done synthesizing module 'texte_5x7__parameterized2' (13#1) [C:/Users/juroy185.GEL.000/Documents/Lab4_GIF-4202/Le_Mur_V4/Le_Mur_V4.srcs/sources_1/new/texte_5x7.vhd:27]
+INFO: [Synth 8-638] synthesizing module 'texte_5x7__parameterized3' [C:/Users/juroy185.GEL.000/Documents/Lab4_GIF-4202/Le_Mur_V4/Le_Mur_V4.srcs/sources_1/new/texte_5x7.vhd:27]
+	Parameter TEXT bound to: DERNIER - type: string 
+	Parameter X_ORIGIN bound to: 316 - type: integer 
+	Parameter Y_ORIGIN bound to: 395 - type: integer 
+	Parameter SCALE bound to: 4 - type: integer 
+INFO: [Synth 8-256] done synthesizing module 'texte_5x7__parameterized3' (13#1) [C:/Users/juroy185.GEL.000/Documents/Lab4_GIF-4202/Le_Mur_V4/Le_Mur_V4.srcs/sources_1/new/texte_5x7.vhd:27]
+INFO: [Synth 8-638] synthesizing module 'texte_5x7__parameterized4' [C:/Users/juroy185.GEL.000/Documents/Lab4_GIF-4202/Le_Mur_V4/Le_Mur_V4.srcs/sources_1/new/texte_5x7.vhd:27]
+	Parameter TEXT bound to: RECORD - type: string 
+	Parameter X_ORIGIN bound to: 1128 - type: integer 
+	Parameter Y_ORIGIN bound to: 395 - type: integer 
+	Parameter SCALE bound to: 4 - type: integer 
+INFO: [Synth 8-256] done synthesizing module 'texte_5x7__parameterized4' (13#1) [C:/Users/juroy185.GEL.000/Documents/Lab4_GIF-4202/Le_Mur_V4/Le_Mur_V4.srcs/sources_1/new/texte_5x7.vhd:27]
+INFO: [Synth 8-638] synthesizing module 'texte_5x7__parameterized5' [C:/Users/juroy185.GEL.000/Documents/Lab4_GIF-4202/Le_Mur_V4/Le_Mur_V4.srcs/sources_1/new/texte_5x7.vhd:27]
+	Parameter TEXT bound to: PAUSE - type: string 
+	Parameter X_ORIGIN bound to: 740 - type: integer 
+	Parameter Y_ORIGIN bound to: 370 - type: integer 
+	Parameter SCALE bound to: 4 - type: integer 
+INFO: [Synth 8-256] done synthesizing module 'texte_5x7__parameterized5' (13#1) [C:/Users/juroy185.GEL.000/Documents/Lab4_GIF-4202/Le_Mur_V4/Le_Mur_V4.srcs/sources_1/new/texte_5x7.vhd:27]
+INFO: [Synth 8-638] synthesizing module 'texte_5x7__parameterized6' [C:/Users/juroy185.GEL.000/Documents/Lab4_GIF-4202/Le_Mur_V4/Le_Mur_V4.srcs/sources_1/new/texte_5x7.vhd:27]
+	Parameter TEXT bound to: FIN - type: string 
+	Parameter X_ORIGIN bound to: 755 - type: integer 
+	Parameter Y_ORIGIN bound to: 245 - type: integer 
+	Parameter SCALE bound to: 5 - type: integer 
+INFO: [Synth 8-256] done synthesizing module 'texte_5x7__parameterized6' (13#1) [C:/Users/juroy185.GEL.000/Documents/Lab4_GIF-4202/Le_Mur_V4/Le_Mur_V4.srcs/sources_1/new/texte_5x7.vhd:27]
+INFO: [Synth 8-638] synthesizing module 'texte_5x7__parameterized7' [C:/Users/juroy185.GEL.000/Documents/Lab4_GIF-4202/Le_Mur_V4/Le_Mur_V4.srcs/sources_1/new/texte_5x7.vhd:27]
+	Parameter TEXT bound to: GO ! - type: string 
+	Parameter X_ORIGIN bound to: 1400 - type: integer 
+	Parameter Y_ORIGIN bound to: 23 - type: integer 
+	Parameter SCALE bound to: 4 - type: integer 
+INFO: [Synth 8-256] done synthesizing module 'texte_5x7__parameterized7' (13#1) [C:/Users/juroy185.GEL.000/Documents/Lab4_GIF-4202/Le_Mur_V4/Le_Mur_V4.srcs/sources_1/new/texte_5x7.vhd:27]
+INFO: [Synth 8-638] synthesizing module 'texte_5x7__parameterized8' [C:/Users/juroy185.GEL.000/Documents/Lab4_GIF-4202/Le_Mur_V4/Le_Mur_V4.srcs/sources_1/new/texte_5x7.vhd:27]
+	Parameter TEXT bound to: REUSSI - type: string 
+	Parameter X_ORIGIN bound to: 710 - type: integer 
+	Parameter Y_ORIGIN bound to: 425 - type: integer 
+	Parameter SCALE bound to: 5 - type: integer 
+INFO: [Synth 8-256] done synthesizing module 'texte_5x7__parameterized8' (13#1) [C:/Users/juroy185.GEL.000/Documents/Lab4_GIF-4202/Le_Mur_V4/Le_Mur_V4.srcs/sources_1/new/texte_5x7.vhd:27]
+INFO: [Synth 8-226] default block is never used [C:/Users/juroy185.GEL.000/Documents/Lab4_GIF-4202/Le_Mur_V4/Le_Mur_V4.srcs/sources_1/new/compositeur.vhd:214]
+INFO: [Synth 8-256] done synthesizing module 'compositeur' (14#1) [C:/Users/juroy185.GEL.000/Documents/Lab4_GIF-4202/Le_Mur_V4/Le_Mur_V4.srcs/sources_1/new/compositeur.vhd:67]
+INFO: [Synth 8-256] done synthesizing module 'top_level' (15#1) [C:/Users/juroy185.GEL.000/Documents/Lab4_GIF-4202/Le_Mur_V4/Le_Mur_V4.srcs/sources_1/new/top_level.vhd:30]
+INFO: [Synth 8-256] done synthesizing module 'HDMI_bd_top_level_0_0' (16#1) [c:/Users/juroy185.GEL.000/Documents/Lab4_GIF-4202/Le_Mur_V4/Le_Mur_V4.srcs/sources_1/bd/HDMI_bd/ip/HDMI_bd_top_level_0_0/synth/HDMI_bd_top_level_0_0.vhd:72]
+WARNING: [Synth 8-3331] design compositeur has unconnected port is_pixel_joueur
+WARNING: [Synth 8-3331] design FSM has unconnected port diff_in[1]
+WARNING: [Synth 8-3331] design FSM has unconnected port diff_in[0]
+WARNING: [Synth 8-3331] design DSP has unconnected port hsync
+---------------------------------------------------------------------------------
+Finished RTL Elaboration : Time (s): cpu = 00:00:01 ; elapsed = 00:00:02 . Memory (MB): peak = 488.762 ; gain = 181.520
+---------------------------------------------------------------------------------
+
+Report Check Netlist: 
++------+------------------+-------+---------+-------+------------------+
+|      |Item              |Errors |Warnings |Status |Description       |
++------+------------------+-------+---------+-------+------------------+
+|1     |multi_driven_nets |      0|        0|Passed |Multi driven nets |
++------+------------------+-------+---------+-------+------------------+
+WARNING: [Synth 8-3295] tying undriven pin u_compositeur:decompte_ui[3] to constant 0 [C:/Users/juroy185.GEL.000/Documents/Lab4_GIF-4202/Le_Mur_V4/Le_Mur_V4.srcs/sources_1/new/top_level.vhd:249]
+WARNING: [Synth 8-3295] tying undriven pin u_compositeur:decompte_ui[2] to constant 0 [C:/Users/juroy185.GEL.000/Documents/Lab4_GIF-4202/Le_Mur_V4/Le_Mur_V4.srcs/sources_1/new/top_level.vhd:249]
+WARNING: [Synth 8-3295] tying undriven pin u_compositeur:decompte_ui[1] to constant 0 [C:/Users/juroy185.GEL.000/Documents/Lab4_GIF-4202/Le_Mur_V4/Le_Mur_V4.srcs/sources_1/new/top_level.vhd:249]
+WARNING: [Synth 8-3295] tying undriven pin u_compositeur:decompte_ui[0] to constant 0 [C:/Users/juroy185.GEL.000/Documents/Lab4_GIF-4202/Le_Mur_V4/Le_Mur_V4.srcs/sources_1/new/top_level.vhd:249]
+WARNING: [Synth 8-3295] tying undriven pin u_compositeur:flash_on to constant 0 [C:/Users/juroy185.GEL.000/Documents/Lab4_GIF-4202/Le_Mur_V4/Le_Mur_V4.srcs/sources_1/new/top_level.vhd:249]
+---------------------------------------------------------------------------------
+Start Handling Custom Attributes
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Handling Custom Attributes : Time (s): cpu = 00:00:02 ; elapsed = 00:00:02 . Memory (MB): peak = 488.762 ; gain = 181.520
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished RTL Optimization Phase 1 : Time (s): cpu = 00:00:02 ; elapsed = 00:00:02 . Memory (MB): peak = 488.762 ; gain = 181.520
+---------------------------------------------------------------------------------
+INFO: [Device 21-403] Loading part xc7z020clg400-1
+INFO: [Project 1-570] Preparing netlist for logic optimization
+
+Processing XDC Constraints
+Initializing timing engine
+Completed Processing XDC Constraints
+
+INFO: [Project 1-111] Unisim Transformation Summary:
+No Unisim elements were transformed.
+
+WARNING: [Constraints 18-5210] No constraint will be written out.
+Constraint Validation Runtime : Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.031 . Memory (MB): peak = 841.926 ; gain = 2.574
+---------------------------------------------------------------------------------
+Finished Constraint Validation : Time (s): cpu = 00:00:06 ; elapsed = 00:00:07 . Memory (MB): peak = 841.926 ; gain = 534.684
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Loading Part and Timing Information
+---------------------------------------------------------------------------------
+Loading part: xc7z020clg400-1
+---------------------------------------------------------------------------------
+Finished Loading Part and Timing Information : Time (s): cpu = 00:00:06 ; elapsed = 00:00:07 . Memory (MB): peak = 841.926 ; gain = 534.684
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Applying 'set_property' XDC Constraints
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished applying 'set_property' XDC Constraints : Time (s): cpu = 00:00:06 ; elapsed = 00:00:07 . Memory (MB): peak = 841.926 ; gain = 534.684
+---------------------------------------------------------------------------------
+INFO: [Synth 8-802] inferred FSM for state register 'etat_courant_reg' in module 'game_state'
+INFO: [Synth 8-5544] ROM "etat_courant" won't be mapped to Block RAM because address size (4) smaller than threshold (5)
+INFO: [Synth 8-5544] ROM "mode_ui" won't be mapped to Block RAM because address size (3) smaller than threshold (5)
+INFO: [Synth 8-5544] ROM "diff" won't be mapped to Block RAM because address size (3) smaller than threshold (5)
+INFO: [Synth 8-5544] ROM "etat_courant" won't be mapped to Block RAM because address size (1) smaller than threshold (5)
+INFO: [Synth 8-5544] ROM "etat_courant" won't be mapped to Block RAM because address size (1) smaller than threshold (5)
+INFO: [Synth 8-5545] ROM "sec_reg" won't be mapped to RAM because address size (28) is larger than maximum supported(25)
+---------------------------------------------------------------------------------------------------
+                   State |                     New Encoding |                Previous Encoding 
+---------------------------------------------------------------------------------------------------
+                    menu |                              000 |                              000
+              play_start |                              001 |                              001
+              round_init |                              010 |                              010
+                    play |                              011 |                              011
+             pause_state |                              100 |                              101
+             wall_passed |                              101 |                              110
+               game_over |                              110 |                              100
+---------------------------------------------------------------------------------------------------
+INFO: [Synth 8-3354] encoded FSM with state register 'etat_courant_reg' using encoding 'sequential' in module 'game_state'
+---------------------------------------------------------------------------------
+Finished RTL Optimization Phase 2 : Time (s): cpu = 00:00:07 ; elapsed = 00:00:08 . Memory (MB): peak = 841.926 ; gain = 534.684
+---------------------------------------------------------------------------------
+
+Report RTL Partitions: 
++-+--------------+------------+----------+
+| |RTL Partition |Replication |Instances |
++-+--------------+------------+----------+
++-+--------------+------------+----------+
+---------------------------------------------------------------------------------
+Start RTL Component Statistics 
+---------------------------------------------------------------------------------
+Detailed RTL Component Info : 
++---Adders : 
+	   2 Input     28 Bit       Adders := 1     
+	   2 Input     13 Bit       Adders := 18    
+	   3 Input     10 Bit       Adders := 1     
+	   2 Input      6 Bit       Adders := 1     
+	   2 Input      4 Bit       Adders := 2     
++---Registers : 
+	               28 Bit    Registers := 1     
+	               24 Bit    Registers := 1     
+	               21 Bit    Registers := 2     
+	                4 Bit    Registers := 3     
+	                3 Bit    Registers := 1     
+	                2 Bit    Registers := 1     
+	                1 Bit    Registers := 45    
++---Muxes : 
+	   4 Input     30 Bit        Muxes := 1     
+	   2 Input     28 Bit        Muxes := 1     
+	   2 Input     24 Bit        Muxes := 17    
+	   5 Input     24 Bit        Muxes := 1     
+	   4 Input     24 Bit        Muxes := 1     
+	   2 Input     22 Bit        Muxes := 1     
+	   2 Input      4 Bit        Muxes := 5     
+	   4 Input      4 Bit        Muxes := 1     
+	   2 Input      3 Bit        Muxes := 4     
+	   7 Input      3 Bit        Muxes := 2     
+	   2 Input      2 Bit        Muxes := 1     
+	   4 Input      2 Bit        Muxes := 1     
+	   2 Input      1 Bit        Muxes := 7     
+	   4 Input      1 Bit        Muxes := 1     
+	   7 Input      1 Bit        Muxes := 7     
+---------------------------------------------------------------------------------
+Finished RTL Component Statistics 
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start RTL Hierarchical Component Statistics 
+---------------------------------------------------------------------------------
+Hierarchical RTL Component report 
+Module Pixel_counter 
+Detailed RTL Component Info : 
++---Registers : 
+	                1 Bit    Registers := 1     
+Module detection_joueur 
+Detailed RTL Component Info : 
++---Adders : 
+	   3 Input     10 Bit       Adders := 1     
+Module Registre_1B 
+Detailed RTL Component Info : 
++---Registers : 
+	                1 Bit    Registers := 1     
+Module Generateur_mur 
+Detailed RTL Component Info : 
++---Muxes : 
+	   4 Input     30 Bit        Muxes := 1     
+Module Presence_mur 
+Detailed RTL Component Info : 
++---Adders : 
+	   2 Input      6 Bit       Adders := 1     
++---Muxes : 
+	   2 Input      3 Bit        Muxes := 1     
+	   2 Input      2 Bit        Muxes := 1     
+Module DSP 
+Detailed RTL Component Info : 
++---Registers : 
+	               21 Bit    Registers := 2     
+	                1 Bit    Registers := 5     
++---Muxes : 
+	   2 Input      1 Bit        Muxes := 2     
+Module game_state 
+Detailed RTL Component Info : 
++---Registers : 
+	                3 Bit    Registers := 1     
+	                2 Bit    Registers := 1     
+	                1 Bit    Registers := 4     
++---Muxes : 
+	   7 Input      3 Bit        Muxes := 2     
+	   2 Input      3 Bit        Muxes := 3     
+	   4 Input      1 Bit        Muxes := 1     
+	   2 Input      1 Bit        Muxes := 1     
+	   7 Input      1 Bit        Muxes := 7     
+Module score 
+Detailed RTL Component Info : 
++---Adders : 
+	   2 Input      4 Bit       Adders := 1     
++---Registers : 
+	                4 Bit    Registers := 2     
++---Muxes : 
+	   2 Input      4 Bit        Muxes := 4     
+	   2 Input      1 Bit        Muxes := 1     
+Module sec_counter 
+Detailed RTL Component Info : 
++---Adders : 
+	   2 Input     28 Bit       Adders := 1     
+	   2 Input      4 Bit       Adders := 1     
++---Registers : 
+	               28 Bit    Registers := 1     
+	                4 Bit    Registers := 1     
++---Muxes : 
+	   2 Input     28 Bit        Muxes := 1     
+	   2 Input      4 Bit        Muxes := 1     
+	   2 Input      1 Bit        Muxes := 2     
+Module FSM 
+Detailed RTL Component Info : 
++---Muxes : 
+	   4 Input      4 Bit        Muxes := 1     
+Module chiffre_7seg 
+Detailed RTL Component Info : 
++---Adders : 
+	   2 Input     13 Bit       Adders := 2     
+Module chiffre_7seg__parameterized0 
+Detailed RTL Component Info : 
++---Adders : 
+	   2 Input     13 Bit       Adders := 2     
+Module chiffre_7seg__parameterized1 
+Detailed RTL Component Info : 
++---Adders : 
+	   2 Input     13 Bit       Adders := 2     
+Module chiffre_7seg__parameterized2 
+Detailed RTL Component Info : 
++---Adders : 
+	   2 Input     13 Bit       Adders := 2     
+Module chiffre_7seg__parameterized3 
+Detailed RTL Component Info : 
++---Adders : 
+	   2 Input     13 Bit       Adders := 2     
+Module chiffre_7seg__parameterized4 
+Detailed RTL Component Info : 
++---Adders : 
+	   2 Input     13 Bit       Adders := 2     
+Module chiffre_7seg__parameterized5 
+Detailed RTL Component Info : 
++---Adders : 
+	   2 Input     13 Bit       Adders := 2     
+Module chiffre_7seg__parameterized6 
+Detailed RTL Component Info : 
++---Adders : 
+	   2 Input     13 Bit       Adders := 2     
+Module compositeur 
+Detailed RTL Component Info : 
++---Registers : 
+	               24 Bit    Registers := 1     
+	                1 Bit    Registers := 3     
++---Muxes : 
+	   2 Input     24 Bit        Muxes := 17    
+	   5 Input     24 Bit        Muxes := 1     
+	   4 Input     24 Bit        Muxes := 1     
+	   2 Input     22 Bit        Muxes := 1     
+	   4 Input      2 Bit        Muxes := 1     
+	   2 Input      1 Bit        Muxes := 1     
+---------------------------------------------------------------------------------
+Finished RTL Hierarchical Component Statistics
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Part Resource Summary
+---------------------------------------------------------------------------------
+Part Resources:
+DSPs: 220 (col length:60)
+BRAMs: 280 (col length: RAMB18 60 RAMB36 30)
+---------------------------------------------------------------------------------
+Finished Part Resource Summary
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Cross Boundary and Area Optimization
+---------------------------------------------------------------------------------
+Warning: Parallel synthesis criteria is not met 
+INFO: [Synth 8-4471] merging register 'U0/u_generateur_mur/reg_mur/regs[30].UREG_I/Output_reg' into 'U0/u_generateur_mur/reg_mur/regs[23].UREG_I/Output_reg' [C:/Users/juroy185.GEL.000/Documents/Lab4_GIF-4202/Le_Mur_V4/Le_Mur_V4.srcs/sources_1/new/Registre_1B.vhd:49]
+INFO: [Synth 8-4471] merging register 'U0/u_generateur_mur/reg_mur/regs[31].UREG_I/Output_reg' into 'U0/u_generateur_mur/reg_mur/regs[23].UREG_I/Output_reg' [C:/Users/juroy185.GEL.000/Documents/Lab4_GIF-4202/Le_Mur_V4/Le_Mur_V4.srcs/sources_1/new/Registre_1B.vhd:49]
+WARNING: [Synth 8-6014] Unused sequential element U0/u_generateur_mur/reg_mur/regs[30].UREG_I/Output_reg was removed.  [C:/Users/juroy185.GEL.000/Documents/Lab4_GIF-4202/Le_Mur_V4/Le_Mur_V4.srcs/sources_1/new/Registre_1B.vhd:49]
+WARNING: [Synth 8-6014] Unused sequential element U0/u_generateur_mur/reg_mur/regs[31].UREG_I/Output_reg was removed.  [C:/Users/juroy185.GEL.000/Documents/Lab4_GIF-4202/Le_Mur_V4/Le_Mur_V4.srcs/sources_1/new/Registre_1B.vhd:49]
+WARNING: [Synth 8-6014] Unused sequential element U0/u_dsp/present_reg_reg was removed.  [C:/Users/juroy185.GEL.000/Documents/Lab4_GIF-4202/Le_Mur_V4/Le_Mur_V4.srcs/sources_1/new/DSP.vhd:387]
+WARNING: [Synth 8-6014] Unused sequential element U0/u_dsp/valid_reg_reg was removed.  [C:/Users/juroy185.GEL.000/Documents/Lab4_GIF-4202/Le_Mur_V4/Le_Mur_V4.srcs/sources_1/new/DSP.vhd:388]
+WARNING: [Synth 8-6014] Unused sequential element U0/u_dsp/player_pixels_reg_reg was removed.  [C:/Users/juroy185.GEL.000/Documents/Lab4_GIF-4202/Le_Mur_V4/Le_Mur_V4.srcs/sources_1/new/DSP.vhd:383]
+WARNING: [Synth 8-6014] Unused sequential element U0/u_dsp/collision_pixels_reg_reg was removed.  [C:/Users/juroy185.GEL.000/Documents/Lab4_GIF-4202/Le_Mur_V4/Le_Mur_V4.srcs/sources_1/new/DSP.vhd:384]
+INFO: [Synth 8-5545] ROM "U0/u_fsm/u_sec_counter/sec_reg" won't be mapped to RAM because address size (28) is larger than maximum supported(25)
+WARNING: [Synth 8-3331] design compositeur has unconnected port is_pixel_joueur
+WARNING: [Synth 8-3331] design HDMI_bd_top_level_0_0 has unconnected port diff[1]
+WARNING: [Synth 8-3331] design HDMI_bd_top_level_0_0 has unconnected port diff[0]
+INFO: [Synth 8-3886] merging instance 'U0/u_fsm/u_game_state/diff_reg[0]' (FDCE) to 'U0/u_fsm/u_game_state/diff_reg[1]'
+INFO: [Synth 8-3886] merging instance 'U0/u_generateur_mur/reg_mur/regs[24].UREG_I/Output_reg' (FDE) to 'U0/u_generateur_mur/reg_mur/regs[23].UREG_I/Output_reg'
+INFO: [Synth 8-3886] merging instance 'U0/u_generateur_mur/reg_mur/regs[23].UREG_I/Output_reg' (FDE) to 'U0/u_generateur_mur/reg_mur/regs[16].UREG_I/Output_reg'
+INFO: [Synth 8-3886] merging instance 'U0/u_generateur_mur/reg_mur/regs[16].UREG_I/Output_reg' (FDE) to 'U0/u_generateur_mur/reg_mur/regs[8].UREG_I/Output_reg'
+INFO: [Synth 8-3886] merging instance 'U0/u_generateur_mur/reg_mur/regs[8].UREG_I/Output_reg' (FDE) to 'U0/u_generateur_mur/reg_mur/regs[0].UREG_I/Output_reg'
+INFO: [Synth 8-3333] propagating constant 0 across sequential element (\U0/u_generateur_mur/reg_mur/regs[0].UREG_I/Output_reg )
+WARNING: [Synth 8-3332] Sequential element (de_out_reg) is unused and will be removed from module compositeur.
+WARNING: [Synth 8-3332] Sequential element (hsync_out_reg) is unused and will be removed from module compositeur.
+WARNING: [Synth 8-3332] Sequential element (vsync_out_reg) is unused and will be removed from module compositeur.
+INFO: [Synth 8-3332] Sequential element (U0/u_generateur_mur/reg_mur/regs[0].UREG_I/Output_reg) is unused and will be removed from module HDMI_bd_top_level_0_0.
+INFO: [Synth 8-3886] merging instance 'U0/u_generateur_mur/reg_mur/regs[15].UREG_I/Output_reg' (FDE) to 'U0/u_generateur_mur/reg_mur/regs[7].UREG_I/Output_reg'
+---------------------------------------------------------------------------------
+Finished Cross Boundary and Area Optimization : Time (s): cpu = 00:00:14 ; elapsed = 00:00:16 . Memory (MB): peak = 841.926 ; gain = 534.684
+---------------------------------------------------------------------------------
+
+Report RTL Partitions: 
++-+--------------+------------+----------+
+| |RTL Partition |Replication |Instances |
++-+--------------+------------+----------+
++-+--------------+------------+----------+
+---------------------------------------------------------------------------------
+Start Applying XDC Timing Constraints
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Applying XDC Timing Constraints : Time (s): cpu = 00:00:18 ; elapsed = 00:00:20 . Memory (MB): peak = 841.926 ; gain = 534.684
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Timing Optimization
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Timing Optimization : Time (s): cpu = 00:00:18 ; elapsed = 00:00:20 . Memory (MB): peak = 841.926 ; gain = 534.684
+---------------------------------------------------------------------------------
+
+Report RTL Partitions: 
++-+--------------+------------+----------+
+| |RTL Partition |Replication |Instances |
++-+--------------+------------+----------+
++-+--------------+------------+----------+
+---------------------------------------------------------------------------------
+Start Technology Mapping
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Technology Mapping : Time (s): cpu = 00:00:18 ; elapsed = 00:00:21 . Memory (MB): peak = 898.832 ; gain = 591.590
+---------------------------------------------------------------------------------
+
+Report RTL Partitions: 
++-+--------------+------------+----------+
+| |RTL Partition |Replication |Instances |
++-+--------------+------------+----------+
++-+--------------+------------+----------+
+---------------------------------------------------------------------------------
+Start IO Insertion
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Flattening Before IO Insertion
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Flattening Before IO Insertion
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Final Netlist Cleanup
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Final Netlist Cleanup
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished IO Insertion : Time (s): cpu = 00:00:19 ; elapsed = 00:00:21 . Memory (MB): peak = 898.832 ; gain = 591.590
+---------------------------------------------------------------------------------
+
+Report Check Netlist: 
++------+------------------+-------+---------+-------+------------------+
+|      |Item              |Errors |Warnings |Status |Description       |
++------+------------------+-------+---------+-------+------------------+
+|1     |multi_driven_nets |      0|        0|Passed |Multi driven nets |
++------+------------------+-------+---------+-------+------------------+
+---------------------------------------------------------------------------------
+Start Renaming Generated Instances
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Renaming Generated Instances : Time (s): cpu = 00:00:19 ; elapsed = 00:00:21 . Memory (MB): peak = 898.832 ; gain = 591.590
+---------------------------------------------------------------------------------
+
+Report RTL Partitions: 
++-+--------------+------------+----------+
+| |RTL Partition |Replication |Instances |
++-+--------------+------------+----------+
++-+--------------+------------+----------+
+---------------------------------------------------------------------------------
+Start Rebuilding User Hierarchy
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Rebuilding User Hierarchy : Time (s): cpu = 00:00:19 ; elapsed = 00:00:21 . Memory (MB): peak = 898.832 ; gain = 591.590
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Renaming Generated Ports
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Renaming Generated Ports : Time (s): cpu = 00:00:19 ; elapsed = 00:00:21 . Memory (MB): peak = 898.832 ; gain = 591.590
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Handling Custom Attributes
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Handling Custom Attributes : Time (s): cpu = 00:00:19 ; elapsed = 00:00:21 . Memory (MB): peak = 898.832 ; gain = 591.590
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Renaming Generated Nets
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Renaming Generated Nets : Time (s): cpu = 00:00:19 ; elapsed = 00:00:21 . Memory (MB): peak = 898.832 ; gain = 591.590
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Writing Synthesis Report
+---------------------------------------------------------------------------------
+
+Report BlackBoxes: 
++-+--------------+----------+
+| |BlackBox name |Instances |
++-+--------------+----------+
++-+--------------+----------+
+
+Report Cell Usage: 
++------+-------+------+
+|      |Cell   |Count |
++------+-------+------+
+|1     |CARRY4 |   340|
+|2     |LUT1   |   239|
+|3     |LUT2   |  1264|
+|4     |LUT3   |    89|
+|5     |LUT4   |   173|
+|6     |LUT5   |   123|
+|7     |LUT6   |   554|
+|8     |MUXF7  |     1|
+|9     |FDCE   |    12|
+|10    |FDPE   |     3|
+|11    |FDRE   |   158|
++------+-------+------+
+
+Report Instance Areas: 
++------+--------------------------+-----------------------------+------+
+|      |Instance                  |Module                       |Cells |
++------+--------------------------+-----------------------------+------+
+|1     |top                       |                             |  2956|
+|2     |  U0                      |top_level                    |  2165|
+|3     |    u_detection_joueur    |detection_joueur             |     6|
+|4     |    u_compositeur         |compositeur                  |   268|
+|5     |      TM_U                |chiffre_7seg__parameterized2 |   168|
+|6     |    u_dsp                 |DSP                          |    97|
+|7     |    u_fsm                 |FSM                          |   250|
+|8     |      u_game_state        |game_state                   |    84|
+|9     |      u_score             |score                        |    77|
+|10    |      u_sec_counter       |sec_counter                  |    89|
+|11    |    u_generateur_mur      |Generateur_mur               |    79|
+|12    |      reg_mur             |rdc_load_Nbits               |    73|
+|13    |        \regs[10].UREG_I  |Registre_1B                  |     3|
+|14    |        \regs[11].UREG_I  |Registre_1B_0                |     2|
+|15    |        \regs[12].UREG_I  |Registre_1B_1                |     2|
+|16    |        \regs[13].UREG_I  |Registre_1B_2                |     2|
+|17    |        \regs[14].UREG_I  |Registre_1B_3                |     6|
+|18    |        \regs[17].UREG_I  |Registre_1B_4                |     2|
+|19    |        \regs[18].UREG_I  |Registre_1B_5                |     4|
+|20    |        \regs[19].UREG_I  |Registre_1B_6                |     2|
+|21    |        \regs[1].UREG_I   |Registre_1B_7                |     2|
+|22    |        \regs[20].UREG_I  |Registre_1B_8                |     2|
+|23    |        \regs[21].UREG_I  |Registre_1B_9                |     2|
+|24    |        \regs[22].UREG_I  |Registre_1B_10               |     7|
+|25    |        \regs[25].UREG_I  |Registre_1B_11               |     2|
+|26    |        \regs[26].UREG_I  |Registre_1B_12               |    12|
+|27    |        \regs[27].UREG_I  |Registre_1B_13               |     2|
+|28    |        \regs[28].UREG_I  |Registre_1B_14               |     2|
+|29    |        \regs[29].UREG_I  |Registre_1B_15               |     3|
+|30    |        \regs[2].UREG_I   |Registre_1B_16               |     3|
+|31    |        \regs[3].UREG_I   |Registre_1B_17               |     2|
+|32    |        \regs[4].UREG_I   |Registre_1B_18               |     2|
+|33    |        \regs[5].UREG_I   |Registre_1B_19               |     2|
+|34    |        \regs[6].UREG_I   |Registre_1B_20               |     3|
+|35    |        \regs[7].UREG_I   |Registre_1B_21               |     2|
+|36    |        \regs[9].UREG_I   |Registre_1B_22               |     2|
+|37    |    u_pixel_counter       |Pixel_counter                |  1394|
+|38    |    u_presence_mur        |Presence_mur                 |    44|
++------+--------------------------+-----------------------------+------+
+---------------------------------------------------------------------------------
+Finished Writing Synthesis Report : Time (s): cpu = 00:00:19 ; elapsed = 00:00:21 . Memory (MB): peak = 898.832 ; gain = 591.590
+---------------------------------------------------------------------------------
+Synthesis finished with 0 errors, 0 critical warnings and 12 warnings.
+Synthesis Optimization Runtime : Time (s): cpu = 00:00:14 ; elapsed = 00:00:17 . Memory (MB): peak = 898.832 ; gain = 238.426
+Synthesis Optimization Complete : Time (s): cpu = 00:00:19 ; elapsed = 00:00:21 . Memory (MB): peak = 898.832 ; gain = 591.590
+INFO: [Project 1-571] Translating synthesized netlist
+INFO: [Netlist 29-17] Analyzing 341 Unisim elements for replacement
+INFO: [Netlist 29-28] Unisim Transformation completed in 0 CPU seconds
+INFO: [Project 1-570] Preparing netlist for logic optimization
+INFO: [Opt 31-138] Pushed 0 inverter(s) to 0 load pin(s).
+INFO: [Project 1-111] Unisim Transformation Summary:
+No Unisim elements were transformed.
+
+INFO: [Common 17-83] Releasing license: Synthesis
+139 Infos, 27 Warnings, 0 Critical Warnings and 0 Errors encountered.
+synth_design completed successfully
+synth_design: Time (s): cpu = 00:00:20 ; elapsed = 00:00:23 . Memory (MB): peak = 898.832 ; gain = 604.648
+WARNING: [Constraints 18-5210] No constraint will be written out.
+INFO: [Common 17-1381] The checkpoint 'C:/Users/juroy185.GEL.000/Documents/Lab4_GIF-4202/Le_Mur_V4/Le_Mur_V4.runs/HDMI_bd_top_level_0_0_synth_1/HDMI_bd_top_level_0_0.dcp' has been generated.
+INFO: [Coretcl 2-1174] Renamed 37 cell refs.
+WARNING: [Constraints 18-5210] No constraint will be written out.
+INFO: [Common 17-1381] The checkpoint 'C:/Users/juroy185.GEL.000/Documents/Lab4_GIF-4202/Le_Mur_V4/Le_Mur_V4.runs/HDMI_bd_top_level_0_0_synth_1/HDMI_bd_top_level_0_0.dcp' has been generated.
+INFO: [runtcl-4] Executing : report_utilization -file HDMI_bd_top_level_0_0_utilization_synth.rpt -pb HDMI_bd_top_level_0_0_utilization_synth.pb
+report_utilization: Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.019 . Memory (MB): peak = 898.832 ; gain = 0.000
+INFO: [Common 17-206] Exiting Vivado at Fri Nov 27 13:25:48 2026...
