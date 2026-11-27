@@ -1,8 +1,8 @@
 Copyright 1986-2018 Xilinx, Inc. All Rights Reserved.
 -------------------------------------------------------------------------------------------------------------------------------
 | Tool Version : Vivado v.2018.2.1 (win64) Build 2288692 Thu Jul 26 18:24:02 MDT 2018
-| Date         : Fri Nov 27 12:38:24 2026
-| Host         : pcetu-183 running 64-bit major release  (build 9200)
+| Date         : Fri Nov 27 14:14:48 2026
+| Host         : pcetu-197 running 64-bit major release  (build 9200)
 | Command      : report_utilization -file HDMI_bd_miroir_0_0_utilization_synth.rpt -pb HDMI_bd_miroir_0_0_utilization_synth.pb
 | Design       : HDMI_bd_miroir_0_0
 | Device       : 7z020clg400-1

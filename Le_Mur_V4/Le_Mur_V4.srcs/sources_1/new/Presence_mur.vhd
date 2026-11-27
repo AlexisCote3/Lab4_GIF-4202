@@ -37,6 +37,6 @@ begin
     row <= y_int / cell_h when y_int < screen_height else wall_height - 1;
 
     -- Haut-gauche = bit 31, bas-droite = bit 0
-    is_mur <= wall_mask(wall_height * wall_width - 1 - (row * wall_width + col));
+    is_mur <= not (wall_mask(wall_height * wall_width - 1 - (row * wall_width + col)));
 
 end Behavioral;

@@ -1,11 +1,11 @@
 // Copyright 1986-2018 Xilinx, Inc. All Rights Reserved.
 // --------------------------------------------------------------------------------
 // Tool Version: Vivado v.2018.2.1 (win64) Build 2288692 Thu Jul 26 18:24:02 MDT 2018
-// Date        : Wed Nov 25 14:46:47 2026
-// Host        : pcetu-129 running 64-bit major release  (build 9200)
+// Date        : Fri Nov 27 12:20:16 2026
+// Host        : pcetu-183 running 64-bit major release  (build 9200)
 // Command     : write_verilog -force -mode synth_stub -rename_top HDMI_bd_dvi2rgb_1_0 -prefix
-//               HDMI_bd_dvi2rgb_1_0_ HDMI_bd_dvi2rgb_0_0_stub.v
-// Design      : HDMI_bd_dvi2rgb_0_0
+//               HDMI_bd_dvi2rgb_1_0_ HDMI_bd_dvi2rgb_1_0_stub.v
+// Design      : HDMI_bd_dvi2rgb_1_0
 // Purpose     : Stub declaration of top-level module interface
 // Device      : xc7z020clg400-1
 // --------------------------------------------------------------------------------

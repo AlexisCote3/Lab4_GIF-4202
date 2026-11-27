@@ -1,8 +1,8 @@
 --Copyright 1986-2018 Xilinx, Inc. All Rights Reserved.
 ----------------------------------------------------------------------------------
 --Tool Version: Vivado v.2018.2.1 (win64) Build 2288692 Thu Jul 26 18:24:02 MDT 2018
---Date        : Fri Nov 27 13:25:16 2026
---Host        : pcetu-183 running 64-bit major release  (build 9200)
+--Date        : Fri Nov 27 15:20:37 2026
+--Host        : pcetu-197 running 64-bit major release  (build 9200)
 --Command     : generate_target HDMI_bd.bd
 --Design      : HDMI_bd
 --Purpose     : IP block netlist
@@ -137,13 +137,14 @@ architecture STRUCTURE of HDMI_bd is
     rgb_out : out STD_LOGIC_VECTOR ( 23 downto 0 );
     run : in STD_LOGIC;
     quit : in STD_LOGIC;
-    diff : in STD_LOGIC_VECTOR ( 1 downto 0 )
+    diff : in STD_LOGIC_VECTOR ( 1 downto 0 );
+    debug_detection : in STD_LOGIC;
+    debug_compose : in STD_LOGIC
   );
   end component HDMI_bd_top_level_0_0;
   signal CLK_1 : STD_LOGIC;
   signal blk_mem_gen_0_douta : STD_LOGIC_VECTOR ( 23 downto 0 );
   signal btn0_1 : STD_LOGIC;
-  signal btn1_1 : STD_LOGIC;
   signal clk_wiz_1_clk_out1 : STD_LOGIC;
   signal dvi2rgb_1_DDC_SCL_I : STD_LOGIC;
   signal dvi2rgb_1_DDC_SCL_O : STD_LOGIC;
@@ -172,6 +173,7 @@ architecture STRUCTURE of HDMI_bd is
   signal rgb2dvi_1_TMDS_DATA_P : STD_LOGIC_VECTOR ( 2 downto 0 );
   signal sw0_1 : STD_LOGIC;
   signal sw1_1 : STD_LOGIC;
+  signal sw2_1 : STD_LOGIC;
   signal top_level_0_rgb_out : STD_LOGIC_VECTOR ( 23 downto 0 );
   signal xlconcat_0_dout : STD_LOGIC_VECTOR ( 1 downto 0 );
   signal xlconstant_0_dout : STD_LOGIC_VECTOR ( 0 to 0 );
@@ -200,7 +202,6 @@ architecture STRUCTURE of HDMI_bd is
 begin
   CLK_1 <= CLK;
   btn0_1 <= btn0;
-  btn1_1 <= btn1;
   dvi2rgb_1_DDC_SCL_I <= hdmi_in_ddc_scl_i;
   dvi2rgb_1_DDC_SDA_I <= hdmi_in_ddc_sda_i;
   hdmi_in_1_CLK_N <= hdmi_in_clk_n;
@@ -219,6 +220,7 @@ begin
   reset_1 <= reset;
   sw0_1 <= sw0;
   sw1_1 <= sw1;
+  sw2_1 <= sw2;
   led(0) <= 'Z';
   led(1) <= 'Z';
   led(2) <= 'Z';
@@ -288,6 +290,8 @@ rgb2dvi: component HDMI_bd_rgb2dvi_1_0
 top_level_0: component HDMI_bd_top_level_0_0
      port map (
       clk => clk_wiz_1_clk_out1,
+      debug_compose => sw1_1,
+      debug_detection => sw0_1,
       diff(1 downto 0) => xlconcat_0_dout(1 downto 0),
       hsync => miroir_0_HSync_out,
       pixel_clk => dvi2rgb_PixelClk,
@@ -295,7 +299,7 @@ top_level_0: component HDMI_bd_top_level_0_0
       reset => reset_1,
       rgb_in(23 downto 0) => blk_mem_gen_0_douta(23 downto 0),
       rgb_out(23 downto 0) => top_level_0_rgb_out(23 downto 0),
-      run => btn1_1,
+      run => sw2_1,
       vde => miroir_0_VDE_out,
       vsync => miroir_0_VSync_out
     );

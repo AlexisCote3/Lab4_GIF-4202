@@ -14,21 +14,21 @@ Starting synth_design
 Attempting to get a license for feature 'Synthesis' and/or device 'xc7z020'
 INFO: [Common 17-349] Got license for feature 'Synthesis' and/or device 'xc7z020'
 INFO: Launching helper process for spawning children vivado processes
-INFO: Helper process launched with PID 11352 
+INFO: Helper process launched with PID 10312 
 ---------------------------------------------------------------------------------
-Starting RTL Elaboration : Time (s): cpu = 00:00:01 ; elapsed = 00:00:00.949 . Memory (MB): peak = 402.668 ; gain = 103.309
+Starting RTL Elaboration : Time (s): cpu = 00:00:01 ; elapsed = 00:00:01 . Memory (MB): peak = 402.125 ; gain = 102.199
 ---------------------------------------------------------------------------------
-INFO: [Synth 8-638] synthesizing module 'HDMI_bd_miroir_0_0' [c:/Users/juroy185.GEL.000/Documents/Lab4_GIF-4202/Le_Mur_V4/Le_Mur_V4.srcs/sources_1/bd/HDMI_bd/ip/HDMI_bd_miroir_0_0/synth/HDMI_bd_miroir_0_0.vhd:70]
+INFO: [Synth 8-638] synthesizing module 'HDMI_bd_miroir_0_0' [u:/Documents/FPGA/lab4/Lab4_GIF-4202/Le_Mur_V4/Le_Mur_V4.srcs/sources_1/bd/HDMI_bd/ip/HDMI_bd_miroir_0_0/synth/HDMI_bd_miroir_0_0.vhd:70]
 	Parameter LINE_WIDTH bound to: 1600 - type: integer 
 	Parameter LINE_TOTAL bound to: 1800 - type: integer 
-INFO: [Synth 8-3491] module 'miroir' declared at 'C:/Users/juroy185.GEL.000/Documents/Lab4_GIF-4202/Le_Mur_V4/Le_Mur_V4.srcs/sources_1/new/miroir.vhd:5' bound to instance 'U0' of component 'miroir' [c:/Users/juroy185.GEL.000/Documents/Lab4_GIF-4202/Le_Mur_V4/Le_Mur_V4.srcs/sources_1/bd/HDMI_bd/ip/HDMI_bd_miroir_0_0/synth/HDMI_bd_miroir_0_0.vhd:99]
-INFO: [Synth 8-638] synthesizing module 'miroir' [C:/Users/juroy185.GEL.000/Documents/Lab4_GIF-4202/Le_Mur_V4/Le_Mur_V4.srcs/sources_1/new/miroir.vhd:20]
+INFO: [Synth 8-3491] module 'miroir' declared at 'U:/Documents/FPGA/lab4/Lab4_GIF-4202/Le_Mur_V4/Le_Mur_V4.srcs/sources_1/new/miroir.vhd:5' bound to instance 'U0' of component 'miroir' [u:/Documents/FPGA/lab4/Lab4_GIF-4202/Le_Mur_V4/Le_Mur_V4.srcs/sources_1/bd/HDMI_bd/ip/HDMI_bd_miroir_0_0/synth/HDMI_bd_miroir_0_0.vhd:99]
+INFO: [Synth 8-638] synthesizing module 'miroir' [U:/Documents/FPGA/lab4/Lab4_GIF-4202/Le_Mur_V4/Le_Mur_V4.srcs/sources_1/new/miroir.vhd:20]
 	Parameter LINE_WIDTH bound to: 1600 - type: integer 
 	Parameter LINE_TOTAL bound to: 1800 - type: integer 
-INFO: [Synth 8-256] done synthesizing module 'miroir' (1#1) [C:/Users/juroy185.GEL.000/Documents/Lab4_GIF-4202/Le_Mur_V4/Le_Mur_V4.srcs/sources_1/new/miroir.vhd:20]
-INFO: [Synth 8-256] done synthesizing module 'HDMI_bd_miroir_0_0' (2#1) [c:/Users/juroy185.GEL.000/Documents/Lab4_GIF-4202/Le_Mur_V4/Le_Mur_V4.srcs/sources_1/bd/HDMI_bd/ip/HDMI_bd_miroir_0_0/synth/HDMI_bd_miroir_0_0.vhd:70]
+INFO: [Synth 8-256] done synthesizing module 'miroir' (1#1) [U:/Documents/FPGA/lab4/Lab4_GIF-4202/Le_Mur_V4/Le_Mur_V4.srcs/sources_1/new/miroir.vhd:20]
+INFO: [Synth 8-256] done synthesizing module 'HDMI_bd_miroir_0_0' (2#1) [u:/Documents/FPGA/lab4/Lab4_GIF-4202/Le_Mur_V4/Le_Mur_V4.srcs/sources_1/bd/HDMI_bd/ip/HDMI_bd_miroir_0_0/synth/HDMI_bd_miroir_0_0.vhd:70]
 ---------------------------------------------------------------------------------
-Finished RTL Elaboration : Time (s): cpu = 00:00:01 ; elapsed = 00:00:02 . Memory (MB): peak = 477.062 ; gain = 177.703
+Finished RTL Elaboration : Time (s): cpu = 00:00:02 ; elapsed = 00:00:02 . Memory (MB): peak = 477.047 ; gain = 177.121
 ---------------------------------------------------------------------------------
 
 Report Check Netlist: 
@@ -41,10 +41,10 @@ Report Check Netlist:
 Start Handling Custom Attributes
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Handling Custom Attributes : Time (s): cpu = 00:00:01 ; elapsed = 00:00:02 . Memory (MB): peak = 477.062 ; gain = 177.703
+Finished Handling Custom Attributes : Time (s): cpu = 00:00:02 ; elapsed = 00:00:03 . Memory (MB): peak = 477.047 ; gain = 177.121
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished RTL Optimization Phase 1 : Time (s): cpu = 00:00:01 ; elapsed = 00:00:02 . Memory (MB): peak = 477.062 ; gain = 177.703
+Finished RTL Optimization Phase 1 : Time (s): cpu = 00:00:02 ; elapsed = 00:00:03 . Memory (MB): peak = 477.047 ; gain = 177.121
 ---------------------------------------------------------------------------------
 INFO: [Device 21-403] Loading part xc7z020clg400-1
 INFO: [Project 1-570] Preparing netlist for logic optimization
@@ -57,25 +57,25 @@ INFO: [Project 1-111] Unisim Transformation Summary:
 No Unisim elements were transformed.
 
 WARNING: [Constraints 18-5210] No constraint will be written out.
-Constraint Validation Runtime : Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.037 . Memory (MB): peak = 828.027 ; gain = 2.113
+Constraint Validation Runtime : Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.048 . Memory (MB): peak = 829.797 ; gain = 3.559
 ---------------------------------------------------------------------------------
-Finished Constraint Validation : Time (s): cpu = 00:00:06 ; elapsed = 00:00:07 . Memory (MB): peak = 828.027 ; gain = 528.668
+Finished Constraint Validation : Time (s): cpu = 00:00:06 ; elapsed = 00:00:10 . Memory (MB): peak = 829.797 ; gain = 529.871
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start Loading Part and Timing Information
 ---------------------------------------------------------------------------------
 Loading part: xc7z020clg400-1
 ---------------------------------------------------------------------------------
-Finished Loading Part and Timing Information : Time (s): cpu = 00:00:06 ; elapsed = 00:00:07 . Memory (MB): peak = 828.027 ; gain = 528.668
+Finished Loading Part and Timing Information : Time (s): cpu = 00:00:06 ; elapsed = 00:00:10 . Memory (MB): peak = 829.797 ; gain = 529.871
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start Applying 'set_property' XDC Constraints
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished applying 'set_property' XDC Constraints : Time (s): cpu = 00:00:06 ; elapsed = 00:00:07 . Memory (MB): peak = 828.027 ; gain = 528.668
+Finished applying 'set_property' XDC Constraints : Time (s): cpu = 00:00:06 ; elapsed = 00:00:10 . Memory (MB): peak = 829.797 ; gain = 529.871
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished RTL Optimization Phase 2 : Time (s): cpu = 00:00:26 ; elapsed = 00:00:27 . Memory (MB): peak = 828.027 ; gain = 528.668
+Finished RTL Optimization Phase 2 : Time (s): cpu = 00:00:18 ; elapsed = 00:00:23 . Memory (MB): peak = 829.797 ; gain = 529.871
 ---------------------------------------------------------------------------------
 
 Report RTL Partitions: 
@@ -129,7 +129,7 @@ Start Cross Boundary and Area Optimization
 ---------------------------------------------------------------------------------
 Warning: Parallel synthesis criteria is not met 
 ---------------------------------------------------------------------------------
-Finished Cross Boundary and Area Optimization : Time (s): cpu = 00:00:41 ; elapsed = 00:00:43 . Memory (MB): peak = 828.027 ; gain = 528.668
+Finished Cross Boundary and Area Optimization : Time (s): cpu = 00:00:31 ; elapsed = 00:00:37 . Memory (MB): peak = 829.797 ; gain = 529.871
 ---------------------------------------------------------------------------------
 
 Report RTL Partitions: 
@@ -141,13 +141,13 @@ Report RTL Partitions:
 Start Applying XDC Timing Constraints
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Applying XDC Timing Constraints : Time (s): cpu = 00:00:45 ; elapsed = 00:00:48 . Memory (MB): peak = 828.027 ; gain = 528.668
+Finished Applying XDC Timing Constraints : Time (s): cpu = 00:00:35 ; elapsed = 00:00:42 . Memory (MB): peak = 829.797 ; gain = 529.871
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start Timing Optimization
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Timing Optimization : Time (s): cpu = 00:00:45 ; elapsed = 00:00:48 . Memory (MB): peak = 828.027 ; gain = 528.668
+Finished Timing Optimization : Time (s): cpu = 00:00:35 ; elapsed = 00:00:42 . Memory (MB): peak = 829.797 ; gain = 529.871
 ---------------------------------------------------------------------------------
 
 Report RTL Partitions: 
@@ -159,7 +159,7 @@ Report RTL Partitions:
 Start Technology Mapping
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Technology Mapping : Time (s): cpu = 00:00:46 ; elapsed = 00:00:48 . Memory (MB): peak = 830.082 ; gain = 530.723
+Finished Technology Mapping : Time (s): cpu = 00:00:35 ; elapsed = 00:00:42 . Memory (MB): peak = 835.129 ; gain = 535.203
 ---------------------------------------------------------------------------------
 
 Report RTL Partitions: 
@@ -183,7 +183,7 @@ Start Final Netlist Cleanup
 Finished Final Netlist Cleanup
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished IO Insertion : Time (s): cpu = 00:00:46 ; elapsed = 00:00:48 . Memory (MB): peak = 830.082 ; gain = 530.723
+Finished IO Insertion : Time (s): cpu = 00:00:36 ; elapsed = 00:00:42 . Memory (MB): peak = 835.129 ; gain = 535.203
 ---------------------------------------------------------------------------------
 
 Report Check Netlist: 
@@ -196,7 +196,7 @@ Report Check Netlist:
 Start Renaming Generated Instances
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Renaming Generated Instances : Time (s): cpu = 00:00:46 ; elapsed = 00:00:48 . Memory (MB): peak = 830.082 ; gain = 530.723
+Finished Renaming Generated Instances : Time (s): cpu = 00:00:36 ; elapsed = 00:00:42 . Memory (MB): peak = 835.129 ; gain = 535.203
 ---------------------------------------------------------------------------------
 
 Report RTL Partitions: 
@@ -208,25 +208,25 @@ Report RTL Partitions:
 Start Rebuilding User Hierarchy
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Rebuilding User Hierarchy : Time (s): cpu = 00:00:46 ; elapsed = 00:00:48 . Memory (MB): peak = 830.082 ; gain = 530.723
+Finished Rebuilding User Hierarchy : Time (s): cpu = 00:00:36 ; elapsed = 00:00:42 . Memory (MB): peak = 835.129 ; gain = 535.203
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start Renaming Generated Ports
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Renaming Generated Ports : Time (s): cpu = 00:00:46 ; elapsed = 00:00:48 . Memory (MB): peak = 830.082 ; gain = 530.723
+Finished Renaming Generated Ports : Time (s): cpu = 00:00:36 ; elapsed = 00:00:42 . Memory (MB): peak = 835.129 ; gain = 535.203
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start Handling Custom Attributes
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Handling Custom Attributes : Time (s): cpu = 00:00:46 ; elapsed = 00:00:48 . Memory (MB): peak = 830.082 ; gain = 530.723
+Finished Handling Custom Attributes : Time (s): cpu = 00:00:36 ; elapsed = 00:00:42 . Memory (MB): peak = 835.129 ; gain = 535.203
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start Renaming Generated Nets
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Renaming Generated Nets : Time (s): cpu = 00:00:46 ; elapsed = 00:00:48 . Memory (MB): peak = 830.082 ; gain = 530.723
+Finished Renaming Generated Nets : Time (s): cpu = 00:00:36 ; elapsed = 00:00:42 . Memory (MB): peak = 835.129 ; gain = 535.203
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start ROM, RAM, DSP and Shift Register Reporting
@@ -275,11 +275,11 @@ Report Instance Areas:
 |2     |  U0     |miroir |   157|
 +------+---------+-------+------+
 ---------------------------------------------------------------------------------
-Finished Writing Synthesis Report : Time (s): cpu = 00:00:46 ; elapsed = 00:00:48 . Memory (MB): peak = 830.082 ; gain = 530.723
+Finished Writing Synthesis Report : Time (s): cpu = 00:00:36 ; elapsed = 00:00:42 . Memory (MB): peak = 835.129 ; gain = 535.203
 ---------------------------------------------------------------------------------
 Synthesis finished with 0 errors, 0 critical warnings and 0 warnings.
-Synthesis Optimization Runtime : Time (s): cpu = 00:00:41 ; elapsed = 00:00:44 . Memory (MB): peak = 830.082 ; gain = 179.758
-Synthesis Optimization Complete : Time (s): cpu = 00:00:46 ; elapsed = 00:00:48 . Memory (MB): peak = 830.082 ; gain = 530.723
+Synthesis Optimization Runtime : Time (s): cpu = 00:00:31 ; elapsed = 00:00:37 . Memory (MB): peak = 835.129 ; gain = 182.453
+Synthesis Optimization Complete : Time (s): cpu = 00:00:36 ; elapsed = 00:00:42 . Memory (MB): peak = 835.129 ; gain = 535.203
 INFO: [Project 1-571] Translating synthesized netlist
 INFO: [Project 1-570] Preparing netlist for logic optimization
 INFO: [Opt 31-138] Pushed 0 inverter(s) to 0 load pin(s).
@@ -289,11 +289,11 @@ No Unisim elements were transformed.
 INFO: [Common 17-83] Releasing license: Synthesis
 14 Infos, 1 Warnings, 0 Critical Warnings and 0 Errors encountered.
 synth_design completed successfully
-synth_design: Time (s): cpu = 00:00:47 ; elapsed = 00:00:50 . Memory (MB): peak = 836.051 ; gain = 549.480
+synth_design: Time (s): cpu = 00:00:37 ; elapsed = 00:00:44 . Memory (MB): peak = 838.855 ; gain = 551.859
 WARNING: [Constraints 18-5210] No constraint will be written out.
-INFO: [Common 17-1381] The checkpoint 'C:/Users/juroy185.GEL.000/Documents/Lab4_GIF-4202/Le_Mur_V4/Le_Mur_V4.runs/HDMI_bd_miroir_0_0_synth_1/HDMI_bd_miroir_0_0.dcp' has been generated.
+INFO: [Common 17-1381] The checkpoint 'U:/Documents/FPGA/lab4/Lab4_GIF-4202/Le_Mur_V4/Le_Mur_V4.runs/HDMI_bd_miroir_0_0_synth_1/HDMI_bd_miroir_0_0.dcp' has been generated.
 WARNING: [Constraints 18-5210] No constraint will be written out.
-INFO: [Common 17-1381] The checkpoint 'C:/Users/juroy185.GEL.000/Documents/Lab4_GIF-4202/Le_Mur_V4/Le_Mur_V4.runs/HDMI_bd_miroir_0_0_synth_1/HDMI_bd_miroir_0_0.dcp' has been generated.
+INFO: [Common 17-1381] The checkpoint 'U:/Documents/FPGA/lab4/Lab4_GIF-4202/Le_Mur_V4/Le_Mur_V4.runs/HDMI_bd_miroir_0_0_synth_1/HDMI_bd_miroir_0_0.dcp' has been generated.
 INFO: [runtcl-4] Executing : report_utilization -file HDMI_bd_miroir_0_0_utilization_synth.rpt -pb HDMI_bd_miroir_0_0_utilization_synth.pb
-report_utilization: Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.015 . Memory (MB): peak = 836.051 ; gain = 0.000
-INFO: [Common 17-206] Exiting Vivado at Fri Nov 27 12:38:24 2026...
+report_utilization: Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.019 . Memory (MB): peak = 838.855 ; gain = 0.000
+INFO: [Common 17-206] Exiting Vivado at Fri Nov 27 14:14:49 2026...

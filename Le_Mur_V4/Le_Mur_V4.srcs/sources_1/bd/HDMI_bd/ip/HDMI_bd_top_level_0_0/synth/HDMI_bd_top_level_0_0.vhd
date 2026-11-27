@@ -65,7 +65,9 @@ ENTITY HDMI_bd_top_level_0_0 IS
     rgb_out : OUT STD_LOGIC_VECTOR(23 DOWNTO 0);
     run : IN STD_LOGIC;
     quit : IN STD_LOGIC;
-    diff : IN STD_LOGIC_VECTOR(1 DOWNTO 0)
+    diff : IN STD_LOGIC_VECTOR(1 DOWNTO 0);
+    debug_detection : IN STD_LOGIC;
+    debug_compose : IN STD_LOGIC
   );
 END HDMI_bd_top_level_0_0;
 
@@ -83,7 +85,10 @@ ARCHITECTURE HDMI_bd_top_level_0_0_arch OF HDMI_bd_top_level_0_0 IS
       MIN_PLAYER_PIXELS : INTEGER;
       MAX_COLLISION_PIXELS : INTEGER;
       COUNT_BITS : INTEGER;
-      DARK_THRESH : INTEGER
+      DARK_THRESH : INTEGER;
+      RED_MIN : INTEGER;
+      GREEN_MAX : INTEGER;
+      BLUE_MAX : INTEGER
     );
     PORT (
       pixel_clk : IN STD_LOGIC;
@@ -96,7 +101,9 @@ ARCHITECTURE HDMI_bd_top_level_0_0_arch OF HDMI_bd_top_level_0_0 IS
       rgb_out : OUT STD_LOGIC_VECTOR(23 DOWNTO 0);
       run : IN STD_LOGIC;
       quit : IN STD_LOGIC;
-      diff : IN STD_LOGIC_VECTOR(1 DOWNTO 0)
+      diff : IN STD_LOGIC_VECTOR(1 DOWNTO 0);
+      debug_detection : IN STD_LOGIC;
+      debug_compose : IN STD_LOGIC
     );
   END COMPONENT top_level;
   ATTRIBUTE X_CORE_INFO : STRING;
@@ -104,7 +111,7 @@ ARCHITECTURE HDMI_bd_top_level_0_0_arch OF HDMI_bd_top_level_0_0 IS
   ATTRIBUTE CHECK_LICENSE_TYPE : STRING;
   ATTRIBUTE CHECK_LICENSE_TYPE OF HDMI_bd_top_level_0_0_arch : ARCHITECTURE IS "HDMI_bd_top_level_0_0,top_level,{}";
   ATTRIBUTE CORE_GENERATION_INFO : STRING;
-  ATTRIBUTE CORE_GENERATION_INFO OF HDMI_bd_top_level_0_0_arch: ARCHITECTURE IS "HDMI_bd_top_level_0_0,top_level,{x_ipProduct=Vivado 2018.2.1,x_ipVendor=xilinx.com,x_ipLibrary=module_ref,x_ipName=top_level,x_ipVersion=1.0,x_ipCoreRevision=1,x_ipLanguage=VHDL,x_ipSimLanguage=MIXED,SCREEN_WIDTH=1600,SCREEN_HEIGHT=900,wall_height=4,wall_width=8,WALL_ONE_IS_OPENING=true,DEBUG_JOUEUR=false,MIN_PLAYER_PIXELS=1000,MAX_COLLISION_PIXELS=500,COUNT_BITS=21,DARK_THRESH=50}";
+  ATTRIBUTE CORE_GENERATION_INFO OF HDMI_bd_top_level_0_0_arch: ARCHITECTURE IS "HDMI_bd_top_level_0_0,top_level,{x_ipProduct=Vivado 2018.2.1,x_ipVendor=xilinx.com,x_ipLibrary=module_ref,x_ipName=top_level,x_ipVersion=1.0,x_ipCoreRevision=1,x_ipLanguage=VHDL,x_ipSimLanguage=MIXED,SCREEN_WIDTH=1600,SCREEN_HEIGHT=900,wall_height=4,wall_width=8,WALL_ONE_IS_OPENING=true,DEBUG_JOUEUR=false,MIN_PLAYER_PIXELS=1000,MAX_COLLISION_PIXELS=500,COUNT_BITS=21,DARK_THRESH=50,RED_MIN=150,GREEN_MAX=100,BLUE_MAX=100}";
   ATTRIBUTE IP_DEFINITION_SOURCE : STRING;
   ATTRIBUTE IP_DEFINITION_SOURCE OF HDMI_bd_top_level_0_0_arch: ARCHITECTURE IS "module_ref";
   ATTRIBUTE X_INTERFACE_INFO : STRING;
@@ -127,7 +134,10 @@ BEGIN
       MIN_PLAYER_PIXELS => 1000,
       MAX_COLLISION_PIXELS => 500,
       COUNT_BITS => 21,
-      DARK_THRESH => 50
+      DARK_THRESH => 50,
+      RED_MIN => 150,
+      GREEN_MAX => 100,
+      BLUE_MAX => 100
     )
     PORT MAP (
       pixel_clk => pixel_clk,
@@ -140,6 +150,8 @@ BEGIN
       rgb_out => rgb_out,
       run => run,
       quit => quit,
-      diff => diff
+      diff => diff,
+      debug_detection => debug_detection,
+      debug_compose => debug_compose
     );
 END HDMI_bd_top_level_0_0_arch;

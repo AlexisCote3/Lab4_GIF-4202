@@ -1,11 +1,11 @@
 // Copyright 1986-2018 Xilinx, Inc. All Rights Reserved.
 // --------------------------------------------------------------------------------
 // Tool Version: Vivado v.2018.2.1 (win64) Build 2288692 Thu Jul 26 18:24:02 MDT 2018
-// Date        : Wed Nov 25 14:46:45 2026
-// Host        : pcetu-129 running 64-bit major release  (build 9200)
+// Date        : Fri Nov 27 12:20:15 2026
+// Host        : pcetu-183 running 64-bit major release  (build 9200)
 // Command     : write_verilog -force -mode funcsim -rename_top HDMI_bd_rgb2dvi_1_0 -prefix
-//               HDMI_bd_rgb2dvi_1_0_ HDMI_bd_rgb2dvi_0_0_sim_netlist.v
-// Design      : HDMI_bd_rgb2dvi_0_0
+//               HDMI_bd_rgb2dvi_1_0_ HDMI_bd_rgb2dvi_1_0_sim_netlist.v
+// Design      : HDMI_bd_rgb2dvi_1_0
 // Purpose     : This verilog netlist is a functional simulation representation of the design and should not be modified
 //               or synthesized. This netlist cannot be used for SDF annotated simulation.
 // Device      : xc7z020clg400-1
@@ -230,7 +230,7 @@ module HDMI_bd_rgb2dvi_1_0_ClockGen
         .Q(\pLocked_q_reg_n_0_[2] ));
 endmodule
 
-(* CHECK_LICENSE_TYPE = "HDMI_bd_rgb2dvi_0_0,rgb2dvi,{}" *) (* downgradeipidentifiedwarnings = "yes" *) (* x_core_info = "rgb2dvi,Vivado 2018.2.1" *) 
+(* CHECK_LICENSE_TYPE = "HDMI_bd_rgb2dvi_1_0,rgb2dvi,{}" *) (* downgradeipidentifiedwarnings = "yes" *) (* x_core_info = "rgb2dvi,Vivado 2018.2.1" *) 
 (* NotValidForBitStream *)
 module HDMI_bd_rgb2dvi_1_0
    (TMDS_Clk_p,
@@ -252,7 +252,7 @@ module HDMI_bd_rgb2dvi_1_0
   (* x_interface_info = "xilinx.com:interface:vid_io:1.0 RGB ACTIVE_VIDEO" *) input vid_pVDE;
   (* x_interface_info = "xilinx.com:interface:vid_io:1.0 RGB HSYNC" *) input vid_pHSync;
   (* x_interface_info = "xilinx.com:interface:vid_io:1.0 RGB VSYNC" *) input vid_pVSync;
-  (* x_interface_info = "xilinx.com:signal:clock:1.0 PixelClk CLK" *) (* x_interface_parameter = "XIL_INTERFACENAME PixelClk, FREQ_HZ 100000000, PHASE 0.000, CLK_DOMAIN HDMI_bd_dvi2rgb_0_0_PixelClk" *) input PixelClk;
+  (* x_interface_info = "xilinx.com:signal:clock:1.0 PixelClk CLK" *) (* x_interface_parameter = "XIL_INTERFACENAME PixelClk, FREQ_HZ 100000000, PHASE 0.000, CLK_DOMAIN HDMI_bd_dvi2rgb_1_0_PixelClk" *) input PixelClk;
 
   wire PixelClk;
   (* IOSTANDARD = "TMDS_33" *) (* SLEW = "SLOW" *) wire TMDS_Clk_n;

@@ -336,16 +336,10 @@ begin
     --
     -- Ces comparaisons sont combinatoires.
     ---------------------------------------------------------------------------
-
-    presence_ok <= '1'
-        when player_count >=
-             to_unsigned(MIN_PLAYER_PIXELS, COUNT_BITS)
-        else '0';
-
-    collision_ok <= '1'
-        when collision_count <=
-             to_unsigned(MAX_COLLISION_PIXELS, COUNT_BITS)
-        else '0';
+    
+    presence_ok <= '1' when player_count >= to_unsigned(MIN_PLAYER_PIXELS, COUNT_BITS) else '0';
+    
+    collision_ok <= '1' when collision_count <= to_unsigned(MAX_COLLISION_PIXELS, COUNT_BITS) else '0';
 
 
     ---------------------------------------------------------------------------
@@ -478,7 +472,6 @@ begin
                     collision_count <= (others => '0');
 
                     frame_seen <= '1';
-
 
                 ----------------------------------------------------------------
                 -- ETAPE 6 : COMPTAGE DES PIXELS

@@ -65,24 +65,22 @@ start_step init_design
 set ACTIVE_STEP init_design
 set rc [catch {
   create_msg_db init_design.pb
+  set_param xicom.use_bs_reader 1
   create_project -in_memory -part xc7z020clg400-1
   set_property design_mode GateLvl [current_fileset]
   set_param project.singleFileAddWarning.threshold 0
-  set_property webtalk.parent_dir C:/Users/juroy185.GEL.000/Documents/Lab4_GIF-4202/Le_Mur_V4/Le_Mur_V4.cache/wt [current_project]
-  set_property parent.project_path C:/Users/juroy185.GEL.000/Documents/Lab4_GIF-4202/Le_Mur_V4/Le_Mur_V4.xpr [current_project]
-  set_property ip_repo_paths {
-  c:/Users/juroy185.GEL.000/Downloads/basic/ZYBO_HDMI_MGA_2018_2/repo
-  C:/Users/juroy185.GEL.000/Documents/Lab4_GIF-4202/Le_Mur_V4/repo
-} [current_project]
-  set_property ip_output_repo C:/Users/juroy185.GEL.000/Documents/Lab4_GIF-4202/Le_Mur_V4/Le_Mur_V4.cache/ip [current_project]
+  set_property webtalk.parent_dir U:/Documents/FPGA/lab4/Lab4_GIF-4202/Le_Mur_V4/Le_Mur_V4.cache/wt [current_project]
+  set_property parent.project_path U:/Documents/FPGA/lab4/Lab4_GIF-4202/Le_Mur_V4/Le_Mur_V4.xpr [current_project]
+  set_property ip_repo_paths u:/Documents/FPGA/lab4/Lab4_GIF-4202/Le_Mur_V4/repo [current_project]
+  set_property ip_output_repo U:/Documents/FPGA/lab4/Lab4_GIF-4202/Le_Mur_V4/Le_Mur_V4.cache/ip [current_project]
   set_property ip_cache_permissions {read write} [current_project]
   set_property XPM_LIBRARIES {XPM_CDC XPM_MEMORY} [current_project]
-  add_files -quiet C:/Users/juroy185.GEL.000/Documents/Lab4_GIF-4202/Le_Mur_V4/Le_Mur_V4.runs/synth_1/HDMI_bd_wrapper.dcp
+  add_files -quiet U:/Documents/FPGA/lab4/Lab4_GIF-4202/Le_Mur_V4/Le_Mur_V4.runs/synth_1/HDMI_bd_wrapper.dcp
   set_msg_config -source 4 -id {BD 41-1661} -limit 0
   set_param project.isImplRun true
-  add_files C:/Users/juroy185.GEL.000/Documents/Lab4_GIF-4202/Le_Mur_V4/Le_Mur_V4.srcs/sources_1/bd/HDMI_bd/HDMI_bd.bd
+  add_files U:/Documents/FPGA/lab4/Lab4_GIF-4202/Le_Mur_V4/Le_Mur_V4.srcs/sources_1/bd/HDMI_bd/HDMI_bd.bd
   set_param project.isImplRun false
-  read_xdc C:/Users/juroy185.GEL.000/Documents/Lab4_GIF-4202/Le_Mur_V4/Le_Mur_V4.srcs/constrs_1/imports/constraints/Zybo-Z7-Master.xdc
+  read_xdc U:/Documents/FPGA/lab4/Lab4_GIF-4202/Le_Mur_V4/Le_Mur_V4.srcs/constrs_1/imports/constraints/Zybo-Z7-Master.xdc
   set_param project.isImplRun true
   link_design -top HDMI_bd_wrapper -part xc7z020clg400-1
   set_param project.isImplRun false

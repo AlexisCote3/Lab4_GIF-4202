@@ -1,8 +1,8 @@
 // Copyright 1986-2018 Xilinx, Inc. All Rights Reserved.
 // --------------------------------------------------------------------------------
 // Tool Version: Vivado v.2018.2.1 (win64) Build 2288692 Thu Jul 26 18:24:02 MDT 2018
-// Date        : Fri Nov 27 12:38:24 2026
-// Host        : pcetu-183 running 64-bit major release  (build 9200)
+// Date        : Fri Nov 27 14:14:48 2026
+// Host        : pcetu-197 running 64-bit major release  (build 9200)
 // Command     : write_verilog -force -mode funcsim -rename_top decalper_eb_ot_sdeen_pot_pi_dehcac_xnilix -prefix
 //               decalper_eb_ot_sdeen_pot_pi_dehcac_xnilix_ HDMI_bd_miroir_0_0_sim_netlist.v
 // Design      : HDMI_bd_miroir_0_0

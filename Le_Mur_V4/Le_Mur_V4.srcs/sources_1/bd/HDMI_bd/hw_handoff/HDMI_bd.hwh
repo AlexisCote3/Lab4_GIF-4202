@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
-<EDKSYSTEM EDWVERSION="1.2" TIMESTAMP="Fri Nov 27 13:25:16 2026" VIVADOVERSION="2018.2.1">
+<EDKSYSTEM EDWVERSION="1.2" TIMESTAMP="Fri Nov 27 15:20:37 2026" VIVADOVERSION="2018.2.1">
 
   <SYSTEMINFO ARCH="zynq" DEVICE="7z020" NAME="HDMI_bd" PACKAGE="clg400" SPEEDGRADE="-1"/>
 
@@ -20,7 +20,11 @@
     <PORT DIR="O" LEFT="2" NAME="hdmi_out_data_n" RIGHT="0" SIGIS="undef"/>
     <PORT DIR="O" LEFT="3" NAME="led" RIGHT="0" SIGIS="undef"/>
     <PORT DIR="I" NAME="btn2" SIGIS="undef"/>
-    <PORT DIR="I" NAME="sw2" SIGIS="undef"/>
+    <PORT DIR="I" NAME="sw2" SIGIS="undef" SIGNAME="External_Ports_sw2">
+      <CONNECTIONS>
+        <CONNECTION INSTANCE="top_level_0" PORT="run"/>
+      </CONNECTIONS>
+    </PORT>
     <PORT DIR="I" NAME="sw3" SIGIS="undef"/>
     <PORT DIR="O" LEFT="0" NAME="hdmi_in_hpd" RIGHT="0" SIGIS="undef" SIGNAME="xlconstant_dout">
       <CONNECTIONS>
@@ -46,19 +50,17 @@
         <CONNECTION INSTANCE="top_level_0" PORT="quit"/>
       </CONNECTIONS>
     </PORT>
-    <PORT DIR="I" NAME="btn1" SIGIS="undef" SIGNAME="External_Ports_btn1">
-      <CONNECTIONS>
-        <CONNECTION INSTANCE="top_level_0" PORT="run"/>
-      </CONNECTIONS>
-    </PORT>
+    <PORT DIR="I" NAME="btn1" SIGIS="undef"/>
     <PORT DIR="I" NAME="sw0" SIGIS="undef" SIGNAME="External_Ports_sw0">
       <CONNECTIONS>
         <CONNECTION INSTANCE="xlconcat_0" PORT="In0"/>
+        <CONNECTION INSTANCE="top_level_0" PORT="debug_detection"/>
       </CONNECTIONS>
     </PORT>
     <PORT DIR="I" NAME="sw1" SIGIS="undef" SIGNAME="External_Ports_sw1">
       <CONNECTIONS>
         <CONNECTION INSTANCE="xlconcat_0" PORT="In1"/>
+        <CONNECTION INSTANCE="top_level_0" PORT="debug_compose"/>
       </CONNECTIONS>
     </PORT>
   </EXTERNALPORTS>
@@ -879,7 +881,7 @@
     </MODULE>
     <MODULE FULLNAME="/dvi2rgb" HWVERSION="1.8" INSTANCE="dvi2rgb" IPTYPE="PERIPHERAL" IS_ENABLE="1" MODCLASS="PERIPHERAL" MODTYPE="dvi2rgb" VLNV="digilentinc.com:ip:dvi2rgb:1.8">
       <DOCUMENTS>
-        <DOCUMENT SOURCE="c:/Users/juroy185.GEL.000/Downloads/basic/ZYBO_HDMI_MGA_2018_2/repo/vivado-library/ip/dvi2rgb/docs/dvi2rgb.pdf"/>
+        <DOCUMENT SOURCE="u:/Documents/FPGA/lab4/Lab4_GIF-4202/Le_Mur_V4/repo/vivado-library/ip/dvi2rgb/docs/dvi2rgb.pdf"/>
       </DOCUMENTS>
       <PARAMETERS>
         <PARAMETER NAME="kEmulateDDC" VALUE="true"/>
@@ -1042,7 +1044,7 @@
     </MODULE>
     <MODULE FULLNAME="/rgb2dvi" HWVERSION="1.4" INSTANCE="rgb2dvi" IPTYPE="PERIPHERAL" IS_ENABLE="1" MODCLASS="PERIPHERAL" MODTYPE="rgb2dvi" VLNV="digilentinc.com:ip:rgb2dvi:1.4">
       <DOCUMENTS>
-        <DOCUMENT SOURCE="c:/Users/juroy185.GEL.000/Downloads/basic/ZYBO_HDMI_MGA_2018_2/repo/vivado-library/ip/rgb2dvi/docs/rgb2dvi.pdf"/>
+        <DOCUMENT SOURCE="u:/Documents/FPGA/lab4/Lab4_GIF-4202/Le_Mur_V4/repo/vivado-library/ip/rgb2dvi/docs/rgb2dvi.pdf"/>
       </DOCUMENTS>
       <PARAMETERS>
         <PARAMETER NAME="kGenerateSerialClk" VALUE="true"/>
@@ -1125,6 +1127,9 @@
         <PARAMETER NAME="MAX_COLLISION_PIXELS" VALUE="500"/>
         <PARAMETER NAME="COUNT_BITS" VALUE="21"/>
         <PARAMETER NAME="DARK_THRESH" VALUE="50"/>
+        <PARAMETER NAME="RED_MIN" VALUE="150"/>
+        <PARAMETER NAME="GREEN_MAX" VALUE="100"/>
+        <PARAMETER NAME="BLUE_MAX" VALUE="100"/>
         <PARAMETER NAME="Component_Name" VALUE="HDMI_bd_top_level_0_0"/>
         <PARAMETER NAME="EDK_IPTYPE" VALUE="PERIPHERAL"/>
       </PARAMETERS>
@@ -1169,9 +1174,9 @@
             <CONNECTION INSTANCE="rgb2dvi" PORT="vid_pData"/>
           </CONNECTIONS>
         </PORT>
-        <PORT DIR="I" NAME="run" SIGIS="undef" SIGNAME="External_Ports_btn1">
+        <PORT DIR="I" NAME="run" SIGIS="undef" SIGNAME="External_Ports_sw2">
           <CONNECTIONS>
-            <CONNECTION INSTANCE="External_Ports" PORT="btn1"/>
+            <CONNECTION INSTANCE="External_Ports" PORT="sw2"/>
           </CONNECTIONS>
         </PORT>
         <PORT DIR="I" NAME="quit" SIGIS="undef" SIGNAME="External_Ports_btn0">
@@ -1182,6 +1187,16 @@
         <PORT DIR="I" LEFT="1" NAME="diff" RIGHT="0" SIGIS="undef" SIGNAME="xlconcat_0_dout">
           <CONNECTIONS>
             <CONNECTION INSTANCE="xlconcat_0" PORT="dout"/>
+          </CONNECTIONS>
+        </PORT>
+        <PORT DIR="I" NAME="debug_detection" SIGIS="undef" SIGNAME="External_Ports_sw0">
+          <CONNECTIONS>
+            <CONNECTION INSTANCE="External_Ports" PORT="sw0"/>
+          </CONNECTIONS>
+        </PORT>
+        <PORT DIR="I" NAME="debug_compose" SIGIS="undef" SIGNAME="External_Ports_sw1">
+          <CONNECTIONS>
+            <CONNECTION INSTANCE="External_Ports" PORT="sw1"/>
           </CONNECTIONS>
         </PORT>
       </PORTS>

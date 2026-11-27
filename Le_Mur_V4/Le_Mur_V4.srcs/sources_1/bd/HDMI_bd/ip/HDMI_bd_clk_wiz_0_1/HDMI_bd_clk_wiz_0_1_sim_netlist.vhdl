@@ -1,11 +1,11 @@
 -- Copyright 1986-2018 Xilinx, Inc. All Rights Reserved.
 -- --------------------------------------------------------------------------------
 -- Tool Version: Vivado v.2018.2.1 (win64) Build 2288692 Thu Jul 26 18:24:02 MDT 2018
--- Date        : Wed Nov 25 14:46:44 2026
--- Host        : pcetu-129 running 64-bit major release  (build 9200)
+-- Date        : Fri Nov 27 12:20:14 2026
+-- Host        : pcetu-183 running 64-bit major release  (build 9200)
 -- Command     : write_vhdl -force -mode funcsim -rename_top HDMI_bd_clk_wiz_0_1 -prefix
---               HDMI_bd_clk_wiz_0_1_ HDMI_bd_clk_wiz_0_0_sim_netlist.vhdl
--- Design      : HDMI_bd_clk_wiz_0_0
+--               HDMI_bd_clk_wiz_0_1_ HDMI_bd_clk_wiz_0_1_sim_netlist.vhdl
+-- Design      : HDMI_bd_clk_wiz_0_1
 -- Purpose     : This VHDL netlist is a functional simulation representation of the design and should not be modified or
 --               synthesized. This netlist cannot be used for SDF annotated simulation.
 -- Device      : xc7z020clg400-1
@@ -14,20 +14,20 @@ library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
 library UNISIM;
 use UNISIM.VCOMPONENTS.ALL;
-entity HDMI_bd_clk_wiz_0_1_HDMI_bd_clk_wiz_0_0_clk_wiz is
+entity HDMI_bd_clk_wiz_0_1_HDMI_bd_clk_wiz_0_1_clk_wiz is
   port (
     clk_out1 : out STD_LOGIC;
     reset : in STD_LOGIC;
     locked : out STD_LOGIC;
     clk_in1 : in STD_LOGIC
   );
-end HDMI_bd_clk_wiz_0_1_HDMI_bd_clk_wiz_0_0_clk_wiz;
+end HDMI_bd_clk_wiz_0_1_HDMI_bd_clk_wiz_0_1_clk_wiz;
 
-architecture STRUCTURE of HDMI_bd_clk_wiz_0_1_HDMI_bd_clk_wiz_0_0_clk_wiz is
-  signal clk_in1_HDMI_bd_clk_wiz_0_0 : STD_LOGIC;
-  signal clk_out1_HDMI_bd_clk_wiz_0_0 : STD_LOGIC;
-  signal clkfbout_HDMI_bd_clk_wiz_0_0 : STD_LOGIC;
-  signal clkfbout_buf_HDMI_bd_clk_wiz_0_0 : STD_LOGIC;
+architecture STRUCTURE of HDMI_bd_clk_wiz_0_1_HDMI_bd_clk_wiz_0_1_clk_wiz is
+  signal clk_in1_HDMI_bd_clk_wiz_0_1 : STD_LOGIC;
+  signal clk_out1_HDMI_bd_clk_wiz_0_1 : STD_LOGIC;
+  signal clkfbout_HDMI_bd_clk_wiz_0_1 : STD_LOGIC;
+  signal clkfbout_buf_HDMI_bd_clk_wiz_0_1 : STD_LOGIC;
   signal NLW_plle2_adv_inst_CLKOUT1_UNCONNECTED : STD_LOGIC;
   signal NLW_plle2_adv_inst_CLKOUT2_UNCONNECTED : STD_LOGIC;
   signal NLW_plle2_adv_inst_CLKOUT3_UNCONNECTED : STD_LOGIC;
@@ -49,8 +49,8 @@ architecture STRUCTURE of HDMI_bd_clk_wiz_0_1_HDMI_bd_clk_wiz_0_0_clk_wiz is
 begin
 clkf_buf: unisim.vcomponents.BUFG
      port map (
-      I => clkfbout_HDMI_bd_clk_wiz_0_0,
-      O => clkfbout_buf_HDMI_bd_clk_wiz_0_0
+      I => clkfbout_HDMI_bd_clk_wiz_0_1,
+      O => clkfbout_buf_HDMI_bd_clk_wiz_0_1
     );
 clkin1_ibufg: unisim.vcomponents.IBUF
     generic map(
@@ -58,11 +58,11 @@ clkin1_ibufg: unisim.vcomponents.IBUF
     )
         port map (
       I => clk_in1,
-      O => clk_in1_HDMI_bd_clk_wiz_0_0
+      O => clk_in1_HDMI_bd_clk_wiz_0_1
     );
 clkout1_buf: unisim.vcomponents.BUFG
      port map (
-      I => clk_out1_HDMI_bd_clk_wiz_0_0,
+      I => clk_out1_HDMI_bd_clk_wiz_0_1,
       O => clk_out1
     );
 plle2_adv_inst: unisim.vcomponents.PLLE2_ADV
@@ -100,12 +100,12 @@ plle2_adv_inst: unisim.vcomponents.PLLE2_ADV
       STARTUP_WAIT => "FALSE"
     )
         port map (
-      CLKFBIN => clkfbout_buf_HDMI_bd_clk_wiz_0_0,
-      CLKFBOUT => clkfbout_HDMI_bd_clk_wiz_0_0,
-      CLKIN1 => clk_in1_HDMI_bd_clk_wiz_0_0,
+      CLKFBIN => clkfbout_buf_HDMI_bd_clk_wiz_0_1,
+      CLKFBOUT => clkfbout_HDMI_bd_clk_wiz_0_1,
+      CLKIN1 => clk_in1_HDMI_bd_clk_wiz_0_1,
       CLKIN2 => '0',
       CLKINSEL => '1',
-      CLKOUT0 => clk_out1_HDMI_bd_clk_wiz_0_0,
+      CLKOUT0 => clk_out1_HDMI_bd_clk_wiz_0_1,
       CLKOUT1 => NLW_plle2_adv_inst_CLKOUT1_UNCONNECTED,
       CLKOUT2 => NLW_plle2_adv_inst_CLKOUT2_UNCONNECTED,
       CLKOUT3 => NLW_plle2_adv_inst_CLKOUT3_UNCONNECTED,
@@ -140,7 +140,7 @@ end HDMI_bd_clk_wiz_0_1;
 
 architecture STRUCTURE of HDMI_bd_clk_wiz_0_1 is
 begin
-inst: entity work.HDMI_bd_clk_wiz_0_1_HDMI_bd_clk_wiz_0_0_clk_wiz
+inst: entity work.HDMI_bd_clk_wiz_0_1_HDMI_bd_clk_wiz_0_1_clk_wiz
      port map (
       clk_in1 => clk_in1,
       clk_out1 => clk_out1,

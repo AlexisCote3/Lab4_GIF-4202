@@ -1,11 +1,11 @@
 -- Copyright 1986-2018 Xilinx, Inc. All Rights Reserved.
 -- --------------------------------------------------------------------------------
 -- Tool Version: Vivado v.2018.2.1 (win64) Build 2288692 Thu Jul 26 18:24:02 MDT 2018
--- Date        : Wed Nov 25 14:46:45 2026
--- Host        : pcetu-129 running 64-bit major release  (build 9200)
+-- Date        : Fri Nov 27 12:20:15 2026
+-- Host        : pcetu-183 running 64-bit major release  (build 9200)
 -- Command     : write_vhdl -force -mode funcsim -rename_top HDMI_bd_rgb2dvi_1_0 -prefix
---               HDMI_bd_rgb2dvi_1_0_ HDMI_bd_rgb2dvi_0_0_sim_netlist.vhdl
--- Design      : HDMI_bd_rgb2dvi_0_0
+--               HDMI_bd_rgb2dvi_1_0_ HDMI_bd_rgb2dvi_1_0_sim_netlist.vhdl
+-- Design      : HDMI_bd_rgb2dvi_1_0
 -- Purpose     : This VHDL netlist is a functional simulation representation of the design and should not be modified or
 --               synthesized. This netlist cannot be used for SDF annotated simulation.
 -- Device      : xc7z020clg400-1
@@ -4938,7 +4938,7 @@ entity HDMI_bd_rgb2dvi_1_0 is
   attribute NotValidForBitStream : boolean;
   attribute NotValidForBitStream of HDMI_bd_rgb2dvi_1_0 : entity is true;
   attribute CHECK_LICENSE_TYPE : string;
-  attribute CHECK_LICENSE_TYPE of HDMI_bd_rgb2dvi_1_0 : entity is "HDMI_bd_rgb2dvi_0_0,rgb2dvi,{}";
+  attribute CHECK_LICENSE_TYPE of HDMI_bd_rgb2dvi_1_0 : entity is "HDMI_bd_rgb2dvi_1_0,rgb2dvi,{}";
   attribute downgradeipidentifiedwarnings : string;
   attribute downgradeipidentifiedwarnings of HDMI_bd_rgb2dvi_1_0 : entity is "yes";
   attribute x_core_info : string;
@@ -4965,7 +4965,7 @@ architecture STRUCTURE of HDMI_bd_rgb2dvi_1_0 is
   attribute x_interface_info : string;
   attribute x_interface_info of PixelClk : signal is "xilinx.com:signal:clock:1.0 PixelClk CLK";
   attribute x_interface_parameter : string;
-  attribute x_interface_parameter of PixelClk : signal is "XIL_INTERFACENAME PixelClk, FREQ_HZ 100000000, PHASE 0.000, CLK_DOMAIN HDMI_bd_dvi2rgb_0_0_PixelClk";
+  attribute x_interface_parameter of PixelClk : signal is "XIL_INTERFACENAME PixelClk, FREQ_HZ 100000000, PHASE 0.000, CLK_DOMAIN HDMI_bd_dvi2rgb_1_0_PixelClk";
   attribute x_interface_info of TMDS_Clk_n : signal is "digilentinc.com:interface:tmds:1.0 TMDS CLK_N, xilinx.com:signal:clock:1.0 TMDS_Clk_n CLK";
   attribute x_interface_parameter of TMDS_Clk_n : signal is "XIL_INTERFACENAME TMDS_Clk_n, ASSOCIATED_RESET aRst_n, FREQ_HZ 100000000, PHASE 0.000";
   attribute x_interface_info of TMDS_Clk_p : signal is "digilentinc.com:interface:tmds:1.0 TMDS CLK_P, xilinx.com:signal:clock:1.0 TMDS_Clk_p CLK";

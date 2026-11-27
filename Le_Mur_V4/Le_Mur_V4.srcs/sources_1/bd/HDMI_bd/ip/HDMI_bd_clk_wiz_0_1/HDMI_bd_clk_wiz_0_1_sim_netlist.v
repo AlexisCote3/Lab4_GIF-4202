@@ -1,11 +1,11 @@
 // Copyright 1986-2018 Xilinx, Inc. All Rights Reserved.
 // --------------------------------------------------------------------------------
 // Tool Version: Vivado v.2018.2.1 (win64) Build 2288692 Thu Jul 26 18:24:02 MDT 2018
-// Date        : Wed Nov 25 14:46:44 2026
-// Host        : pcetu-129 running 64-bit major release  (build 9200)
+// Date        : Fri Nov 27 12:20:14 2026
+// Host        : pcetu-183 running 64-bit major release  (build 9200)
 // Command     : write_verilog -force -mode funcsim -rename_top HDMI_bd_clk_wiz_0_1 -prefix
-//               HDMI_bd_clk_wiz_0_1_ HDMI_bd_clk_wiz_0_0_sim_netlist.v
-// Design      : HDMI_bd_clk_wiz_0_0
+//               HDMI_bd_clk_wiz_0_1_ HDMI_bd_clk_wiz_0_1_sim_netlist.v
+// Design      : HDMI_bd_clk_wiz_0_1
 // Purpose     : This verilog netlist is a functional simulation representation of the design and should not be modified
 //               or synthesized. This netlist cannot be used for SDF annotated simulation.
 // Device      : xc7z020clg400-1
@@ -28,14 +28,14 @@ module HDMI_bd_clk_wiz_0_1
   wire locked;
   wire reset;
 
-  HDMI_bd_clk_wiz_0_1_HDMI_bd_clk_wiz_0_0_clk_wiz inst
+  HDMI_bd_clk_wiz_0_1_HDMI_bd_clk_wiz_0_1_clk_wiz inst
        (.clk_in1(clk_in1),
         .clk_out1(clk_out1),
         .locked(locked),
         .reset(reset));
 endmodule
 
-module HDMI_bd_clk_wiz_0_1_HDMI_bd_clk_wiz_0_0_clk_wiz
+module HDMI_bd_clk_wiz_0_1_HDMI_bd_clk_wiz_0_1_clk_wiz
    (clk_out1,
     reset,
     locked,
@@ -46,11 +46,11 @@ module HDMI_bd_clk_wiz_0_1_HDMI_bd_clk_wiz_0_0_clk_wiz
   input clk_in1;
 
   wire clk_in1;
-  wire clk_in1_HDMI_bd_clk_wiz_0_0;
+  wire clk_in1_HDMI_bd_clk_wiz_0_1;
   wire clk_out1;
-  wire clk_out1_HDMI_bd_clk_wiz_0_0;
-  wire clkfbout_HDMI_bd_clk_wiz_0_0;
-  wire clkfbout_buf_HDMI_bd_clk_wiz_0_0;
+  wire clk_out1_HDMI_bd_clk_wiz_0_1;
+  wire clkfbout_HDMI_bd_clk_wiz_0_1;
+  wire clkfbout_buf_HDMI_bd_clk_wiz_0_1;
   wire locked;
   wire reset;
   wire NLW_plle2_adv_inst_CLKOUT1_UNCONNECTED;
@@ -63,8 +63,8 @@ module HDMI_bd_clk_wiz_0_1_HDMI_bd_clk_wiz_0_0_clk_wiz
 
   (* BOX_TYPE = "PRIMITIVE" *) 
   BUFG clkf_buf
-       (.I(clkfbout_HDMI_bd_clk_wiz_0_0),
-        .O(clkfbout_buf_HDMI_bd_clk_wiz_0_0));
+       (.I(clkfbout_HDMI_bd_clk_wiz_0_1),
+        .O(clkfbout_buf_HDMI_bd_clk_wiz_0_1));
   (* BOX_TYPE = "PRIMITIVE" *) 
   (* CAPACITANCE = "DONT_CARE" *) 
   (* IBUF_DELAY_VALUE = "0" *) 
@@ -73,10 +73,10 @@ module HDMI_bd_clk_wiz_0_1_HDMI_bd_clk_wiz_0_0_clk_wiz
     .IOSTANDARD("DEFAULT")) 
     clkin1_ibufg
        (.I(clk_in1),
-        .O(clk_in1_HDMI_bd_clk_wiz_0_0));
+        .O(clk_in1_HDMI_bd_clk_wiz_0_1));
   (* BOX_TYPE = "PRIMITIVE" *) 
   BUFG clkout1_buf
-       (.I(clk_out1_HDMI_bd_clk_wiz_0_0),
+       (.I(clk_out1_HDMI_bd_clk_wiz_0_1),
         .O(clk_out1));
   (* BOX_TYPE = "PRIMITIVE" *) 
   PLLE2_ADV #(
@@ -112,12 +112,12 @@ module HDMI_bd_clk_wiz_0_1_HDMI_bd_clk_wiz_0_0_clk_wiz
     .REF_JITTER2(0.010000),
     .STARTUP_WAIT("FALSE")) 
     plle2_adv_inst
-       (.CLKFBIN(clkfbout_buf_HDMI_bd_clk_wiz_0_0),
-        .CLKFBOUT(clkfbout_HDMI_bd_clk_wiz_0_0),
-        .CLKIN1(clk_in1_HDMI_bd_clk_wiz_0_0),
+       (.CLKFBIN(clkfbout_buf_HDMI_bd_clk_wiz_0_1),
+        .CLKFBOUT(clkfbout_HDMI_bd_clk_wiz_0_1),
+        .CLKIN1(clk_in1_HDMI_bd_clk_wiz_0_1),
         .CLKIN2(1'b0),
         .CLKINSEL(1'b1),
-        .CLKOUT0(clk_out1_HDMI_bd_clk_wiz_0_0),
+        .CLKOUT0(clk_out1_HDMI_bd_clk_wiz_0_1),
         .CLKOUT1(NLW_plle2_adv_inst_CLKOUT1_UNCONNECTED),
         .CLKOUT2(NLW_plle2_adv_inst_CLKOUT2_UNCONNECTED),
         .CLKOUT3(NLW_plle2_adv_inst_CLKOUT3_UNCONNECTED),

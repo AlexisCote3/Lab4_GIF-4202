@@ -65,7 +65,9 @@ ENTITY HDMI_bd_top_level_0_0 IS
     rgb_out : OUT STD_LOGIC_VECTOR(23 DOWNTO 0);
     run : IN STD_LOGIC;
     quit : IN STD_LOGIC;
-    diff : IN STD_LOGIC_VECTOR(1 DOWNTO 0)
+    diff : IN STD_LOGIC_VECTOR(1 DOWNTO 0);
+    debug_detection : IN STD_LOGIC;
+    debug_compose : IN STD_LOGIC
   );
 END HDMI_bd_top_level_0_0;
 
@@ -83,7 +85,10 @@ ARCHITECTURE HDMI_bd_top_level_0_0_arch OF HDMI_bd_top_level_0_0 IS
       MIN_PLAYER_PIXELS : INTEGER;
       MAX_COLLISION_PIXELS : INTEGER;
       COUNT_BITS : INTEGER;
-      DARK_THRESH : INTEGER
+      DARK_THRESH : INTEGER;
+      RED_MIN : INTEGER;
+      GREEN_MAX : INTEGER;
+      BLUE_MAX : INTEGER
     );
     PORT (
       pixel_clk : IN STD_LOGIC;
@@ -96,7 +101,9 @@ ARCHITECTURE HDMI_bd_top_level_0_0_arch OF HDMI_bd_top_level_0_0 IS
       rgb_out : OUT STD_LOGIC_VECTOR(23 DOWNTO 0);
       run : IN STD_LOGIC;
       quit : IN STD_LOGIC;
-      diff : IN STD_LOGIC_VECTOR(1 DOWNTO 0)
+      diff : IN STD_LOGIC_VECTOR(1 DOWNTO 0);
+      debug_detection : IN STD_LOGIC;
+      debug_compose : IN STD_LOGIC
     );
   END COMPONENT top_level;
   ATTRIBUTE IP_DEFINITION_SOURCE : STRING;
@@ -121,7 +128,10 @@ BEGIN
       MIN_PLAYER_PIXELS => 1000,
       MAX_COLLISION_PIXELS => 500,
       COUNT_BITS => 21,
-      DARK_THRESH => 50
+      DARK_THRESH => 50,
+      RED_MIN => 150,
+      GREEN_MAX => 100,
+      BLUE_MAX => 100
     )
     PORT MAP (
       pixel_clk => pixel_clk,
@@ -134,6 +144,8 @@ BEGIN
       rgb_out => rgb_out,
       run => run,
       quit => quit,
-      diff => diff
+      diff => diff,
+      debug_detection => debug_detection,
+      debug_compose => debug_compose
     );
 END HDMI_bd_top_level_0_0_arch;

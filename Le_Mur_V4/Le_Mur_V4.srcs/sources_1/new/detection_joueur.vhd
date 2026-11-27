@@ -1,3 +1,4 @@
+
 --------------------------------------------------------------------------------
 -- PROJET : LE MUR
 -- MODULE : detection_joueur
@@ -6,27 +7,20 @@
 --
 -- DESCRIPTION
 --
--- Ce module determine si un pixel provenant de la camera
--- appartient potentiellement au joueur.
+-- Ce module detecte les pixels appartenant potentiellement au joueur.
 --
--- On suppose que :
---   - Le fond de l'image est relativement clair.
---   - Le joueur porte des vetements fonces.
+-- Deux modes de fonctionnement :
 --
--- La detection repose sur la luminosite du pixel.
+-- MODE NORMAL (debug = '0') :
+--   Detection des pixels sombres par leur luminosite.
 --
--- ENTREES :
---   rgb_in : Pixel RGB code sur 24 bits.
+-- MODE DEBUG (debug = '1') :
+--   Detection des pixels rouges.
 --
--- SORTIES :
---   is_pixel_joueur :
---       1 = pixel considere comme appartenant au joueur
---       0 = pixel considere comme appartenant au fond
---
--- PARAMETRE :
---   DARK_THRESH : Seuil de luminosite configurable.
+-- Les seuils de detection sont configurables avec des generics.
 --
 -- Ce module est entierement combinatoire.
+-- Aucune variable VHDL.
 --------------------------------------------------------------------------------
 
 library IEEE;
@@ -41,16 +35,23 @@ use IEEE.NUMERIC_STD.ALL;
 entity detection_joueur is
 
     generic (
-        -- Seuil moyen de luminosite, entre 0 et 255.
-        DARK_THRESH : natural := 50
+        -- Seuil moyen de luminosite pour le mode normal.
+        DARK_THRESH : natural := 50;
+
+        -- Seuils de detection pour le mode debug.
+        RED_MIN   : natural := 150;
+        GREEN_MAX : natural := 100;
+        BLUE_MAX  : natural := 100
     );
 
     port (
-        -- Pixel d'entree :
-        -- R = bits 23 a 16
-        -- G = bits 15 a 8
-        -- B = bits 7 a 0
+        -- Pixel RGB sur 24 bits.
         rgb_in : in STD_LOGIC_VECTOR(23 downto 0);
+
+        -- Choix du mode :
+        -- 0 = Detection du noir
+        -- 1 = Detection du rouge
+        debug : in STD_LOGIC;
 
         -- Resultat de la detection.
         is_pixel_joueur : out STD_LOGIC
@@ -66,72 +67,100 @@ end detection_joueur;
 architecture Behavioral of detection_joueur is
 
     ---------------------------------------------------------------------------
-    -- SIGNAL : luminosity
+    -- EXTRACTION DES COMPOSANTES RGB
+    ---------------------------------------------------------------------------
+
+    signal red   : unsigned(7 downto 0);
+    signal green : unsigned(7 downto 0);
+    signal blue  : unsigned(7 downto 0);
+
+
+    ---------------------------------------------------------------------------
+    -- LUMINOSITE
     --
-    -- Somme des composantes RGB.
-    --
-    -- Chaque couleur possede 8 bits (0 a 255).
-    --
-    -- La somme varie donc entre :
-    --     Minimum = 0
-    --     Maximum = 765
-    --
-    -- Il faut 10 bits pour representer cette somme.
+    -- Somme des trois composantes RGB.
+    -- Plage : 0 a 765 (10 bits).
     ---------------------------------------------------------------------------
 
     signal luminosity : unsigned(9 downto 0);
 
+
+    ---------------------------------------------------------------------------
+    -- RESULTATS DES DEUX MODES
+    ---------------------------------------------------------------------------
+
+    signal detect_noir  : STD_LOGIC;
+    signal detect_rouge : STD_LOGIC;
+
 begin
 
     ---------------------------------------------------------------------------
-    -- VERIFICATION DU PARAMETRE
-    --
-    -- Le seuil doit etre compris entre 0 et 255.
+    -- VERIFICATION DES SEUILS
     ---------------------------------------------------------------------------
 
     assert DARK_THRESH <= 255
         report "DARK_THRESH doit etre entre 0 et 255"
         severity failure;
 
+    assert RED_MIN <= 255 and GREEN_MAX <= 255 and BLUE_MAX <= 255
+        report "Les seuils RGB doivent etre entre 0 et 255"
+        severity failure;
+
+
+    ---------------------------------------------------------------------------
+    -- EXTRACTION DES COMPOSANTES RGB
+    ---------------------------------------------------------------------------
+
+    red   <= unsigned(rgb_in(23 downto 16));
+    green <= unsigned(rgb_in(15 downto 8));
+    blue  <= unsigned(rgb_in(7 downto 0));
+
 
     ---------------------------------------------------------------------------
     -- CALCUL DE LA LUMINOSITE
-    --
-    -- luminosity = R + G + B
-    --
-    -- Chaque composante est convertie en unsigned puis
-    -- agrandie sur 10 bits avant l'addition.
-    --
-    -- Cela evite les debordements lors du calcul.
     ---------------------------------------------------------------------------
 
     luminosity <=
-        resize(unsigned(rgb_in(23 downto 16)), 10) +
-        resize(unsigned(rgb_in(15 downto 8)), 10) +
-        resize(unsigned(rgb_in(7 downto 0)), 10);
+        resize(red, 10) +
+        resize(green, 10) +
+        resize(blue, 10);
 
 
     ---------------------------------------------------------------------------
-    -- DETECTION DU JOUEUR
-    --
-    -- Si la luminosite est inferieure a trois fois
-    -- le seuil moyen, le pixel est considere sombre.
-    --
-    -- Exemple pour DARK_THRESH = 100 :
-    --
-    --     R + G + B < 300
-    --
-    -- Pixel noir (0,0,0) :
-    --     luminosity = 0
-    --     is_pixel_joueur = 1
-    --
-    -- Pixel blanc (255,255,255) :
-    --     luminosity = 765
-    --     is_pixel_joueur = 0
+    -- MODE NORMAL : DETECTION DES PIXELS SOMBRES
     ---------------------------------------------------------------------------
 
-    is_pixel_joueur <= '1'
+    detect_noir <= '1'
         when luminosity < to_unsigned(3 * DARK_THRESH, 10)
         else '0';
+
+
+    ---------------------------------------------------------------------------
+    -- MODE DEBUG : DETECTION DES PIXELS ROUGES
+    --
+    -- Un pixel est considere rouge lorsque :
+    --
+    --   R > RED_MIN
+    --   G < GREEN_MAX
+    --   B < BLUE_MAX
+    ---------------------------------------------------------------------------
+
+    detect_rouge <= '1'
+        when red   > to_unsigned(RED_MIN, 8)
+         and green < to_unsigned(GREEN_MAX, 8)
+         and blue  < to_unsigned(BLUE_MAX, 8)
+        else '0';
+
+
+    ---------------------------------------------------------------------------
+    -- SELECTION DU MODE
+    --
+    -- debug = 0 : detection du noir
+    -- debug = 1 : detection du rouge
+    ---------------------------------------------------------------------------
+
+    is_pixel_joueur <= detect_rouge
+        when debug = '1'
+        else detect_noir;
 
 end Behavioral;

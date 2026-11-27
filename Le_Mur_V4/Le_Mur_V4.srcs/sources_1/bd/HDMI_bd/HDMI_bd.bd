@@ -396,24 +396,26 @@
         <spirit:internalPortReference spirit:componentRef="top_level_0" spirit:portRef="quit"/>
       </spirit:adHocConnection>
       <spirit:adHocConnection>
-        <spirit:name>btn1_1</spirit:name>
-        <spirit:externalPortReference spirit:portRef="btn1"/>
+        <spirit:name>xlconcat_0_dout</spirit:name>
+        <spirit:internalPortReference spirit:componentRef="xlconcat_0" spirit:portRef="dout"/>
+        <spirit:internalPortReference spirit:componentRef="top_level_0" spirit:portRef="diff"/>
+      </spirit:adHocConnection>
+      <spirit:adHocConnection>
+        <spirit:name>sw2_1</spirit:name>
+        <spirit:externalPortReference spirit:portRef="sw2"/>
         <spirit:internalPortReference spirit:componentRef="top_level_0" spirit:portRef="run"/>
       </spirit:adHocConnection>
       <spirit:adHocConnection>
         <spirit:name>sw0_1</spirit:name>
         <spirit:externalPortReference spirit:portRef="sw0"/>
         <spirit:internalPortReference spirit:componentRef="xlconcat_0" spirit:portRef="In0"/>
+        <spirit:internalPortReference spirit:componentRef="top_level_0" spirit:portRef="debug_detection"/>
       </spirit:adHocConnection>
       <spirit:adHocConnection>
         <spirit:name>sw1_1</spirit:name>
         <spirit:externalPortReference spirit:portRef="sw1"/>
         <spirit:internalPortReference spirit:componentRef="xlconcat_0" spirit:portRef="In1"/>
-      </spirit:adHocConnection>
-      <spirit:adHocConnection>
-        <spirit:name>xlconcat_0_dout</spirit:name>
-        <spirit:internalPortReference spirit:componentRef="xlconcat_0" spirit:portRef="dout"/>
-        <spirit:internalPortReference spirit:componentRef="top_level_0" spirit:portRef="diff"/>
+        <spirit:internalPortReference spirit:componentRef="top_level_0" spirit:portRef="debug_compose"/>
       </spirit:adHocConnection>
     </spirit:adHocConnections>
     <spirit:hierConnections>

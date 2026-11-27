@@ -66,7 +66,7 @@ with diff_sig select
     time_limit_sig <= "1010" when "00",    -- 10 s
                       "0111" when "01",    --  7 s
                       "0101" when "10",    --  5 s
-                      "0011" when others;  --  3 s
+                      "0101" when others;  --  3 s
 
 u_game_state : game_state
     port map ( clk         => clk,

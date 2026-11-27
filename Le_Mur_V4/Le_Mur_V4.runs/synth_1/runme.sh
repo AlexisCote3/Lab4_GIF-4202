@@ -24,7 +24,7 @@ else
 fi
 export LD_LIBRARY_PATH
 
-HD_PWD='C:/Users/juroy185.GEL.000/Documents/Lab4_GIF-4202/Le_Mur_V4/Le_Mur_V4.runs/synth_1'
+HD_PWD='U:/Documents/FPGA/lab4/Lab4_GIF-4202/Le_Mur_V4/Le_Mur_V4.runs/synth_1'
 cd "$HD_PWD"
 
 HD_LOG=runme.log

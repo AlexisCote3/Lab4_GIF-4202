@@ -65,7 +65,8 @@ ENTITY HDMI_bd_top_level_0_0 IS
     rgb_out : OUT STD_LOGIC_VECTOR(23 DOWNTO 0);
     run : IN STD_LOGIC;
     quit : IN STD_LOGIC;
-    diff : IN STD_LOGIC_VECTOR(1 DOWNTO 0)
+    diff : IN STD_LOGIC_VECTOR(1 DOWNTO 0);
+    debug : IN STD_LOGIC
   );
 END HDMI_bd_top_level_0_0;
 
@@ -96,7 +97,8 @@ ARCHITECTURE HDMI_bd_top_level_0_0_arch OF HDMI_bd_top_level_0_0 IS
       rgb_out : OUT STD_LOGIC_VECTOR(23 DOWNTO 0);
       run : IN STD_LOGIC;
       quit : IN STD_LOGIC;
-      diff : IN STD_LOGIC_VECTOR(1 DOWNTO 0)
+      diff : IN STD_LOGIC_VECTOR(1 DOWNTO 0);
+      debug : IN STD_LOGIC
     );
   END COMPONENT top_level;
   ATTRIBUTE IP_DEFINITION_SOURCE : STRING;
@@ -134,6 +136,7 @@ BEGIN
       rgb_out => rgb_out,
       run => run,
       quit => quit,
-      diff => diff
+      diff => diff,
+      debug => debug
     );
 END HDMI_bd_top_level_0_0_arch;

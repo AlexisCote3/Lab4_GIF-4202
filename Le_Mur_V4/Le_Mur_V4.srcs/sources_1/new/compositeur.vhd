@@ -60,7 +60,8 @@ entity compositeur is
         rgb_out           : out std_logic_vector(23 downto 0);
         de_out            : out std_logic;
         hsync_out         : out std_logic;
-        vsync_out         : out std_logic
+        vsync_out         : out std_logic;
+        debug             : in  std_logic
     );
 end compositeur;
 
@@ -100,7 +101,7 @@ begin
 
     -- Ne pas recalculer les zones du mur ici : Presence_mur le fait deja.
     -- Conformite avec le sens de la sortie is_mur du depot existant.
-    wall_pixel <= not is_pixel_mur when WALL_ONE_IS_OPENING else is_pixel_mur;
+    wall_pixel <= is_pixel_mur when WALL_ONE_IS_OPENING else not is_pixel_mur;
 
     -- Conversion binaire -> BCD (2 chiffres): ports 4 bits de la FSM.
     score_num   <= to_integer(unsigned(score_courant));
@@ -338,7 +339,17 @@ begin
                 hsync_out <= '0';
                 vsync_out <= '0';
             else
-                rgb_out   <= rgb_pixel;
+                if (debug = '1') then
+                    if is_pixel_joueur = '1' and is_pixel_mur = '1' then
+                        rgb_out   <= x"FF0000";
+                    elsif is_pixel_joueur = '1' then
+                        rgb_out <= x"00FF00";
+                    else
+                        rgb_out <= rgb_pixel;
+                    end if;
+                else 
+                    rgb_out   <= rgb_pixel;
+                end if;
                 de_out    <= de_in;
                 hsync_out <= hsync_in;
                 vsync_out <= vsync_in;

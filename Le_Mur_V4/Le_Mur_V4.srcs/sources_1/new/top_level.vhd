@@ -12,7 +12,10 @@ entity top_level is
         MIN_PLAYER_PIXELS     : natural := 1000;
         MAX_COLLISION_PIXELS  : natural := 500;
         COUNT_BITS            : positive := 21;
-        DARK_THRESH           : natural := 50
+        DARK_THRESH           : natural := 50;
+        RED_MIN   : natural := 150;
+                GREEN_MAX : natural := 100;
+                BLUE_MAX  : natural := 100
     );
     Port ( pixel_clk : in STD_LOGIC;
            clk : in STD_LOGIC;
@@ -24,7 +27,9 @@ entity top_level is
            rgb_out : out STD_LOGIC_VECTOR (23 downto 0);
            run : in STD_LOGIC;
            quit : in STD_LOGIC;
-           diff : in STD_LOGIC_VECTOR (1 downto 0));
+           diff : in STD_LOGIC_VECTOR (1 downto 0);
+           debug_detection             : in  std_logic;
+           debug_compose             : in  std_logic);
 end top_level;
 
 architecture Behavioral of top_level is
@@ -52,7 +57,8 @@ component compositeur is
         temps_restant     : in  std_logic_vector(3 downto 0);
         score_dernier     : in  std_logic_vector(3 downto 0);
         record_personnel  : in  std_logic_vector(3 downto 0);
-        rgb_out           : out std_logic_vector(23 downto 0)
+        rgb_out           : out std_logic_vector(23 downto 0);
+        debug             : in  std_logic
     );
 end component;
 
@@ -137,10 +143,25 @@ end component;
 
 component detection_joueur is
     generic (
-        DARK_THRESH : natural := 50
+        -- Seuil moyen de luminosite pour le mode normal.
+        DARK_THRESH : natural := 50;
+
+        -- Seuils de detection pour le mode debug.
+        RED_MIN   : natural := 150;
+        GREEN_MAX : natural := 100;
+        BLUE_MAX  : natural := 100
     );
+
     port (
+        -- Pixel RGB sur 24 bits.
         rgb_in : in STD_LOGIC_VECTOR(23 downto 0);
+
+        -- Choix du mode :
+        -- 0 = Detection du noir
+        -- 1 = Detection du rouge
+        debug : in STD_LOGIC;
+
+        -- Resultat de la detection.
         is_pixel_joueur : out STD_LOGIC
     );
 end component;
@@ -177,11 +198,15 @@ begin
 
     u_detection_joueur : detection_joueur
         generic map (
-            DARK_THRESH => DARK_THRESH
+            DARK_THRESH => DARK_THRESH,
+            RED_MIN => RED_MIN,
+            GREEN_MAX => GREEN_MAX,
+            BLUE_MAX  => BLUE_MAX
         )
         port map (
             rgb_in          => rgb_in,
-            is_pixel_joueur => is_pixel_joueur
+            is_pixel_joueur => is_pixel_joueur,
+            debug => debug_detection
         );
 
     u_generateur_mur : Generateur_mur
@@ -269,7 +294,8 @@ begin
             temps_restant    => sec,
             score_dernier    => score_dernier,
             record_personnel => record_perso,
-            rgb_out          => rgb_out
+            rgb_out          => rgb_out,
+            debug            => debug_compose
         );
 
 end Behavioral;

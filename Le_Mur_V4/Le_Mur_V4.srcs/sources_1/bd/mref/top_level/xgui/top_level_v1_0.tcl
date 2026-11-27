@@ -3,11 +3,14 @@ proc init_gui { IPINST } {
   ipgui::add_param $IPINST -name "Component_Name"
   #Adding Page
   set Page_0 [ipgui::add_page $IPINST -name "Page 0"]
+  ipgui::add_param $IPINST -name "BLUE_MAX" -parent ${Page_0}
   ipgui::add_param $IPINST -name "COUNT_BITS" -parent ${Page_0}
   ipgui::add_param $IPINST -name "DARK_THRESH" -parent ${Page_0}
   ipgui::add_param $IPINST -name "DEBUG_JOUEUR" -parent ${Page_0}
+  ipgui::add_param $IPINST -name "GREEN_MAX" -parent ${Page_0}
   ipgui::add_param $IPINST -name "MAX_COLLISION_PIXELS" -parent ${Page_0}
   ipgui::add_param $IPINST -name "MIN_PLAYER_PIXELS" -parent ${Page_0}
+  ipgui::add_param $IPINST -name "RED_MIN" -parent ${Page_0}
   ipgui::add_param $IPINST -name "SCREEN_HEIGHT" -parent ${Page_0}
   ipgui::add_param $IPINST -name "SCREEN_WIDTH" -parent ${Page_0}
   ipgui::add_param $IPINST -name "WALL_ONE_IS_OPENING" -parent ${Page_0}
@@ -15,6 +18,15 @@ proc init_gui { IPINST } {
   ipgui::add_param $IPINST -name "wall_width" -parent ${Page_0}
 
 
+}
+
+proc update_PARAM_VALUE.BLUE_MAX { PARAM_VALUE.BLUE_MAX } {
+	# Procedure called to update BLUE_MAX when any of the dependent parameters in the arguments change
+}
+
+proc validate_PARAM_VALUE.BLUE_MAX { PARAM_VALUE.BLUE_MAX } {
+	# Procedure called to validate BLUE_MAX
+	return true
 }
 
 proc update_PARAM_VALUE.COUNT_BITS { PARAM_VALUE.COUNT_BITS } {
@@ -44,6 +56,15 @@ proc validate_PARAM_VALUE.DEBUG_JOUEUR { PARAM_VALUE.DEBUG_JOUEUR } {
 	return true
 }
 
+proc update_PARAM_VALUE.GREEN_MAX { PARAM_VALUE.GREEN_MAX } {
+	# Procedure called to update GREEN_MAX when any of the dependent parameters in the arguments change
+}
+
+proc validate_PARAM_VALUE.GREEN_MAX { PARAM_VALUE.GREEN_MAX } {
+	# Procedure called to validate GREEN_MAX
+	return true
+}
+
 proc update_PARAM_VALUE.MAX_COLLISION_PIXELS { PARAM_VALUE.MAX_COLLISION_PIXELS } {
 	# Procedure called to update MAX_COLLISION_PIXELS when any of the dependent parameters in the arguments change
 }
@@ -59,6 +80,15 @@ proc update_PARAM_VALUE.MIN_PLAYER_PIXELS { PARAM_VALUE.MIN_PLAYER_PIXELS } {
 
 proc validate_PARAM_VALUE.MIN_PLAYER_PIXELS { PARAM_VALUE.MIN_PLAYER_PIXELS } {
 	# Procedure called to validate MIN_PLAYER_PIXELS
+	return true
+}
+
+proc update_PARAM_VALUE.RED_MIN { PARAM_VALUE.RED_MIN } {
+	# Procedure called to update RED_MIN when any of the dependent parameters in the arguments change
+}
+
+proc validate_PARAM_VALUE.RED_MIN { PARAM_VALUE.RED_MIN } {
+	# Procedure called to validate RED_MIN
 	return true
 }
 
@@ -156,5 +186,20 @@ proc update_MODELPARAM_VALUE.COUNT_BITS { MODELPARAM_VALUE.COUNT_BITS PARAM_VALU
 proc update_MODELPARAM_VALUE.DARK_THRESH { MODELPARAM_VALUE.DARK_THRESH PARAM_VALUE.DARK_THRESH } {
 	# Procedure called to set VHDL generic/Verilog parameter value(s) based on TCL parameter value
 	set_property value [get_property value ${PARAM_VALUE.DARK_THRESH}] ${MODELPARAM_VALUE.DARK_THRESH}
+}
+
+proc update_MODELPARAM_VALUE.RED_MIN { MODELPARAM_VALUE.RED_MIN PARAM_VALUE.RED_MIN } {
+	# Procedure called to set VHDL generic/Verilog parameter value(s) based on TCL parameter value
+	set_property value [get_property value ${PARAM_VALUE.RED_MIN}] ${MODELPARAM_VALUE.RED_MIN}
+}
+
+proc update_MODELPARAM_VALUE.GREEN_MAX { MODELPARAM_VALUE.GREEN_MAX PARAM_VALUE.GREEN_MAX } {
+	# Procedure called to set VHDL generic/Verilog parameter value(s) based on TCL parameter value
+	set_property value [get_property value ${PARAM_VALUE.GREEN_MAX}] ${MODELPARAM_VALUE.GREEN_MAX}
+}
+
+proc update_MODELPARAM_VALUE.BLUE_MAX { MODELPARAM_VALUE.BLUE_MAX PARAM_VALUE.BLUE_MAX } {
+	# Procedure called to set VHDL generic/Verilog parameter value(s) based on TCL parameter value
+	set_property value [get_property value ${PARAM_VALUE.BLUE_MAX}] ${MODELPARAM_VALUE.BLUE_MAX}
 }
 

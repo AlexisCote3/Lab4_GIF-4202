@@ -1,8 +1,8 @@
 Copyright 1986-2018 Xilinx, Inc. All Rights Reserved.
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------
 | Tool Version     : Vivado v.2018.2.1 (win64) Build 2288692 Thu Jul 26 18:24:02 MDT 2018
-| Date             : Fri Nov 27 13:26:59 2026
-| Host             : pcetu-183 running 64-bit major release  (build 9200)
+| Date             : Fri Nov 27 15:22:41 2026
+| Host             : pcetu-197 running 64-bit major release  (build 9200)
 | Command          : report_power -file HDMI_bd_wrapper_power_routed.rpt -pb HDMI_bd_wrapper_power_summary_routed.pb -rpx HDMI_bd_wrapper_power_routed.rpx
 | Design           : HDMI_bd_wrapper
 | Device           : xc7z020clg400-1
@@ -30,14 +30,14 @@ Table of Contents
 ----------
 
 +--------------------------+--------------+
-| Total On-Chip Power (W)  | 0.522        |
+| Total On-Chip Power (W)  | 0.526        |
 | Design Power Budget (W)  | Unspecified* |
 | Power Budget Margin (W)  | NA           |
-| Dynamic (W)              | 0.410        |
+| Dynamic (W)              | 0.414        |
 | Device Static (W)        | 0.112        |
 | Effective TJA (C/W)      | 11.5         |
-| Max Ambient (C)          | 79.0         |
-| Junction Temperature (C) | 31.0         |
+| Max Ambient (C)          | 78.9         |
+| Junction Temperature (C) | 31.1         |
 | Confidence Level         | Low          |
 | Setting File             | ---          |
 | Simulation Activity File | ---          |
@@ -53,23 +53,23 @@ Table of Contents
 | On-Chip                  | Power (W) | Used     | Available | Utilization (%) |
 +--------------------------+-----------+----------+-----------+-----------------+
 | Clocks                   |     0.006 |        5 |       --- |             --- |
-| Slice Logic              |     0.004 |     4688 |       --- |             --- |
-|   LUT as Logic           |     0.003 |     2372 |     53200 |            4.46 |
-|   CARRY4                 |    <0.001 |      358 |     13300 |            2.69 |
+| Slice Logic              |     0.006 |     4674 |       --- |             --- |
+|   LUT as Logic           |     0.005 |     2366 |     53200 |            4.45 |
 |   Register               |    <0.001 |      833 |    106400 |            0.78 |
+|   CARRY4                 |    <0.001 |      358 |     13300 |            2.69 |
 |   BUFG                   |    <0.001 |        3 |        32 |            9.38 |
 |   LUT as Distributed RAM |    <0.001 |       24 |     17400 |            0.14 |
 |   F7/F8 Muxes            |    <0.001 |       28 |     53200 |            0.05 |
 |   Others                 |    <0.001 |      151 |       --- |             --- |
 |   BUFR                   |     0.000 |        3 |        88 |            3.41 |
 |   LUT as Shift Register  |     0.000 |      114 |     17400 |            0.66 |
-| Signals                  |     0.003 |     2830 |       --- |             --- |
+| Signals                  |     0.005 |     2814 |       --- |             --- |
 | Block RAM                |    <0.001 |      1.5 |       140 |            1.07 |
 | MMCM                     |     0.124 |        2 |         4 |           50.00 |
 | PLL                      |     0.110 |        1 |         4 |           25.00 |
-| I/O                      |     0.163 |       27 |       125 |           21.60 |
+| I/O                      |     0.163 |       29 |       125 |           23.20 |
 | Static Power             |     0.112 |          |           |                 |
-| Total                    |     0.522 |          |           |                 |
+| Total                    |     0.526 |          |           |                 |
 +--------------------------+-----------+----------+-----------+-----------------+
 
 
@@ -79,7 +79,7 @@ Table of Contents
 +-----------+-------------+-----------+-------------+------------+
 | Source    | Voltage (V) | Total (A) | Dynamic (A) | Static (A) |
 +-----------+-------------+-----------+-------------+------------+
-| Vccint    |       1.000 |     0.036 |       0.027 |      0.009 |
+| Vccint    |       1.000 |     0.040 |       0.031 |      0.009 |
 | Vccaux    |       1.800 |     0.151 |       0.140 |      0.011 |
 | Vcco33    |       3.300 |     0.041 |       0.040 |      0.001 |
 | Vcco25    |       2.500 |     0.000 |       0.000 |      0.000 |
@@ -157,8 +157,8 @@ Table of Contents
 +------------------------------------------------+-----------+
 | Name                                           | Power (W) |
 +------------------------------------------------+-----------+
-| HDMI_bd_wrapper                                |     0.410 |
-|   HDMI_bd_i                                    |     0.410 |
+| HDMI_bd_wrapper                                |     0.414 |
+|   HDMI_bd_i                                    |     0.414 |
 |     blk_mem_gen_0                              |    <0.001 |
 |       U0                                       |    <0.001 |
 |         inst_blk_mem_gen                       |    <0.001 |
@@ -170,9 +170,9 @@ Table of Contents
 |                 prim_noinit.ram                |    <0.001 |
 |     clk_wiz                                    |     0.111 |
 |       inst                                     |     0.111 |
-|     dvi2rgb                                    |     0.101 |
-|       U0                                       |     0.101 |
-|         DataDecoders[0].DecoderX               |     0.011 |
+|     dvi2rgb                                    |     0.102 |
+|       U0                                       |     0.102 |
+|         DataDecoders[0].DecoderX               |     0.012 |
 |           ChannelBondX                         |    <0.001 |
 |             pFIFO_reg_0_31_0_5                 |    <0.001 |
 |             pFIFO_reg_0_31_6_9                 |    <0.001 |
@@ -182,7 +182,7 @@ Table of Contents
 |             SyncAsyncx                         |    <0.001 |
 |           SyncBaseRst                          |    <0.001 |
 |             SyncAsyncx                         |    <0.001 |
-|         DataDecoders[1].DecoderX               |     0.012 |
+|         DataDecoders[1].DecoderX               |     0.011 |
 |           ChannelBondX                         |    <0.001 |
 |             pFIFO_reg_0_31_0_5                 |    <0.001 |
 |             pFIFO_reg_0_31_6_9                 |    <0.001 |
@@ -219,14 +219,14 @@ Table of Contents
 |             SyncAsyncx                         |    <0.001 |
 |     miroir_0                                   |     0.000 |
 |       U0                                       |     0.000 |
-|     rgb2dvi                                    |     0.194 |
-|       U0                                       |     0.194 |
+|     rgb2dvi                                    |     0.197 |
+|       U0                                       |     0.197 |
 |         ClockGenInternal.ClockGenX             |     0.062 |
 |           LockLostReset                        |     0.000 |
 |             SyncAsyncx                         |     0.000 |
 |           PLL_LockSyncAsync                    |     0.000 |
 |         ClockSerializer                        |     0.033 |
-|         DataEncoders[0].DataEncoder            |    <0.001 |
+|         DataEncoders[0].DataEncoder            |     0.003 |
 |         DataEncoders[0].DataSerializer         |     0.033 |
 |         DataEncoders[1].DataEncoder            |    <0.001 |
 |         DataEncoders[1].DataSerializer         |     0.033 |
@@ -236,9 +236,9 @@ Table of Contents
 |           SyncAsyncx                           |     0.000 |
 |     top_level_0                                |     0.004 |
 |       U0                                       |     0.004 |
-|         u_compositeur                          |     0.000 |
+|         u_compositeur                          |    <0.001 |
 |           TM_U                                 |     0.000 |
-|         u_detection_joueur                     |     0.000 |
+|         u_detection_joueur                     |    <0.001 |
 |         u_dsp                                  |    <0.001 |
 |         u_fsm                                  |     0.002 |
 |           u_game_state                         |    <0.001 |
