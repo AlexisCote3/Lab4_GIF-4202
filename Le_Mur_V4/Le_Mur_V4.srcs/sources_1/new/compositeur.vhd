@@ -46,9 +46,11 @@ entity compositeur is
         is_pixel_joueur   : in  std_logic;
 
         -- Modes emis par game_state (FSM) :
-        -- 000 accueil, 001 lancement, 010 jeu, 011 mur reussi,
-        -- 100 partie terminee, 110 pause, 111 reset.
+        -- 000 accueil, 001 decompte 3/2/1/GO, 010 jeu,
+        -- 011 reussite, 100 fin, 101 echec, 110 pause, 111 accueil.
         mode_ui           : in  std_logic_vector(2 downto 0);
+        decompte_ui       : in  std_logic_vector(3 downto 0); -- 3,2,1,0=GO
+        flash_on          : in  std_logic; -- bascule 0/1 pendant 3 secondes de resultat
         score_courant     : in  std_logic_vector(3 downto 0);
         temps_restant     : in  std_logic_vector(3 downto 0);
         score_dernier     : in  std_logic_vector(3 downto 0);
@@ -63,9 +65,12 @@ entity compositeur is
 end compositeur;
 
 architecture RTL of compositeur is
-    constant C_MUR     : std_logic_vector(23 downto 0) := x"B74751";
+    constant C_MUR        : std_logic_vector(23 downto 0) := x"E33E4B"; -- Rouge jeu/echec
+    constant C_MUR_BLEU   : std_logic_vector(23 downto 0) := x"2668AE"; -- Etat par defaut
+    constant C_MUR_VERT   : std_logic_vector(23 downto 0) := x"25C96A"; -- Reussite
     constant C_HUD     : std_logic_vector(23 downto 0) := x"14283D";
-    constant C_PANEL   : std_logic_vector(23 downto 0) := x"253A56";
+    -- Gris fonce neutre : rendu stable meme pendant un diagnostic RGB.
+    constant C_PANEL   : std_logic_vector(23 downto 0) := x"202020";
     constant C_PAUSE   : std_logic_vector(23 downto 0) := x"22577B";
     constant C_WHITE   : std_logic_vector(23 downto 0) := x"FFFFFF";
     constant C_ACCENT  : std_logic_vector(23 downto 0) := x"FFD166";
@@ -88,6 +93,7 @@ architecture RTL of compositeur is
     -- Pixels allumes par les textes de l'interface
     signal txt_score, txt_temps, txt_title, txt_start : std_logic;
     signal txt_dernier, txt_record, txt_pause, txt_fin : std_logic;
+    signal txt_go, num_countdown, txt_reussi : std_logic;
 begin
     px <= to_integer(unsigned(pixel_x));
     py <= to_integer(unsigned(pixel_y));
@@ -127,6 +133,13 @@ begin
         generic map (X_ORIGIN => SCREEN_WIDTH - 160, Y_ORIGIN => 12, SCALE => 3)
         port map (x => pixel_x, y => pixel_y, chiffre => temps_uni, pixel_on => num_tm_u);
 
+    -- Compte a rebours utilise a la place des chiffres du temps, dans le HUD.
+    -- La FSM doit envoyer 3, 2, 1 puis 0 pour afficher GO !
+    TM_DECOMPTE : entity work.chiffre_7seg
+        generic map (X_ORIGIN => SCREEN_WIDTH - 160, Y_ORIGIN => 12, SCALE => 3)
+        port map (x => pixel_x, y => pixel_y, chiffre => decompte_ui,
+                  pixel_on => num_countdown);
+
     -- Sous-modules chiffres 7 segments (dernier score / record accueil)
     LAST_D : entity work.chiffre_7seg
         generic map (X_ORIGIN => SCREEN_WIDTH/4 - 45, Y_ORIGIN => SCREEN_HEIGHT/2 + 3, SCALE => 3)
@@ -156,11 +169,12 @@ begin
     TXT_START1 : entity work.texte_5x7
         generic map (TEXT => "START", X_ORIGIN => (SCREEN_WIDTH-120)/2, Y_ORIGIN => SCREEN_HEIGHT/2 - 80, SCALE => 4)
         port map (x => pixel_x, y => pixel_y, pixel_on => txt_start);
+    -- Etiquettes d'accueil agrandies (5x7 -> 20x28 pixels par caractere).
     TXT_LAST1 : entity work.texte_5x7
-        generic map (TEXT => "DERNIER", X_ORIGIN => SCREEN_WIDTH/4 - 75, Y_ORIGIN => SCREEN_HEIGHT/2 - 30, SCALE => 2)
+        generic map (TEXT => "DERNIER", X_ORIGIN => SCREEN_WIDTH/4 - 84, Y_ORIGIN => SCREEN_HEIGHT/2 - 55, SCALE => 4)
         port map (x => pixel_x, y => pixel_y, pixel_on => txt_dernier);
     TXT_REC : entity work.texte_5x7
-        generic map (TEXT => "RECORD", X_ORIGIN => 3*SCREEN_WIDTH/4 - 75, Y_ORIGIN => SCREEN_HEIGHT/2 - 30, SCALE => 2)
+        generic map (TEXT => "RECORD", X_ORIGIN => 3*SCREEN_WIDTH/4 - 72, Y_ORIGIN => SCREEN_HEIGHT/2 - 55, SCALE => 4)
         port map (x => pixel_x, y => pixel_y, pixel_on => txt_record);
     TXT_PAUSE1 : entity work.texte_5x7
         generic map (TEXT => "PAUSE", X_ORIGIN => (SCREEN_WIDTH-120)/2, Y_ORIGIN => SCREEN_HEIGHT/2 - 80, SCALE => 4)
@@ -169,15 +183,29 @@ begin
         generic map (TEXT => "FIN", X_ORIGIN => (SCREEN_WIDTH-90)/2, Y_ORIGIN => SCREEN_HEIGHT/4 + 20, SCALE => 5)
         port map (x => pixel_x, y => pixel_y, pixel_on => txt_fin);
 
+    -- Le texte GO ! apparait dans la zone TEMPS (et non au centre).
+    TXT_GO1 : entity work.texte_5x7
+        generic map (TEXT => "GO !", X_ORIGIN => SCREEN_WIDTH - 200,
+                     Y_ORIGIN => 23, SCALE => 4)
+        port map (x => pixel_x, y => pixel_y, pixel_on => txt_go);
+
+    -- Message de confirmation pendant le flash vert.
+    TXT_REUSSI1 : entity work.texte_5x7
+        generic map (TEXT => "REUSSI", X_ORIGIN => (SCREEN_WIDTH - 180)/2,
+                     Y_ORIGIN => SCREEN_HEIGHT/2 - 25, SCALE => 5)
+        port map (x => pixel_x, y => pixel_y, pixel_on => txt_reussi);
+
     -- ========================================================================
     -- Composition combinatoire des pixels.
     -- Priorite : interface utilisateur > mur > camera.
     -- ========================================================================
-    process (rgb_in, de_in, px, py, mode_ui, wall_pixel, is_pixel_joueur,
+    process (rgb_in, de_in, px, py, mode_ui, decompte_ui, flash_on,
+             wall_pixel, is_pixel_joueur,
              txt_score, txt_temps, txt_title, txt_start,
              txt_dernier, txt_record, txt_pause, txt_fin,
              num_sc_d, num_sc_u, num_tm_d, num_tm_u,
-             num_last_d, num_last_u, num_rec_d, num_rec_u)
+             num_last_d, num_last_u, num_rec_d, num_rec_u,
+             txt_go, num_countdown, txt_reussi)
     begin
         rgb_pixel <= rgb_in;  -- Camera en fond
         if de_in = '0' then
@@ -185,8 +213,16 @@ begin
         else
             case mode_ui is
                 when "000" | "111" => -- Accueil ou reset
-                    if (px >= SCREEN_WIDTH/8 and px < 7*SCREEN_WIDTH/8 and
-                        py >= SCREEN_HEIGHT/6 and py < 5*SCREEN_HEIGHT/6) then
+                    -- On laisse la camera visible autour de quatre petits panneaux.
+                    -- Les panneaux sont opaques (pas de framebuffer/alpha).
+                    if (px >= SCREEN_WIDTH/2 - 190 and px < SCREEN_WIDTH/2 + 190 and
+                        py >= SCREEN_HEIGHT/4 - 30 and py < SCREEN_HEIGHT/4 + 70) or
+                       (px >= SCREEN_WIDTH/2 - 130 and px < SCREEN_WIDTH/2 + 130 and
+                        py >= SCREEN_HEIGHT/2 - 105 and py < SCREEN_HEIGHT/2 - 25) or
+                       (px >= SCREEN_WIDTH/4 - 150 and px < SCREEN_WIDTH/4 + 150 and
+                        py >= SCREEN_HEIGHT/2 - 75 and py < SCREEN_HEIGHT/2 + 105) or
+                       (px >= 3*SCREEN_WIDTH/4 - 150 and px < 3*SCREEN_WIDTH/4 + 150 and
+                        py >= SCREEN_HEIGHT/2 - 75 and py < SCREEN_HEIGHT/2 + 105) then
                         rgb_pixel <= C_PANEL;
                     end if;
                     if (txt_title = '1' or txt_start = '1') then
@@ -198,9 +234,29 @@ begin
                         rgb_pixel <= C_WHITE;
                     end if;
 
-                when "001" | "010" | "011" | "110" => -- Jeu et pause
+                when "001" | "010" | "011" | "101" | "110" =>
+                    -- 001 : attente/decompte, mur bleu
+                    -- 010 : jeu, mur rouge
+                    -- 011 : succes, vert clignotant sur fond bleu
+                    -- 101 : echec, rouge clignotant sur fond bleu
+                    -- 110 : pause, mur bleu
                     if wall_pixel = '1' then
-                        rgb_pixel <= C_MUR;
+                        case mode_ui is
+                            when "010" => rgb_pixel <= C_MUR;
+                            when "011" =>
+                                if flash_on = '1' then
+                                    rgb_pixel <= C_MUR_VERT;
+                                else
+                                    rgb_pixel <= C_MUR_BLEU;
+                                end if;
+                            when "101" =>
+                                if flash_on = '1' then
+                                    rgb_pixel <= C_MUR;
+                                else
+                                    rgb_pixel <= C_MUR_BLEU;
+                                end if;
+                            when others => rgb_pixel <= C_MUR_BLEU;
+                        end case;
                     end if;
                     -- Surcouche de diagnostic optionnelle, sans toucher au DSP.
                     if DEBUG_JOUEUR and is_pixel_joueur = '1' then
@@ -214,9 +270,26 @@ begin
                     if py < 90 then
                         rgb_pixel <= C_HUD;
                     end if;
+                    -- Le score reste visible; TEMPS montre l'horloge du mur
+                    -- en mode jeu, ou le decompte 3,2,1 puis GO en mode 001.
                     if txt_score = '1' or txt_temps = '1' or
-                       num_sc_d = '1' or num_sc_u = '1' or
-                       num_tm_d = '1' or num_tm_u = '1' then
+                       num_sc_d = '1' or num_sc_u = '1' then
+                        rgb_pixel <= C_WHITE;
+                    end if;
+                    if mode_ui = "001" then
+                        if decompte_ui = "0000" then
+                            if txt_go = '1' then
+                                rgb_pixel <= C_ACCENT;
+                            end if;
+                        elsif num_countdown = '1' then
+                            rgb_pixel <= C_ACCENT;
+                        end if;
+                    else
+                        if num_tm_d = '1' or num_tm_u = '1' then
+                            rgb_pixel <= C_WHITE;
+                        end if;
+                    end if;
+                    if mode_ui = "011" and txt_reussi = '1' then
                         rgb_pixel <= C_WHITE;
                     end if;
                     -- Panneau PAUSE par-dessus camera / mur / HUD
@@ -231,8 +304,13 @@ begin
                     end if;
 
                 when "100" => -- Partie terminee
-                    if (px >= SCREEN_WIDTH/8 and px < 7*SCREEN_WIDTH/8 and
-                        py >= SCREEN_HEIGHT/6 and py < 5*SCREEN_HEIGHT/6) then
+                    -- Ecran de fin : camera visible avec panneau FIN + scores.
+                    if (px >= SCREEN_WIDTH/2 - 190 and px < SCREEN_WIDTH/2 + 190 and
+                        py >= SCREEN_HEIGHT/4 - 30 and py < SCREEN_HEIGHT/4 + 100) or
+                       (px >= SCREEN_WIDTH/4 - 150 and px < SCREEN_WIDTH/4 + 150 and
+                        py >= SCREEN_HEIGHT/2 - 75 and py < SCREEN_HEIGHT/2 + 105) or
+                       (px >= 3*SCREEN_WIDTH/4 - 150 and px < 3*SCREEN_WIDTH/4 + 150 and
+                        py >= SCREEN_HEIGHT/2 - 75 and py < SCREEN_HEIGHT/2 + 105) then
                         rgb_pixel <= C_PANEL;
                     end if;
                     if txt_fin = '1' then
